@@ -5,7 +5,8 @@ using UnityEngine;
 public class CharacterController : MonoBehaviour
 {
 
-	[SerializeField] float moveSpeed = 4f;
+	[SerializeField] private float moveSpeed = 4f;
+	[SerializeField] private bool isPicking = false;
 
 	Vector3 forward, right;
 
@@ -19,7 +20,7 @@ public class CharacterController : MonoBehaviour
     void Update()
     {
 
-		if (Input.anyKey)
+		if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
 		{
 			Move();
 		}
@@ -47,5 +48,13 @@ public class CharacterController : MonoBehaviour
 		transform.position += upMovement;
 	}
 
+	public void TogglePicking()
+	{
+		isPicking = !isPicking;
+	}
 
+	public bool GetPickingStatus()
+	{
+		return isPicking;
+	}
 }
