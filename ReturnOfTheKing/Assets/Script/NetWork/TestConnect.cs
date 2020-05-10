@@ -9,14 +9,15 @@ public class TestConnect : MonoBehaviourPunCallbacks
     void Start()
     {
         print("connecting...");
-        PhotonNetwork.GameVersion = "V1.0";
+        PhotonNetwork.GameVersion = MainManager.GameSettings.GameVersion;
         PhotonNetwork.ConnectUsingSettings();
     }
 
     public override void OnConnectedToMaster()
     {
-        base.OnConnectedToMaster();
+        
         print("connected");
+        PhotonNetwork.JoinLobby();
     }
 
     public override void OnDisconnected(Photon.Realtime.DisconnectCause cause)
