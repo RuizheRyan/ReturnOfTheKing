@@ -5,31 +5,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CreatRoom : MonoBehaviourPunCallbacks
+public class HostARoom : MonoBehaviourPunCallbacks
 {
     [SerializeField]
     private Text _roomName;
-    //public Text roomName
-    //{
-    //    get
-    //    {
-    //        return _roomName;
-    //    }
-    //    set
-    //    {
-    //        _roomName = value;
-    //        if (_roomName == null || _roomName.text == "")
-    //        {
-    //            this.GetComponent<Button>().interactable = false;
-    //        }
-    //        else
-    //        {
-    //            this.GetComponent<Button>().interactable = true;
-    //        }
-    //    }
-    //}
+    [SerializeField]
+    private Button _creatButton;
 
-    public void addNewRoomToList()
+    public void upDateCreateButtonState()
+    {
+        if (_roomName.text == null || _roomName.text == "")
+        {
+            _creatButton.interactable = false;
+        }
+        else
+        {
+            _creatButton.interactable = true;
+        }
+    }
+
+    public void createANewRoom()
     {
         if(!PhotonNetwork.IsConnected || _roomName.text == null || _roomName.text == "")
         {
