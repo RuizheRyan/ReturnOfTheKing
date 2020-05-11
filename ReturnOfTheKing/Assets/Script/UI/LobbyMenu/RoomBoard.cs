@@ -95,6 +95,14 @@ public class RoomBoard : MonoBehaviourPunCallbacks
         _preparePage.inRoomPage.showSelf();
         _content.destroyChildren();
         _roomBlockList.Clear();
+        if (PhotonNetwork.IsMasterClient)
+        {
+            _preparePage.inRoomPage._startButton.interactable = true;
+        }
+        else
+        {
+            _preparePage.inRoomPage._startButton.interactable = false;
+        }
     }
 
     public void joinSelectedRoom()

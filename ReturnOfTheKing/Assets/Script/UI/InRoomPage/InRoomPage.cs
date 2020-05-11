@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using Photon.Pun;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InRoomPage : MonoBehaviour
 {
@@ -8,6 +10,8 @@ public class InRoomPage : MonoBehaviour
     private PlayerBoard _playerBoard;
     [SerializeField]
     private LeaveRoom _leaveRoomButton;
+    [SerializeField]
+    public Button _startButton;
 
     private PreparePage _preparePage;
 
@@ -16,7 +20,6 @@ public class InRoomPage : MonoBehaviour
         _preparePage = page;
         _leaveRoomButton.firstInitialize(page);
         _playerBoard.firstInitialize(page);
-
     }
 
     public void showSelf()
@@ -26,5 +29,15 @@ public class InRoomPage : MonoBehaviour
     public void hideSelf()
     {
         gameObject.SetActive(false);
+    }
+
+    public void startGame()
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            PhotonNetwork.CurrentRoom.IsOpen = false;
+            PhotonNetwork.CurrentRoom.IsVisible = false;
+            PhotonNetwork.LoadLevel(1);
+        }
     }
 }

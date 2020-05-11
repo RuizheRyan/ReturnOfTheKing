@@ -13,9 +13,6 @@ public class PlayerBoard: MonoBehaviourPunCallbacks
     [SerializeField]
     private Transform _content;
 
-    [SerializeField]
-    private Button _startButton;
-
     private PreparePage _preparePage;
 
     private List<PlayerBlock> _playerBlockList = new List<PlayerBlock>();
@@ -45,6 +42,10 @@ public class PlayerBoard: MonoBehaviourPunCallbacks
     }
     private void getCurrentPlayersInTheRoom()
     {
+        if (!PhotonNetwork.IsConnected)
+            return;
+        if (PhotonNetwork.CurrentRoom == null || PhotonNetwork.CurrentRoom.Players == null)
+            return;
         foreach(KeyValuePair<int,Player> playerInfo in PhotonNetwork.CurrentRoom.Players)
         {
             addPlayerBlockIntoPlayerBoard(playerInfo.Value);
