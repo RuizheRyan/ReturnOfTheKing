@@ -44,8 +44,10 @@ public class CharacterController : MonoBehaviour
 
 		transform.forward = heading;
 
-		transform.position += rightMovement;
-		transform.position += upMovement;
+		transform.position += heading * moveSpeed * Time.deltaTime;
+
+		//transform.position += rightMovement;
+		//transform.position += upMovement;
 	}
 
 	public void TogglePicking()
