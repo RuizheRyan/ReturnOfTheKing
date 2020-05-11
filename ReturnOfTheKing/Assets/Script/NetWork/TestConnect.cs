@@ -10,6 +10,7 @@ public class TestConnect : MonoBehaviourPunCallbacks
     {
         print("connecting...");
         PhotonNetwork.GameVersion = MainManager.GameSettings.GameVersion;
+        PhotonNetwork.NickName = MainManager.GameSettings.NickName;
         PhotonNetwork.ConnectUsingSettings();
     }
 
@@ -17,7 +18,8 @@ public class TestConnect : MonoBehaviourPunCallbacks
     {
         
         print("connected");
-        PhotonNetwork.JoinLobby();
+        if (!PhotonNetwork.InLobby)
+            PhotonNetwork.JoinLobby();
     }
 
     public override void OnDisconnected(Photon.Realtime.DisconnectCause cause)

@@ -9,8 +9,8 @@ public class RoomBlock : MonoBehaviour
 {
     [SerializeField]
     private Text _text;
-    [SerializeField]
-    private RoomBoard _roomBoard;
+
+    public RoomBoard _roomBoard;
     public RoomInfo roomInformation { get; private set; }
 
     public void setRoomInfo (RoomInfo roomInfo)

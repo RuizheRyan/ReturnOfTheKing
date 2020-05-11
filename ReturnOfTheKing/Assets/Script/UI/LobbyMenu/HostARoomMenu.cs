@@ -5,13 +5,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HostARoom : MonoBehaviourPunCallbacks
+public class HostARoomMenu : MonoBehaviourPunCallbacks
 {
     [SerializeField]
     private Text _roomName;
     [SerializeField]
     private Button _creatButton;
 
+    private PreparePage _preparePage;
+
+    public void firstInitialize(PreparePage page)
+    {
+        _preparePage = page;
+    }
     public void upDateCreateButtonState()
     {
         if (_roomName.text == null || _roomName.text == "")
@@ -34,13 +40,16 @@ public class HostARoom : MonoBehaviourPunCallbacks
         {
             RoomOptions roomOptions = new RoomOptions();
             roomOptions.MaxPlayers = 3;
-            PhotonNetwork.CreateRoom(_roomName.text, roomOptions, TypedLobby.Default);
+            PhotonNetwork.JoinOrCreateRoom(_roomName.text, roomOptions, TypedLobby.Default);
+
         }
+
     }
 
     public override void OnCreatedRoom()
     {
         Debug.Log("create succeed");
+        _preparePage.inRoomPage.showSelf();
 
     }
     public override void OnCreateRoomFailed(short returnCode, string message)

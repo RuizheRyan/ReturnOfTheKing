@@ -7,6 +7,8 @@ public class GameSettings : ScriptableObject
 {
     [SerializeField]
     private string _gameVersion = "V1.0";
+    [SerializeField]
+    private string _nickName = "TestPlayerName";
     public string GameVersion
     {
         get
@@ -15,4 +17,12 @@ public class GameSettings : ScriptableObject
         }
     }
 
+    public string NickName
+    {
+        get
+        {
+            int number = Random.Range(0, 9999);
+            return _nickName + number.ToString();
+        }
+    }
 }

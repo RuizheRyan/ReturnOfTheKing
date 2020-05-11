@@ -15,8 +15,10 @@ public class RoomBoard : MonoBehaviourPunCallbacks
     [SerializeField]
     private Button _joinButton;
 
-    private string _selectedRoomName = null;
     private List<RoomBlock> _roomBlockList = new List<RoomBlock>();
+
+
+    private string _selectedRoomName = null;
     public string selectedRoomName
     {
         get
@@ -42,8 +44,14 @@ public class RoomBoard : MonoBehaviourPunCallbacks
                 }
             }
         }
-    } 
+    }
 
+    private PreparePage _preparePage;
+
+    public void FirstInitialize(PreparePage page)
+    {
+        _preparePage = page;
+    }
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
         foreach(RoomInfo info in roomList)
@@ -63,18 +71,42 @@ public class RoomBoard : MonoBehaviourPunCallbacks
             }
             else
             {
-                RoomBlock block = Instantiate(_roomBlock, _content);
-                if (block != null)
+                int index = _roomBlockList.FindIndex(x => x.roomInformation.Name == info.Name);
+                if (index == -1)
                 {
-                    block.setRoomInfo(info);
-                    _roomBlockList.Add(block);
+                    RoomBlock block = Instantiate(_roomBlock, _content);
+                    if (block != null)
+                    {
+                        block.setRoomInfo(info);
+                        block._roomBoard = this;
+                        _roomBlockList.Add(block);
+                    }
+                }
+                else
+                {
+                    //modify existed block
                 }
             }
         }
     }
 
+    public override void OnJoinedRoom()
+    {
+        _preparePage.inRoomPage.showSelf();
+        _content.destroyChildren();
+        _roomBlockList.Clear();
+    }
+
     public void joinSelectedRoom()
     {
-        PhotonNetwork.JoinRoom(selectedRoomName);
+        //Debug.Log(selectedRoomName);
+        if (selectedRoomName != null || selectedRoomName != "")
+        {
+            PhotonNetwork.JoinRoom(selectedRoomName);
+        }    
     }
+    //public override void OnJoinedRoom()
+    //{
+    //    Debug.Log("Entered:" + selectedRoomName);
+    //}
 }
