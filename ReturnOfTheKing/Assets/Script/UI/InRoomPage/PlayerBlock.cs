@@ -19,6 +19,16 @@ public class PlayerBlock : MonoBehaviour
     public void setPlayerInfo (Player player)
     {
         Player = player;
+        float redValue = 0;
+        float greenValue = 0;
+        float blueValue = 0;
+        if(player.CustomProperties.ContainsKey("CustomColor:Red"))
+            redValue = (float)player.CustomProperties["CustomColor:Red"];
+        if (player.CustomProperties.ContainsKey("CustomColor:Green"))
+            greenValue = (float)player.CustomProperties["CustomColor:Green"];
+        if (player.CustomProperties.ContainsKey("CustomColor:Blue"))
+            blueValue = (float)player.CustomProperties["CustomColor:Blue"];
+        this.GetComponent<RawImage>().color = new Color(redValue,greenValue,blueValue,1);
         _text.text = player.NickName;
     }
 
