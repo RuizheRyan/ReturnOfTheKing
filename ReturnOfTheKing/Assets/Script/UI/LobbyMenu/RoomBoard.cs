@@ -97,12 +97,13 @@ public class RoomBoard : MonoBehaviourPunCallbacks
         _roomBlockList.Clear();
         if (PhotonNetwork.IsMasterClient)
         {
-            _preparePage.inRoomPage._startButton.interactable = true;
+            _preparePage.inRoomPage.startButton.interactable = true;
         }
         else
         {
-            _preparePage.inRoomPage._startButton.interactable = false;
+            _preparePage.inRoomPage.startButton.interactable = false;
         }
+        _preparePage.inRoomPage.colorButton.image.color = _preparePage.lobbyMenu.colorButton.image.color;
     }
 
     public void joinSelectedRoom()

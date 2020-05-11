@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LobbyMenu : MonoBehaviour
 {
@@ -8,6 +9,8 @@ public class LobbyMenu : MonoBehaviour
     private HostARoomMenu _hostARoomMenu;
     [SerializeField]
     private RoomBoard _roomBoard;
+    [SerializeField]
+    public Button colorButton;
 
     private PreparePage _preparePage;
     

@@ -23,6 +23,6 @@ public class GetARandomColor : MonoBehaviour
         _customProperties["CustomColor:Red"] = playersColor.r;
         _customProperties["CustomColor:Green"] = playersColor.g;
         _customProperties["CustomColor:Blue"] = playersColor.b;
-        PhotonNetwork.LocalPlayer.CustomProperties = _customProperties;
+        PhotonNetwork.SetPlayerCustomProperties(_customProperties);
     } 
 }
