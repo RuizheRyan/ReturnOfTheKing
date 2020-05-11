@@ -14,7 +14,16 @@ public class InRoomPage : MonoBehaviour
     public Button startButton;
     [SerializeField]
     public Button colorButton;
+    [SerializeField]
+    public Button readyButton;
 
+    public LeaveRoom leaveRoomButton
+    {
+        get
+        {
+            return _leaveRoomButton;
+        }
+    }
     private PreparePage _preparePage;
 
     public void firstInitialize(PreparePage page)

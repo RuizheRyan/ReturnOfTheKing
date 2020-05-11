@@ -11,6 +11,31 @@ public class PlayerBlock : MonoBehaviourPunCallbacks
     [SerializeField]
     private Text _text;
     [SerializeField]
+    private Text _readyText;
+
+    private bool _ready = false;
+    public PlayerBoard playerBoard;
+
+    public bool ready
+    {
+        get
+        {
+            return _ready;
+        }
+        set
+        {
+            _ready = value;
+            if (_ready)
+            {
+                _readyText.text = "Ready";
+            }
+            else
+            {
+                _readyText.text = "Unready";
+            }
+            playerBoard.checkReadyState();
+        }
+    } 
     public Player Player
     {
         get;
