@@ -6,7 +6,9 @@ public class CharacterController : MonoBehaviour
 {
 
 	[SerializeField] private float moveSpeed = 4f;
-	[SerializeField] private bool isPicking = false;
+	//[SerializeField] private Collider PickableItemACollider;
+	//[SerializeField] private Collider PickableItemBCollider;
+	public bool isPicking = false;
 
 	Vector3 forward, right;
 
@@ -14,6 +16,17 @@ public class CharacterController : MonoBehaviour
     void Start()
     {
 		CoordinationSetting();
+
+		GameObject[] allItems;
+		allItems = GameObject.FindGameObjectsWithTag("PickableItem");
+		foreach(GameObject item in allItems)
+		{
+			Physics.IgnoreCollision(item.GetComponent<BoxCollider>(), GetComponent<Collider>());
+		}
+		//Physics.IgnoreCollision(PickableItemACollider, GetComponent<Collider>());
+		//Physics.IgnoreCollision(PickableItemBCollider, GetComponent<Collider>());
+
+
 	}
 
     // Update is called once per frame
@@ -36,7 +49,7 @@ public class CharacterController : MonoBehaviour
 
 	void Move()
 	{
-		Vector3 direction = new Vector3(Input.GetAxis("HorizontalKey"), 0, Input.GetAxis("VerticalKey"));
+		//Vector3 direction = new Vector3(Input.GetAxis("HorizontalKey"), 0, Input.GetAxis("VerticalKey"));
 		Vector3 rightMovement = right * moveSpeed * Time.deltaTime * Input.GetAxis("HorizontalKey");
 		Vector3 upMovement = forward * moveSpeed * Time.deltaTime * Input.GetAxis("VerticalKey");
 
@@ -50,13 +63,14 @@ public class CharacterController : MonoBehaviour
 		//transform.position += upMovement;
 	}
 
-	public void TogglePicking()
+
+	public bool IsPlayerPressedE()
 	{
-		isPicking = !isPicking;
+		return Input.GetKeyUp(KeyCode.E);
 	}
 
-	public bool GetPickingStatus()
+	public bool IsPlayerPressedMouse()
 	{
-		return isPicking;
+		return Input.GetMouseButtonUp(0);
 	}
 }
