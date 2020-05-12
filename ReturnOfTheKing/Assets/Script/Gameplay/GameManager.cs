@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
 	public enum ItemType { A, B };
 	private GameObject[] allGoals;
 
-	[SerializeField]private bool isVictory;
+	[SerializeField]private bool isVictory = false;
 	// Start is called before the first frame update
 	void Start()
     {

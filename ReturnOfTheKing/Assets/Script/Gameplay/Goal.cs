@@ -5,7 +5,7 @@ using UnityEngine;
 public class Goal : MonoBehaviour
 {
 	[SerializeField] private GameManager.ItemType thisGoalType;
-	[SerializeField] private bool isArrived;
+	[SerializeField] private bool isArrived = false;
 
 	private PickableItem myItemScript;
 	private CharacterController myCharacterController;
