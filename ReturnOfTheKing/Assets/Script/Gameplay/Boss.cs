@@ -7,7 +7,7 @@ public class Boss : MonoBehaviour
 	[Header("Attributes")]
 	[SerializeField] private float coolDown = 5f;
 	[SerializeField] private int damage = 1;
-	[Header("Integer & Times by 5")]
+	[Header("Integer Angle & Times by 5")]
 	[SerializeField] private int detectingRange = 60;
 
 	[Header("Do not change")]
@@ -20,7 +20,7 @@ public class Boss : MonoBehaviour
 	private bool isHit = false;
 	private int numberOfRays;
 	private RaycastHit[] hitsInfo;
-
+	private int numberOfRaysHitPlayer = 0;
 	// Start is called before the first frame update
 	void Start()
     {
@@ -34,10 +34,11 @@ public class Boss : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-		Debug.DrawRay(transform.position, transform.forward * 10f, Color.red);
+		//Debug.DrawRay(transform.position, transform.forward * 10f, Color.red);
 
 
 		BossDetecting();
+		ToggleCoolDown();
     }
 
 
@@ -47,7 +48,7 @@ public class Boss : MonoBehaviour
 		{
 			Vector3 origin = new Vector3(transform.position.x, 1f, transform.position.z);
 			Vector3 startDirection = Quaternion.AngleAxis(-detectingRange / 2, Vector3.up) * transform.forward;
-
+			numberOfRaysHitPlayer = 0;
 			//Debug.Log(startDirection);
 			for (int i = 0; i < numberOfRays; i++)
 			{
@@ -59,12 +60,13 @@ public class Boss : MonoBehaviour
 					//Debug.Log(i + " yes");
 					if(hitsInfo[i].collider.tag == "Player")
 					{
-						Debug.Log(i + " Player");
+						hitsInfo[i].collider.transform.GetComponent<CharacterController>().UnderAttack(damage);
 					}
 					//if(hitsInfo[i].collider.tag == "Obstacle")
 					//{
 					//	Debug.Log(i+ " Obstacle");
 					//}
+					
 				}
 
 			}

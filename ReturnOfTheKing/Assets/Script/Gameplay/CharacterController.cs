@@ -5,7 +5,7 @@ using UnityEngine;
 public class CharacterController : MonoBehaviour
 {
 	[Header("Attributes")]
-	[SerializeField] private int fullHealth = 100;
+	[SerializeField] private float fullHealth = 100f;
 	[SerializeField] private float normalSpeed = 4f;
 	[SerializeField] private float slowDownSpeed = 2f;
 	[SerializeField] private float coolDownTime = 10f;
@@ -14,7 +14,7 @@ public class CharacterController : MonoBehaviour
 	public bool hasThrown = false;
 	public bool isDetected = false;
 	[SerializeField] private float timer = 0f;
-	[SerializeField] private int currentHealth;
+	[SerializeField] private float currentHealth;
 	//[SerializeField] private Collider PickableItemACollider;
 	//[SerializeField] private Collider PickableItemBCollider;
 	public bool isPicking = false;
@@ -43,20 +43,12 @@ public class CharacterController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-		if (!isDetected)
-		{
-			moveSpeed = normalSpeed;
-		}
-		else
-		{
-			moveSpeed = slowDownSpeed;
-		}
+		ToggleSpeed();
 
 		if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
 		{
 			Move();
 		}
-
 		ToggleCoolDown();
     }
 
@@ -108,9 +100,18 @@ public class CharacterController : MonoBehaviour
 		}
 	}
 
+	void ToggleSpeed()
+	{
+		//keep movespeed at normal speed when not hit by boss
+		moveSpeed += normalSpeed * Time.deltaTime;
+		moveSpeed = Mathf.Clamp(moveSpeed, slowDownSpeed, normalSpeed);
+	}
+
+
 	public void UnderAttack(int damage)
 	{
-		currentHealth -= damage;
+		currentHealth -= damage * Time.deltaTime;
+		moveSpeed -= 2 * normalSpeed;
 	}
 
 }

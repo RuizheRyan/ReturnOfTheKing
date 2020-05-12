@@ -124,8 +124,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df87c2eec6a352642a4cd345500ac004, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 8
+  fullHealth: 100
+  normalSpeed: 8
+  slowDownSpeed: 2
   coolDownTime: 10
   hasThrown: 0
+  isDetected: 0
   timer: 0
+  currentHealth: 0
   isPicking: 0
