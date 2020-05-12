@@ -16,9 +16,9 @@ GameObject:
   - component: {fileID: 574116419877312608}
   - component: {fileID: 6155486416857777828}
   - component: {fileID: 5096736554002590852}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Boss
-  m_TagString: Untagged
+  m_TagString: Boss
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -149,7 +149,8 @@ MonoBehaviour:
   rotateSpeed: 2
   layerMask:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 4352
+  nextBoss: {fileID: 0}
 --- !u!135 &5096736554002590852
 SphereCollider:
   m_ObjectHideFlags: 0

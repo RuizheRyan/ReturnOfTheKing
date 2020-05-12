@@ -5,14 +5,14 @@ using UnityEngine;
 public class Boss : MonoBehaviour
 {
 	[Header("Attributes")]
-	[SerializeField] private float coolDown = 5f;
+	[SerializeField] private float HitCoolDown = 5f;
 	[SerializeField] private int damage = 1;
 	[Header("Integer Angle & Times by 5")]
 	[SerializeField] private int detectingRange = 60;
 
 	[Header("Do not change")]
 	[SerializeField] private LayerMask layerMask;
-	[SerializeField] private bool isAvailable;
+	public bool isAvailable;
 	[SerializeField] private float timer = 0f;
 
 
@@ -44,7 +44,7 @@ public class Boss : MonoBehaviour
 
 	void BossDetecting()
 	{
-		if (!isHit)
+		if (!isHit & isAvailable)
 		{
 			Vector3 origin = new Vector3(transform.position.x, 1f, transform.position.z);
 			Vector3 startDirection = Quaternion.AngleAxis(-detectingRange / 2, Vector3.up) * transform.forward;
@@ -100,7 +100,7 @@ public class Boss : MonoBehaviour
 			timer += Time.deltaTime;
 		}
 
-		if (timer >= coolDown)
+		if (timer >= HitCoolDown)
 		{
 			isHit = false;
 			timer = 0;
