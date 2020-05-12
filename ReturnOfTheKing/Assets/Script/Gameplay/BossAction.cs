@@ -6,11 +6,14 @@ public class BossAction : MonoBehaviour
 {
 	[Header("Attributes")]
 	[SerializeField] private float rotateSpeed = 10f;
+	[SerializeField] private float switchCoolDown = 5f;
 	[Header("Do not Change")]
 	[SerializeField] private LayerMask layerMask;
 
 	[Header("Debugging")]
 	[SerializeField] GameObject nextBoss;
+	public bool isSwitched = false;
+	[SerializeField] private float switchTimer = 0f;
 
 	private const float MAX_RAY_DISTANCE = 100f;
 	private Vector3 targetDirection;
@@ -33,6 +36,7 @@ public class BossAction : MonoBehaviour
 		isAvailable = myBoss.isAvailable;
 
 		ControlBoss();
+		ToggleSwitchCD();
 	}
 
 
@@ -58,11 +62,30 @@ public class BossAction : MonoBehaviour
 			if(Input.GetMouseButtonUp(0) && hit.collider.tag == "Boss")
 			{
 				nextBoss = hit.collider.gameObject;
-				myBoss.isAvailable = false;
-				nextBoss.GetComponent<Boss>().isAvailable = true;
+				if (!nextBoss.GetComponent<BossAction>().isSwitched && nextBoss != gameObject)
+				{
+					myBoss.isAvailable = false;
+					isSwitched = true;
+					nextBoss.GetComponent<Boss>().isAvailable = true;
+				}
+
 			}
 		}
 		
+	}
+
+	void ToggleSwitchCD()
+	{
+		if (isSwitched)
+		{
+			switchTimer += Time.deltaTime;
+		}
+
+		if(switchTimer > switchCoolDown)
+		{
+			isSwitched = false;
+			switchTimer = 0f;
+		}
 	}
 
 }
