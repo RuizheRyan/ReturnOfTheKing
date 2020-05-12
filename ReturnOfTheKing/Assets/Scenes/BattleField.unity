@@ -121,6 +121,56 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &343040177
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 343040179}
+  - component: {fileID: 343040178}
+  m_Layer: 0
+  m_Name: InstantiateTest
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &343040178
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 343040177}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 055ce43ccab4ff24ba7203c0968d78cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerPrefab: {fileID: 3703448915361641223, guid: c71df1f0f0927704486b2e7e07fffa25,
+    type: 3}
+  _monsterPrefab: {fileID: 3703448915361641223, guid: 71ead19033c611a4eb4efaf3546c7d09,
+    type: 3}
+  _startPointOfMonster: {x: 10, y: 10, z: 1}
+  _startPointOfPlayer1: {x: 0, y: 10, z: 1}
+  _startPointOfPlayer2: {x: 20, y: 10, z: 1}
+--- !u!4 &343040179
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 343040177}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 618.36255, y: 349.355, z: -61.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &399566933
 GameObject:
   m_ObjectHideFlags: 0
@@ -729,6 +779,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 3703448915361641223, guid: 7dc0d2bb61c7f5447aa646f3fe8bcc1f,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3703448915361641229, guid: 7dc0d2bb61c7f5447aa646f3fe8bcc1f,
         type: 3}
