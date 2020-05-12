@@ -13,19 +13,19 @@ public class PlayerBlock : MonoBehaviourPunCallbacks
     [SerializeField]
     private Text _readyText;
 
-    private bool _ready = false;
+    private bool _readyState = false;
     public PlayerBoard playerBoard;
 
-    public bool ready
+    public bool readyState
     {
         get
         {
-            return _ready;
+            return _readyState;
         }
         set
         {
-            _ready = value;
-            if (_ready)
+            _readyState = value;
+            if (_readyState)
             {
                 _readyText.text = "Ready";
             }
@@ -59,9 +59,9 @@ public class PlayerBlock : MonoBehaviourPunCallbacks
 
     private void setPlayerBlock(Player player)
     {
-        float redValue = 0;
-        float greenValue = 0;
-        float blueValue = 0;
+        float redValue = 1;
+        float greenValue = 1;
+        float blueValue = 1;
         if (player.CustomProperties.ContainsKey("CustomColor:Red"))
             redValue = (float)player.CustomProperties["CustomColor:Red"];
         if (player.CustomProperties.ContainsKey("CustomColor:Green"))

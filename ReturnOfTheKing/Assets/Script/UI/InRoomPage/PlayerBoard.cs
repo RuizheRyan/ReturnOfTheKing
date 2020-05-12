@@ -14,9 +14,34 @@ public class PlayerBoard: MonoBehaviourPunCallbacks
     private Transform _content;
     [SerializeField]
     private Text _readyText;
+    [SerializeField]
+    private Text _everyOneIsReadyText;
 
     private PreparePage _preparePage;
-    private bool _everyOneIsready = false;
+    private bool _localReadyState = false;
+    private bool _everyOneIsReady = false;
+
+    public bool everyOneIsReady
+    {
+        get
+        {
+            return _everyOneIsReady;
+        }
+        set
+        {
+            _everyOneIsReady = value;
+            if (_everyOneIsReady)
+            {
+                _preparePage.inRoomPage.startButton.interactable = true;
+                _everyOneIsReadyText.text = "Everyone is ready";
+            }
+            else
+            {
+                _preparePage.inRoomPage.startButton.interactable = false;
+                _everyOneIsReadyText.text = "Unready";
+            }
+        }
+    }
 
     private List<PlayerBlock> _playerBlockList = new List<PlayerBlock>();
 
@@ -46,14 +71,14 @@ public class PlayerBoard: MonoBehaviourPunCallbacks
 
     private void setReadyUp(bool state)
     {
-        _everyOneIsready = state;
-        if (_everyOneIsready)
+        _localReadyState = state;
+        if (_localReadyState)
         {
-            _readyText.text = "R";
+            _readyText.text = "IsReady";
         }
         else
         {
-            _readyText.text = "N";
+            _readyText.text = "Unready";
         }
     }
 
@@ -83,9 +108,9 @@ public class PlayerBoard: MonoBehaviourPunCallbacks
             if (block != null)
             {
                 block.setPlayerInfo(player);
-                _playerBlock.playerBoard = this;
+                block.playerBoard = this;
                 if (player.IsMasterClient)
-                    _playerBlock.ready = true;
+                    block.readyState = true;
                 _playerBlockList.Add(block);
             }
         }
@@ -94,6 +119,7 @@ public class PlayerBoard: MonoBehaviourPunCallbacks
     {
         Debug.Log("PlayersEntered.");
         addPlayerBlockIntoPlayerBoard(newPlayer);
+        everyOneIsReady = false;
     }
 
     public override void OnPlayerLeftRoom(Player leftPlayer)
@@ -110,39 +136,48 @@ public class PlayerBoard: MonoBehaviourPunCallbacks
     {
         if (!PhotonNetwork.IsMasterClient)
         {
-            setReadyUp(!_everyOneIsready);
-            base.photonView.RPC("RPC_ChangeReadyState", RpcTarget.MasterClient,PhotonNetwork.LocalPlayer,_everyOneIsready);
+            setReadyUp(!_localReadyState);
+            base.photonView.RPC("RPC_ChangeReadyState", RpcTarget.All,PhotonNetwork.LocalPlayer,_localReadyState);
         }
     }
-    
+
+    public void checkReadyState()
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            for (int i = 0; i < _playerBlockList.Count; i++)
+            {
+                if (_playerBlockList[i].Player != PhotonNetwork.LocalPlayer)
+                {
+                    if (!_playerBlockList[i].readyState)
+                    {
+                        everyOneIsReady = false;
+                        Debug.Log("Someone is unready");
+                        return;
+                    }
+                }
+            }
+            Debug.Log("Everyone is ready");
+            everyOneIsReady = true;
+        }
+    }
+
+    public override void OnMasterClientSwitched(Player newMasterClient)
+    {
+        _preparePage.inRoomPage.leaveRoomButton.leaveCurrentRoom();
+    }
+
     [PunRPC]
     private void RPC_ChangeReadyState(Player player,bool ready)
     {
         int index = _playerBlockList.FindIndex(x => x.Player == player);
         if (index != -1)
         {
-            _playerBlockList[index].ready = ready;
+            _playerBlockList[index].readyState = ready;
         }
     }
 
-    public void checkReadyState()
-    {
-        if (PhotonNetwork.IsMasterClient) {
-            for (int i = 0; i < _playerBlockList.Count; i++)
-            {
-                if (_playerBlockList[i].Player != PhotonNetwork.LocalPlayer)
-                {
-                    if (!_playerBlockList[i].ready)
-                    {
-                        _everyOneIsready = false;
-                        _preparePage.inRoomPage.startButton.interactable = false;
-                        return;
-                    }
-                }
-            }
-            _everyOneIsready = true;
-            _preparePage.inRoomPage.startButton.interactable = true;
-        }
-    }
+
+
 
 }

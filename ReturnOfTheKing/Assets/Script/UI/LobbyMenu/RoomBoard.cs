@@ -99,6 +99,7 @@ public class RoomBoard : MonoBehaviourPunCallbacks
         {
             _preparePage.inRoomPage.startButton.interactable = true;
             _preparePage.inRoomPage.readyButton.interactable = false;
+            _preparePage.inRoomPage.readyButton.GetComponentInChildren<Text>().text = "Ready";
         }
         else
         {
