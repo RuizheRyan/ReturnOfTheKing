@@ -63,15 +63,20 @@ public class PickableItem : MonoBehaviour
 			}
 			else if (isPicked && myCharacterController.isPicking)
 			{
-				transform.parent = null;
-				transform.position = thisPlayer.transform.position;
-				transform.localRotation = Quaternion.identity;
-				isPicked = false;
-				rb.useGravity = true;
-				myCharacterController.isPicking = false;
+				DropItem();
 			}
 
 		}
+	}
+
+	public void DropItem()
+	{
+		transform.parent = null;
+		transform.position = thisPlayer.transform.position;
+		transform.localRotation = Quaternion.identity;
+		isPicked = false;
+		rb.useGravity = true;
+		myCharacterController.isPicking = false;
 	}
 
 	private void ThrowItem()
@@ -125,5 +130,8 @@ public class PickableItem : MonoBehaviour
 	}
 
 
-
+	public bool GetPickingState()
+	{
+		return isPicked;
+	}
 }
