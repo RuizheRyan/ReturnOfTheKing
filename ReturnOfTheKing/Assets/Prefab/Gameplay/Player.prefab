@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3703448915361641218}
   - component: {fileID: 3703448915361641217}
   - component: {fileID: 3703448915361641216}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -61,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: b0ed3b751bbd218408c716d7f6ff723a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -125,8 +125,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 8
-  PickableItemACollider: {fileID: 6680015633671630518, guid: 8c4e6067acf534c4791e868ec404c441,
-    type: 3}
-  PickableItemBCollider: {fileID: 2250900144211188589, guid: f3b52e67ed7cbc44f830d5865818e7c3,
-    type: 3}
+  coolDownTime: 10
+  hasThrown: 0
+  timer: 0
   isPicking: 0

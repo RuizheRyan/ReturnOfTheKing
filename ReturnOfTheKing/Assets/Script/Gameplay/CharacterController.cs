@@ -5,22 +5,28 @@ using UnityEngine;
 public class CharacterController : MonoBehaviour
 {
 	[Header("Attributes")]
-	[SerializeField] private float moveSpeed = 4f;
+	[SerializeField] private int fullHealth = 100;
+	[SerializeField] private float normalSpeed = 4f;
+	[SerializeField] private float slowDownSpeed = 2f;
 	[SerializeField] private float coolDownTime = 10f;
 
 	[Header("Debugging")]
-	public bool hasThrown;
+	public bool hasThrown = false;
+	public bool isDetected = false;
 	[SerializeField] private float timer = 0f;
+	[SerializeField] private int currentHealth;
 	//[SerializeField] private Collider PickableItemACollider;
 	//[SerializeField] private Collider PickableItemBCollider;
 	public bool isPicking = false;
 
 	Vector3 forward, right;
+	private float moveSpeed;
 
     // Start is called before the first frame update
     void Start()
     {
 		CoordinationSetting();
+		currentHealth = fullHealth;
 
 		GameObject[] allItems;
 		allItems = GameObject.FindGameObjectsWithTag("PickableItem");
@@ -37,6 +43,14 @@ public class CharacterController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+		if (!isDetected)
+		{
+			moveSpeed = normalSpeed;
+		}
+		else
+		{
+			moveSpeed = slowDownSpeed;
+		}
 
 		if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
 		{
@@ -90,6 +104,13 @@ public class CharacterController : MonoBehaviour
 		if(timer >= coolDownTime)
 		{
 			hasThrown = false;
+			timer = 0;
 		}
 	}
+
+	public void UnderAttack(int damage)
+	{
+		currentHealth -= damage;
+	}
+
 }

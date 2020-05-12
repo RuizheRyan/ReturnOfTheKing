@@ -50,7 +50,7 @@ public class PickableItem : MonoBehaviour
 
 	private void InteractWithItem()
 	{
-		if (thisPlayer != null && myCharacterController.IsPlayerPressedE() )
+		if (thisPlayer != null && myCharacterController.IsPlayerPressedE())
 		{
 			if (inRange && !isPicked && !myCharacterController.isPicking)
 			{

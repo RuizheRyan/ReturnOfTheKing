@@ -4,17 +4,30 @@ using UnityEngine;
 
 public class Boss : MonoBehaviour
 {
-	[SerializeField] private float rotateSpeed = 10f;
+	[Header("Attributes")]
+	[SerializeField] private float coolDown = 5f;
+	[SerializeField] private int damage = 1;
+	[Header("Integer & Times by 5")]
+	[SerializeField] private int detectingRange = 60;
+
+	[Header("Do not change")]
 	[SerializeField] private LayerMask layerMask;
 	[SerializeField] private bool isAvailable;
+	[SerializeField] private float timer = 0f;
 
-	private Vector3 targetDirection;
-	private const float MAX_RAY_DISTANCE = 100f;
-	private bool isHit;
+
+	private const float MAX_RAY_DISTANCE = 1000f;
+	private bool isHit = false;
+	private int numberOfRays;
+	private RaycastHit[] hitsInfo;
+
 	// Start is called before the first frame update
 	void Start()
     {
-		targetDirection = transform.forward;
+
+
+		numberOfRays = Mathf.FloorToInt(detectingRange / 5) + 1;
+		hitsInfo = new RaycastHit[numberOfRays];
         
     }
 
@@ -23,22 +36,59 @@ public class Boss : MonoBehaviour
     {
 		Debug.DrawRay(transform.position, transform.forward * 10f, Color.red);
 
-		BossRotate();
+
+		BossDetecting();
     }
 
-	void BossRotate()
+
+	void BossDetecting()
 	{
-		Vector2 mousePosition = Input.mousePosition;
-		Ray ray = Camera.main.ScreenPointToRay(mousePosition);
-		RaycastHit hit;
-
-		if (Input.GetMouseButtonUp(1) && Physics.Raycast(ray, out hit, MAX_RAY_DISTANCE, layerMask))
+		if (!isHit)
 		{
-			targetDirection = new Vector3(hit.point.x - transform.position.x, 0, hit.point.z - transform.position.z);
-		}
-		Vector3 newDirection = Vector3.RotateTowards(transform.forward, targetDirection, rotateSpeed * Time.deltaTime, 0.0f);
-		//Debug.Log(targetDirection - transform.forward);
+			Vector3 origin = new Vector3(transform.position.x, 1f, transform.position.z);
+			Vector3 startDirection = Quaternion.AngleAxis(-detectingRange / 2, Vector3.up) * transform.forward;
 
-		transform.rotation = Quaternion.LookRotation(newDirection);
+			//Debug.Log(startDirection);
+			for (int i = 0; i < numberOfRays; i++)
+			{
+				Vector3 rayDirection = Quaternion.AngleAxis(i * 5f, Vector3.up) * startDirection;
+				Ray ray = new Ray(origin, rayDirection);
+				Debug.DrawRay(origin, rayDirection * 100f, Color.yellow);
+				if(Physics.Raycast(ray, out hitsInfo[i], MAX_RAY_DISTANCE, layerMask))
+				{
+					//Debug.Log(i + " yes");
+					if(hitsInfo[i].collider.tag == "Player")
+					{
+						Debug.Log(i + " Player");
+					}
+					//if(hitsInfo[i].collider.tag == "Obstacle")
+					//{
+					//	Debug.Log(i+ " Obstacle");
+					//}
+				}
+
+			}
+			
+		}
+	}
+
+
+	public void BossGotHit()
+	{
+		isHit = true;
+	}
+
+	void ToggleCoolDown()
+	{
+		if (isHit)
+		{
+			timer += Time.deltaTime;
+		}
+
+		if (timer >= coolDown)
+		{
+			isHit = false;
+			timer = 0;
+		}
 	}
 }
