@@ -4,18 +4,21 @@ using UnityEngine;
 
 public class PickableItem : MonoBehaviour
 {
-	enum ItemType {A, B};
 	[Header("Attributes")]
-	[SerializeField] private ItemType thisType;
-	[SerializeField] private bool inRange = false;
-	[SerializeField] private bool isPicked = false;
-	[SerializeField] private float force = 100.0f;
-	[SerializeField] private float offset = 2.0f;
-	[SerializeField] private GameObject thisPlayer;
 
+	[SerializeField] private float force = 100.0f;
+	//when the item is held by a player
+	[SerializeField] private float heightOffset = 2.0f;
+
+	[Header("Do Not Change")]
+	public GameManager.ItemType thisType;
 	[SerializeField] private LayerMask layerMask;
 
+	[Header("Debugging")]
+	[SerializeField] private GameObject thisPlayer;
 	[SerializeField] private Camera camera;
+	[SerializeField] private bool inRange = false;
+	[SerializeField] private bool isPicked = false;
 
 	private CharacterController myCharacterController;
 	private Rigidbody rb;
@@ -52,7 +55,7 @@ public class PickableItem : MonoBehaviour
 			if (inRange && !isPicked && !myCharacterController.isPicking)
 			{
 				transform.parent = thisPlayer.transform;
-				transform.position = thisPlayer.transform.position + new Vector3(0f, offset, 0f);
+				transform.position = thisPlayer.transform.position + new Vector3(0f, heightOffset, 0f);
 				rb.useGravity = false;
 				isPicked = true;
 				myCharacterController.isPicking = true;
@@ -119,5 +122,7 @@ public class PickableItem : MonoBehaviour
 			inRange = false;
 		}
 	}
+
+
 
 }
