@@ -81,7 +81,7 @@ public class PickableItem : MonoBehaviour
 		RaycastHit hit;
 		Debug.DrawRay(ray.origin, ray.direction * 10, Color.green);
 
-		if(thisPlayer != null && myCharacterController.IsPlayerPressedMouse() && isPicked)
+		if(thisPlayer != null && myCharacterController.IsPlayerPressedMouse() && isPicked && !myCharacterController.hasThrown)
 		{
 			if(Physics.Raycast(ray, out hit, MAX_RAY_DISTANCE, layerMask))
 			{
@@ -97,6 +97,7 @@ public class PickableItem : MonoBehaviour
 			}
 			isPicked = false;
 			myCharacterController.isPicking = false;
+			myCharacterController.hasThrown = true;
 		}
 
 

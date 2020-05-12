@@ -4,8 +4,13 @@ using UnityEngine;
 
 public class CharacterController : MonoBehaviour
 {
-
+	[Header("Attributes")]
 	[SerializeField] private float moveSpeed = 4f;
+	[SerializeField] private float coolDownTime = 10f;
+
+	[Header("Debugging")]
+	public bool hasThrown;
+	[SerializeField] private float timer = 0f;
 	//[SerializeField] private Collider PickableItemACollider;
 	//[SerializeField] private Collider PickableItemBCollider;
 	public bool isPicking = false;
@@ -37,6 +42,8 @@ public class CharacterController : MonoBehaviour
 		{
 			Move();
 		}
+
+		ToggleCoolDown();
     }
 
 	void CoordinationSetting()
@@ -72,5 +79,17 @@ public class CharacterController : MonoBehaviour
 	public bool IsPlayerPressedMouse()
 	{
 		return Input.GetMouseButtonUp(0);
+	}
+
+	void ToggleCoolDown()
+	{
+		if (hasThrown)
+		{
+			timer += Time.deltaTime;
+		}
+		if(timer >= coolDownTime)
+		{
+			hasThrown = false;
+		}
 	}
 }
