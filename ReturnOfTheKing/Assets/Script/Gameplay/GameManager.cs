@@ -6,6 +6,8 @@ public class GameManager : MonoBehaviour
 {
 	public enum ItemType { A, B };
 	private GameObject[] allGoals;
+
+	[SerializeField]private bool isVictory;
 	// Start is called before the first frame update
 	void Start()
     {
@@ -15,6 +17,25 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+		//CheckWin();
+
     }
+
+	public void CheckWin()
+	{
+		int arrivedGoals = 0;
+		foreach(GameObject goal in allGoals)
+		{
+			if (goal.GetComponent<Goal>().GetArrivalStatus())
+			{
+				arrivedGoals += 1;
+			}
+		}
+
+		if(arrivedGoals == allGoals.Length)
+		{
+			isVictory = true;
+		}
+
+	}
 }
