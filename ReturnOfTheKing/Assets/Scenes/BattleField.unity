@@ -193,6 +193,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1869734180681421027, guid: 01f75a7042cd92848ada4164e40aae0d,
+        type: 3}
+      propertyPath: viewIdField
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 01f75a7042cd92848ada4164e40aae0d, type: 3}
 --- !u!1 &343040177
@@ -211,7 +216,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &343040178
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -224,9 +229,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 055ce43ccab4ff24ba7203c0968d78cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerPrefab: {fileID: 3703448915361641223, guid: c71df1f0f0927704486b2e7e07fffa25,
+  _playerPrefab: {fileID: 3703448915361641223, guid: 7dc0d2bb61c7f5447aa646f3fe8bcc1f,
     type: 3}
-  _monsterPrefab: {fileID: 3703448915361641223, guid: 71ead19033c611a4eb4efaf3546c7d09,
+  _monsterPrefab: {fileID: 574116419877312619, guid: 01f75a7042cd92848ada4164e40aae0d,
     type: 3}
   _startPointOfMonster: {x: 10, y: 10, z: 1}
   _startPointOfPlayer1: {x: 0, y: 10, z: 1}
@@ -717,6 +722,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1869734180681421027, guid: 01f75a7042cd92848ada4164e40aae0d,
+        type: 3}
+      propertyPath: viewIdField
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 01f75a7042cd92848ada4164e40aae0d, type: 3}
 --- !u!1 &1764220519
@@ -938,6 +948,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1869734180681421027, guid: 01f75a7042cd92848ada4164e40aae0d,
+        type: 3}
+      propertyPath: viewIdField
+      value: 4
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 01f75a7042cd92848ada4164e40aae0d, type: 3}
 --- !u!1001 &1288644324235032390
@@ -1085,6 +1100,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1107971628178827926, guid: 7dc0d2bb61c7f5447aa646f3fe8bcc1f,
+        type: 3}
+      propertyPath: viewIdField
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3703448915361641223, guid: 7dc0d2bb61c7f5447aa646f3fe8bcc1f,
         type: 3}
       propertyPath: m_Name

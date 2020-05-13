@@ -21,7 +21,6 @@ public class Boss : MonoBehaviourPun
 	private bool isHit = false;
 	private int numberOfRays;
 	private RaycastHit[] hitsInfo;
-	private int numberOfRaysHitPlayer = 0;
 	// Start is called before the first frame update
 	void Start()
     {
@@ -49,7 +48,6 @@ public class Boss : MonoBehaviourPun
 		{
 			Vector3 origin = new Vector3(transform.position.x, 1f, transform.position.z);
 			Vector3 startDirection = Quaternion.AngleAxis(-detectingRange / 2, Vector3.up) * transform.forward;
-			numberOfRaysHitPlayer = 0;
 			//Debug.Log(startDirection);
 			for (int i = 0; i < numberOfRays; i++)
 			{
