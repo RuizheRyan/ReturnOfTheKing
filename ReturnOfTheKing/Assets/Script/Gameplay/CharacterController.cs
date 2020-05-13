@@ -1,8 +1,9 @@
-﻿using System.Collections;
+﻿using Photon.Pun;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterController : MonoBehaviour
+public class CharacterController : MonoBehaviourPun
 {
 	[Header("Attributes")]
 	[SerializeField] private float fullHealth = 100f;
@@ -43,13 +44,17 @@ public class CharacterController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-		ToggleSpeed();
-
-		if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
+		if (base.photonView.IsMine)
 		{
-			Move();
+			ToggleSpeed();
+
+			if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
+			{
+				Move();
+			}
+			ToggleCoolDown();
 		}
-		ToggleCoolDown();
+
     }
 
 	void CoordinationSetting()

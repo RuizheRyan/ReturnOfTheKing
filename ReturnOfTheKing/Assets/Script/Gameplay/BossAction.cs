@@ -1,8 +1,9 @@
-﻿using System.Collections;
+﻿using Photon.Pun;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BossAction : MonoBehaviour
+public class BossAction : MonoBehaviourPun
 {
 	[Header("Attributes")]
 	[SerializeField] private float rotateSpeed = 10f;
@@ -33,10 +34,14 @@ public class BossAction : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-		isAvailable = myBoss.isAvailable;
+		if (base.photonView.IsMine)
+		{
+			isAvailable = myBoss.isAvailable;
 
-		ControlBoss();
-		ToggleSwitchCD();
+			ControlBoss();
+			ToggleSwitchCD();
+		}
+
 	}
 
 
