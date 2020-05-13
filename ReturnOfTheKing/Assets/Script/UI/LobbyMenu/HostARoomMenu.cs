@@ -11,6 +11,8 @@ public class HostARoomMenu : MonoBehaviourPunCallbacks
     private Text _roomName;
     [SerializeField]
     private Button _creatButton;
+    [SerializeField]
+    private LocalPlayerInformation _localPlayerInformation;
 
     private PreparePage _preparePage;
 
@@ -20,7 +22,7 @@ public class HostARoomMenu : MonoBehaviourPunCallbacks
     }
     public void upDateCreateButtonState()
     {
-        if (_roomName.text == null || _roomName.text == "")
+        if (_roomName.text == null || _roomName.text == "" || !_localPlayerInformation.getLocalPlayerInformation)
         {
             _creatButton.interactable = false;
         }

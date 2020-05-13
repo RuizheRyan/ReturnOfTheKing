@@ -25,5 +25,9 @@ public class GameSettings : ScriptableObject
             int number = Random.Range(0, 9999);
             return _nickName + number.ToString();
         }
+        set
+        {
+            _nickName = value;
+        }
     }
 }

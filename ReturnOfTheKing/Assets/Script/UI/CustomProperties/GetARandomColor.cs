@@ -8,23 +8,34 @@ using UnityEngine.UI;
 public class GetARandomColor : MonoBehaviour
 {
     private Color _playersColor;
-    //[SerializeField]
-    //private PlayerBoard _playBoard;
+    public Color playersColor
+    {
+        get
+        {
+            return _playersColor;
+        }
+        set
+        {
+            _playersColor = value;
+            //Color newcolor = this.GetComponent<Image>().color;
+            //newcolor = _playersColor;
+            this.GetComponent<Image>().color = _playersColor;
+            _customProperties["CustomColor:Red"] = _playersColor.r;
+            _customProperties["CustomColor:Green"] = _playersColor.g;
+            _customProperties["CustomColor:Blue"] = _playersColor.b;
+            PhotonNetwork.SetPlayerCustomProperties(_customProperties);
+            _playerInformation.setPlayerColor(_playersColor);
+        }
+    }
+    [SerializeField]
+    private LocalPlayerInformation _playerInformation;
 
     private ExitGames.Client.Photon.Hashtable _customProperties = new ExitGames.Client.Photon.Hashtable();
     public void getARandomColor()
     {
-        _playersColor.r = Random.Range(0, 1.0f);
-        _playersColor.g = Random.Range(0, 1.0f);
-        _playersColor.b = Random.Range(0, 1.0f);
-        _playersColor.a = 1;
-        Color newcolor = this.GetComponent<Image>().color;
-        newcolor = _playersColor;
-        this.GetComponent<Image>().color = newcolor;
-
-        _customProperties["CustomColor:Red"] = _playersColor.r;
-        _customProperties["CustomColor:Green"] = _playersColor.g;
-        _customProperties["CustomColor:Blue"] = _playersColor.b;
-        PhotonNetwork.SetPlayerCustomProperties(_customProperties);
+        float r = Random.Range(0, 1.0f);
+        float g = Random.Range(0, 1.0f);
+        float b = Random.Range(0, 1.0f);
+        playersColor = new Color(r, g, b);
     } 
 }

@@ -14,6 +14,8 @@ public class RoomBoard : MonoBehaviourPunCallbacks
     private Transform _content;
     [SerializeField]
     private Button _joinButton;
+    [SerializeField]
+    private LocalPlayerInformation _localPlayerInformation;
 
     private List<RoomBlock> _roomBlockList = new List<RoomBlock>();
 
@@ -28,21 +30,7 @@ public class RoomBoard : MonoBehaviourPunCallbacks
         set
         {
             _selectedRoomName = value;
-            if (_selectedRoomName == null || _selectedRoomName == "")
-            {
-                _joinButton.interactable = false;
-            }
-            else
-            {
-                _joinButton.interactable = true;
-                foreach(RoomBlock roomBlock in _roomBlockList)
-                {
-                    if (roomBlock.roomInformation.Name != selectedRoomName)
-                    {
-                        roomBlock.GetComponent<Button>().interactable = true;
-                    }
-                }
-            }
+            updateJoinButtonState();
         }
     }
 
@@ -120,4 +108,24 @@ public class RoomBoard : MonoBehaviourPunCallbacks
     //{
     //    Debug.Log("Entered:" + selectedRoomName);
     //}
+
+    public void updateJoinButtonState()
+    {
+        if (_selectedRoomName == null || _selectedRoomName == "")
+        {
+            _joinButton.interactable = false;
+        }
+        else
+        {
+            if(_localPlayerInformation.getLocalPlayerInformation)
+                _joinButton.interactable = true;
+            foreach (RoomBlock roomBlock in _roomBlockList)
+            {
+                if (roomBlock.roomInformation.Name != selectedRoomName)
+                {
+                    roomBlock.GetComponent<Button>().interactable = true;
+                }
+            }
+        }
+    }
 }

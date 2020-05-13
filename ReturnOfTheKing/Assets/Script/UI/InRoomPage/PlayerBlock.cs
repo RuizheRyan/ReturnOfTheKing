@@ -69,6 +69,6 @@ public class PlayerBlock : MonoBehaviourPunCallbacks
         if (player.CustomProperties.ContainsKey("CustomColor:Blue"))
             blueValue = (float)player.CustomProperties["CustomColor:Blue"];
         this.GetComponent<RawImage>().color = new Color(redValue, greenValue, blueValue, 1);
-        _text.text = player.NickName;
+        _text.text = (string)player.CustomProperties["PlayerName"];
     }
 }
