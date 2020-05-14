@@ -11,6 +11,8 @@ public class LobbyMenu : MonoBehaviour
     private RoomBoard _roomBoard;
     [SerializeField]
     public Button colorButton;
+    [SerializeField]
+    public LocalPlayerInformation localPlayerInformation;
 
     private PreparePage _preparePage;
     

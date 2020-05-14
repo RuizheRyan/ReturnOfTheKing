@@ -66,6 +66,7 @@ public class LocalPlayerInformation : MonoBehaviour
         float g = Random.Range(0, 1.0f);
         float b = Random.Range(0, 1.0f);
         playersColor = new Color(r, g, b);
+        setPlayerColor(playersColor);
     }
 
     public void Awake()
@@ -107,6 +108,7 @@ public class LocalPlayerInformation : MonoBehaviour
 
     public void setPlayerColor(Color color)
     {
+        
         PlayerPrefs.SetFloat("RedColor", color.r);
         PlayerPrefs.SetFloat("GreenColor", color.g);
         PlayerPrefs.SetFloat("BlueColor", color.b);

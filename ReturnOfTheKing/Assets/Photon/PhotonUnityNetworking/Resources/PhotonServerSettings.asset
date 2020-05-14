@@ -34,15 +34,9 @@ MonoBehaviour:
   - ClickRpc
   - DestroyRpc
   - RPC_ChangeReadyState
-  - DropItem
-  - PickUpItem
-  - ThrowItem
   - RPC_DropItem
   - RPC_PickUpItem
   - RPC_ThrowItem
-  - PickedBy
-  - RPC_Drop
-  - RPC_PickUp
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1
