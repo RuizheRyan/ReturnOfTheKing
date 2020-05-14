@@ -72,7 +72,7 @@ public class CharacterController : MonoBehaviourPun
 					}
 					else
 					{
-						photonView.RPC("RPC_PickUpItem", RpcTarget.Others);
+						photonView.RPC("RPC_PickUpItem", RpcTarget.Others, theOneRing);
 						PickUpItem();
 					}
 				}
@@ -167,9 +167,9 @@ public class CharacterController : MonoBehaviourPun
 		theOneRing.GetComponent<PhotonView>().TransferOwnership(photonView.Owner);
 	}
 	[PunRPC]
-	void RPC_PickUpItem()
+	void RPC_PickUpItem(GameObject obj)
 	{
-		var pv = PhotonView.Get(theOneRing);
+		var pv = PhotonView.Get(obj);
 		var temp = PhotonView.Find(pv.ViewID).gameObject;
 		//pv.Synchronization = ViewSynchronization.Off;
 		isHolding = true;
