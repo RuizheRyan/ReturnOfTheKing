@@ -4324,7 +4324,7 @@ MonoBehaviour:
   _colorButton: {fileID: 586985110}
   _hostARoomMenu: {fileID: 1116956948}
   _roomBoard: {fileID: 2057732673}
-  _gameSettings: {fileID: 11400000, guid: f44318aab84480d4793ca6476f3dacdf, type: 2}
+  _playersColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &2110302032
 GameObject:
   m_ObjectHideFlags: 0
