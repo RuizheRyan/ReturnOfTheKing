@@ -54,8 +54,8 @@ public class CharacterController : MonoBehaviourPun
     // Update is called once per frame
     void Update()
     {
-		//if (base.photonView.IsMine)
-		//{
+		if (base.photonView.IsMine)
+		{
 			ToggleSpeed();
 
 			Move();
@@ -85,7 +85,7 @@ public class CharacterController : MonoBehaviourPun
 			else
 			{
 			}
-		//}
+		}
 
 	}
 
@@ -159,6 +159,7 @@ public class CharacterController : MonoBehaviourPun
 
 	void PickUpItem()
 	{
+		
 		isHolding = true;
 		theOneRing.GetComponent<Rigidbody>().isKinematic = true;
 		theOneRing.transform.SetParent(transform);

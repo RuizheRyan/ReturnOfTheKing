@@ -92,6 +92,7 @@ public class RoomBoard : MonoBehaviourPunCallbacks
         else
         {
             _preparePage.inRoomPage.startButton.interactable = false;
+            _preparePage.inRoomPage.readyButton.interactable = true;
         }
         _preparePage.inRoomPage.colorButton.image.color = _preparePage.lobbyMenu.colorButton.image.color;
     }
