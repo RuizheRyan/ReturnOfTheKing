@@ -137,7 +137,7 @@ public class PlayerBoard: MonoBehaviourPunCallbacks
         if (!PhotonNetwork.IsMasterClient)
         {
             setReadyUp(!_localReadyState);
-            base.photonView.RPC("RPC_ChangeReadyState", RpcTarget.All,PhotonNetwork.LocalPlayer,_localReadyState);
+            base.photonView.RPC("RPC_ChangeReadyState", RpcTarget.All, PhotonNetwork.LocalPlayer, _localReadyState);
         }
     }
 

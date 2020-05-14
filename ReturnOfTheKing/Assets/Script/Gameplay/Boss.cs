@@ -76,20 +76,20 @@ public class Boss : MonoBehaviourPun
 
 	private void OnTriggerEnter(Collider other)
 	{
-		if(other.tag == "PickableItem")
-		{
-			if (!other.gameObject.GetComponent<PickableItem>().GetPickingState())
-			{
-				isHit = true;
+		//if(other.tag == "PickableItem")
+		//{
+		//	if (!other.gameObject.GetComponent<PickableItem>().GetPickingState())
+		//	{
+		//		isHit = true;
 
-				Rigidbody rb = other.gameObject.GetComponent<Rigidbody>();
-				rb.velocity = Vector3.zero;
-			}
-			else
-			{
-				other.gameObject.GetComponent<PickableItem>().DropItem();
-			}
-		}
+		//		Rigidbody rb = other.gameObject.GetComponent<Rigidbody>();
+		//		rb.velocity = Vector3.zero;
+		//	}
+		//	else
+		//	{
+		//		other.gameObject.GetComponent<PickableItem>().DropItem();
+		//	}
+		//}
 	}
 
 	void ToggleCoolDown()

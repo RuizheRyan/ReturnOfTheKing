@@ -26,8 +26,7 @@ public class BossAction : MonoBehaviourPun
 	// Start is called before the first frame update
 	void Start()
     {
-		targetDirection = transform.forward;
-
+		targetDirection = transform.up;
 		myBoss = transform.GetComponent<Boss>();
 	}
 
@@ -57,14 +56,12 @@ public class BossAction : MonoBehaviourPun
 			// rotate boss to mouse position
 			if (Input.GetMouseButtonUp(1) && hit.collider.tag == "Ground")
 			{
-				targetDirection = new Vector3(hit.point.x - transform.position.x, 0, hit.point.z - transform.position.z);
+				targetDirection = new Vector3(hit.point.x - transform.position.x, hit.point.y - transform.position.y, 0);
 			}
-			Vector3 newDirection = Vector3.RotateTowards(transform.forward, targetDirection, rotateSpeed * Time.deltaTime, 0.0f);
-
-			transform.rotation = Quaternion.LookRotation(newDirection);
+			transform.up = Vector3.RotateTowards(transform.up, targetDirection, rotateSpeed * Time.deltaTime, 0.0f);
 
 			//change to another one
-			if(Input.GetMouseButtonUp(0) && hit.collider.tag == "Boss")
+			if (Input.GetMouseButtonUp(0) && hit.collider.tag == "Boss")
 			{
 				nextBoss = hit.collider.gameObject;
 				if (!nextBoss.GetComponent<BossAction>().isSwitched && nextBoss != gameObject)
