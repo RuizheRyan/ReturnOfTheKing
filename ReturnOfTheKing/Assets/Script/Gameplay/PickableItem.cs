@@ -135,31 +135,4 @@ public class PickableItem : MonoBehaviourPun
 	//{
 	//	return isPicked;
 	//}
-	public void PickUp(int viewID)
-	{
-		PhotonView.Get(this).RPC("RPC_PickUp", RpcTarget.All, viewID);
-	}	
-	public void Drop()
-	{
-		PhotonView.Get(this).RPC("RPC_PickUp", RpcTarget.All);
-	}
-
-
-	[PunRPC]
-	void RPC_PickUp(int viewID)
-	{
-		transform.SetParent(PhotonView.Find(viewID).transform);
-		GetComponent<Rigidbody>().isKinematic = true;
-		transform.localPosition = Vector3.forward * -2;
-		PhotonView.Get(this).Synchronization = ViewSynchronization.Off;
-		isPicked = true;
-	}
-	[PunRPC]
-	void RPC_Drop()
-	{
-		transform.SetParent(null);
-		GetComponent<Rigidbody>().isKinematic = false;
-		PhotonView.Get(this).Synchronization = ViewSynchronization.UnreliableOnChange;
-		isPicked = false;
-	}
 }

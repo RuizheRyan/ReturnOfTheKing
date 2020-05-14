@@ -7,20 +7,20 @@ public class CharacterController : MonoBehaviourPun
 {
 	[Header("Attributes")]
 	[SerializeField] private float fullHealth = 100f;
+	[SerializeField] private float rotateSpeed = 4f;
 	[SerializeField] private float normalSpeed = 4f;
 	[SerializeField] private float slowDownSpeed = 2f;
 	[SerializeField] private float coolDownTime = 10f;
 	[SerializeField] private float throwForce = 5;
-	[SerializeField] private bool isHolding = false;
 
 	[Header("Debugging")]
 	public bool hasThrown = false;
 	public bool isDetected = false;
 	[SerializeField] private float timer = 0f;
 	[SerializeField] private float currentHealth;
+	public bool isHolding = false;
 	//[SerializeField] private Collider PickableItemACollider;
 	//[SerializeField] private Collider PickableItemBCollider;
-	public bool isPicking = false;
 
 	Vector3 forward, right;
 	private float moveSpeed;
@@ -54,8 +54,8 @@ public class CharacterController : MonoBehaviourPun
     // Update is called once per frame
     void Update()
     {
-		if (base.photonView.IsMine)
-		{
+		//if (base.photonView.IsMine)
+		//{
 			ToggleSpeed();
 
 			Move();
@@ -85,7 +85,7 @@ public class CharacterController : MonoBehaviourPun
 			else
 			{
 			}
-		}
+		//}
 
 	}
 
@@ -109,7 +109,7 @@ public class CharacterController : MonoBehaviourPun
 
 		if(Input.GetAxis("HorizontalKey") != 0 || Input.GetAxis("VerticalKey") != 0)
 		{
-			transform.up = heading;
+			transform.up = Vector3.RotateTowards(transform.up, heading, rotateSpeed, 0f);
 		}
 
 		//transform.position += heading * moveSpeed * Time.deltaTime;
@@ -157,23 +157,45 @@ public class CharacterController : MonoBehaviourPun
 		moveSpeed -= 2 * normalSpeed;
 	}
 
-
 	void PickUpItem()
 	{
 		isHolding = true;
-		theOneRing.GetComponent<PickableItem>().PickUp(PhotonView.Get(this).ViewID);
 		theOneRing.GetComponent<Rigidbody>().isKinematic = true;
 		theOneRing.transform.SetParent(transform);
 		theOneRing.transform.localPosition = Vector3.forward * -2;
+		//theOneRing.GetComponent<PhotonView>().Synchronization = ViewSynchronization.Off;
+		theOneRing.GetComponent<PhotonView>().TransferOwnership(photonView.Owner);
+	}
+	[PunRPC]
+	void RPC_PickUpItem()
+	{
+		var pv = PhotonView.Get(theOneRing);
+		var temp = PhotonView.Find(pv.ViewID).gameObject;
+		//pv.Synchronization = ViewSynchronization.Off;
+		isHolding = true;
+		temp.GetComponent<Rigidbody>().isKinematic = true;
+		temp.transform.SetParent(transform);
+		temp.transform.localPosition = Vector3.forward * -2;
 	}
 
 
 	void DropItem()
 	{
 		isHolding = false;
-		theOneRing.GetComponent<PickableItem>().Drop();
 		theOneRing.GetComponent<Rigidbody>().isKinematic = false;
 		theOneRing.transform.SetParent(null);
+		theOneRing.GetComponent<PhotonView>().Synchronization = ViewSynchronization.UnreliableOnChange;
+		theOneRing = null;
+	}
+	[PunRPC]
+	void RPC_DropItem()
+	{
+		var pv = PhotonView.Get(theOneRing);
+		var temp = PhotonView.Find(pv.ViewID).gameObject;
+		isHolding = false;
+		temp.GetComponent<Rigidbody>().isKinematic = false;
+		temp.transform.SetParent(null);
+		temp.GetComponent<PhotonView>().Synchronization = ViewSynchronization.UnreliableOnChange;
 		theOneRing = null;
 	}
 
@@ -191,8 +213,22 @@ public class CharacterController : MonoBehaviourPun
 			theOneRing.GetComponent<Rigidbody>().isKinematic = false;
 			theOneRing.transform.SetParent(null);
 			theOneRing.GetComponent<Rigidbody>().AddForce(targetDirection.normalized * throwForce, ForceMode.Impulse);
+			theOneRing.GetComponent<PhotonView>().Synchronization = ViewSynchronization.UnreliableOnChange;
 			theOneRing = null;
 		}
+	}
+
+	[PunRPC]
+	void RPC_ThrowItem()
+	{
+		var pv = PhotonView.Get(theOneRing);
+		var temp = PhotonView.Find(pv.ViewID).gameObject;
+		isHolding = false;
+		temp.GetComponent<Rigidbody>().isKinematic = false;
+		temp.transform.SetParent(null);
+		temp.GetComponent<PhotonView>().Synchronization = ViewSynchronization.UnreliableOnChange;
+		theOneRing = null;
+		
 	}
 
 	private void OnTriggerStay(Collider other)

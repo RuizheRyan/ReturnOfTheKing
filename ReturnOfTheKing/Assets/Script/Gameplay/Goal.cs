@@ -35,9 +35,9 @@ public class Goal : MonoBehaviour
 				if (other.transform.parent != null)
 				{
 					myCharacterController = other.gameObject.transform.parent.GetComponent<CharacterController>();
-					if (myCharacterController.isPicking)
+					if (myCharacterController.isHolding)
 					{
-						myCharacterController.isPicking = false;
+						myCharacterController.isHolding = false;
 					}
 				}
 
