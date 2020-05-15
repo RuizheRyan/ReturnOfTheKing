@@ -30,8 +30,8 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 	[Header("Attributes")]
 	public float fullHealth = 100f;
 	[SerializeField] private float rotateSpeed = 4f;
-	[SerializeField] private float normalSpeed = 4f;
-	[SerializeField] private float slowDownSpeed = 2f;
+	[SerializeField] private float normalSpeed = 8f;
+	[SerializeField] private float slowDownSpeed = 1.3333f;
 	[SerializeField] private float coolDownTime = 10f;
 	[SerializeField] private float throwForce = 5;
 	[SerializeField] private float secondsToFrozen = 3f;
@@ -212,10 +212,10 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 	public void UnderAttack(int damage)
 	{
 		currentHealth -= damage * Time.deltaTime;
-		if(moveSpeed > slowDownSpeed)
+		if(moveSpeed > normalSpeed / 2)
 		{
 			//moveSpeed -= 2 * normalSpeed;
-			moveSpeed = slowDownSpeed;
+			moveSpeed = normalSpeed / 2;
 		}
 		else
 		{
