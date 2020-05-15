@@ -33,6 +33,5 @@ public class Instantiate : MonoBehaviour
                 MainManager.NetworkInstantiate(_playerPrefab, _startPointOfPlayer2, Quaternion.identity);
             }
         }
-        //Debug.Log("Actornumber:" + PhotonNetwork.LocalPlayer.ActorNumber);
     }
 }

@@ -27,16 +27,16 @@ public class GameManager : MonoBehaviourPun
 
 	public enum ItemType { A, B };
 	private GameObject[] allGoals;
-	private GameObject[] allPlayers;
 
 	[SerializeField]private bool playerIsVictory = false;
+	[SerializeField]private int numberOfDeadPlayer = 0;
 
 	//private bool monsterIsVictory = false;
 	// Start is called before the first frame update
 	void Start()
     {
 		allGoals = GameObject.FindGameObjectsWithTag("Goal");
-		allPlayers = GameObject.FindGameObjectsWithTag("Player");
+		numberOfDeadPlayer = 0;
 	}
 
     // Update is called once per frame
@@ -61,23 +61,9 @@ public class GameManager : MonoBehaviourPun
 			playerIsVictory = true;
 			callloadEndScene(playerIsVictory);
 		}
-		bool existAlivePlayer = false;
-		foreach (GameObject player in allPlayers)
-		{		
-			CharacterController playerController = player.GetComponent<CharacterController>();
-			if (playerController.currentHealth <= 0)
-			{
-				playerController.checkSelfDeadState();
-			}
-			else
-			{
-				existAlivePlayer |= true; 
-			}			
-		}
-		if (!existAlivePlayer && allPlayers.Length != 0)
+		if (numberOfDeadPlayer >= (PhotonNetwork.PlayerList.Length - 1) && numberOfDeadPlayer != 0)
 		{
-			//monsterIsVictory = true;
-			callloadEndScene(playerIsVictory);
+			loadEndScene(playerIsVictory);
 		}
 	}
 
@@ -95,5 +81,15 @@ public class GameManager : MonoBehaviourPun
 	{
 		_gameSettings.playerWin = playersWin;
 		SceneManager.LoadScene(2);
+	}
+
+	public void checkSomeoneDead()
+	{
+		photonView.RPC("someoneDead", RpcTarget.All);
+	}
+	[PunRPC]
+	public void someoneDead()
+	{
+		numberOfDeadPlayer += 1;
 	}
 }

@@ -89,6 +89,8 @@ MonoBehaviour:
     m_Bits: 3584
   isAvailable: 0
   timer: 0
+  firstPlayer: {fileID: 0}
+  secondPlayer: {fileID: 0}
 --- !u!114 &6155486416857777828
 MonoBehaviour:
   m_ObjectHideFlags: 0

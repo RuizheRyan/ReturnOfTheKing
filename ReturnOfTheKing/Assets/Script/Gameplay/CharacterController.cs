@@ -28,7 +28,9 @@ public class CharacterController : MonoBehaviourPun
 
 	Vector3 forward, right;
 	private float moveSpeed;
-	private bool dead = false;
+	[SerializeField]private bool dead = false;
+
+	private GameManager _gameManager;
 	
 
 	Transform mainCam;
@@ -40,6 +42,7 @@ public class CharacterController : MonoBehaviourPun
 	void Start()
     {
 		photonView = PhotonView.Get(this);
+		_gameManager = GameManager.instance;
 		rb = GetComponent<Rigidbody>();
 		mainCam = Camera.main.transform;
 		CoordinationSetting();
@@ -60,7 +63,8 @@ public class CharacterController : MonoBehaviourPun
     // Update is called once per frame
     void Update()
     {
-		if (base.photonView.IsMine && !dead)
+		Debug.Log(moveSpeed);
+		if (base.photonView.IsMine && !dead && moveSpeed > 0)
 		{
 			ToggleSpeed();
 
@@ -92,7 +96,11 @@ public class CharacterController : MonoBehaviourPun
 			{
 			}
 		}
-
+		if(currentHealth <= 0)
+		{
+			_gameManager.someoneDead();
+			checkSelfDeadState();
+		}
 	}
 
 	void CoordinationSetting()
