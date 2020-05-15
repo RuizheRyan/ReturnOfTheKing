@@ -146,7 +146,7 @@ public class PickableItem : MonoBehaviourPun
 	{
 		if (PhotonView.Get(gameObject).ViewID == targetObjectID)
 		{
-			Destroy(gameObject);
+			gameObject.SetActive(false);
 		}
 	}
 }

@@ -37,6 +37,10 @@ MonoBehaviour:
   - RPC_DropItem
   - RPC_PickUpItem
   - RPC_ThrowItem
+  - changeGoalState
+  - checkDestroySelf
+  - checkUnderAttack
+  - loadEndScene
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

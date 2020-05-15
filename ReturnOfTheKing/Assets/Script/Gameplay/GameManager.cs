@@ -75,7 +75,6 @@ public class GameManager : MonoBehaviourPun
 	}
 
 	[PunRPC]
-
 	public void loadEndScene()
 	{
 		Debug.Log("EndCalled");

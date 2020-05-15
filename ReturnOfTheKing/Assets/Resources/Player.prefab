@@ -257,11 +257,13 @@ MonoBehaviour:
   slowDownSpeed: 2
   coolDownTime: 10
   throwForce: 5
+  secondsToFrozen: 3
   hasThrown: 0
   isDetected: 0
   currentHealth: 0
   timer: 0
   isHolding: 0
+  photonView: {fileID: 0}
 --- !u!114 &1107971628178827926
 MonoBehaviour:
   m_ObjectHideFlags: 0
