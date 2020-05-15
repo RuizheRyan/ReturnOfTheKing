@@ -28,6 +28,8 @@ public class CharacterController : MonoBehaviourPun
 
 	Vector3 forward, right;
 	private float moveSpeed;
+	private bool dead = false;
+	
 
 	Transform mainCam;
 	Rigidbody rb;
@@ -58,7 +60,7 @@ public class CharacterController : MonoBehaviourPun
     // Update is called once per frame
     void Update()
     {
-		if (base.photonView.IsMine)
+		if (base.photonView.IsMine && !dead)
 		{
 			ToggleSpeed();
 
@@ -273,5 +275,19 @@ public class CharacterController : MonoBehaviourPun
 			UnderAttack(damage);
 		}
 	} 
+
+	public void checkSelfDeadState()
+	{
+		photonView.RPC("amIDead", RpcTarget.All, photonView.ViewID);
+	}
+
+	[PunRPC]
+	public void amIDead(int deadManID)
+	{
+		if(deadManID == photonView.ViewID)
+		{
+			dead = true;
+		}
+	}
 
 }

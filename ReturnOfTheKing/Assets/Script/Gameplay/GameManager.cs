@@ -1,6 +1,7 @@
 ﻿using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -24,12 +25,16 @@ public class GameManager : MonoBehaviourPun
 
 	public enum ItemType { A, B };
 	private GameObject[] allGoals;
+	private GameObject[] allPlayers;
 
-	[SerializeField]private bool isVictory = false;
+	[SerializeField]private bool playerIsVictory = false;
+
+	//private bool monsterIsVictory = false;
 	// Start is called before the first frame update
 	void Start()
     {
 		allGoals = GameObject.FindGameObjectsWithTag("Goal");
+		allPlayers = GameObject.FindGameObjectsWithTag("Player");
 	}
 
     // Update is called once per frame
@@ -51,33 +56,42 @@ public class GameManager : MonoBehaviourPun
 
 		if(arrivedGoals == allGoals.Length)
 		{
-			isVictory = true;
-			callloadEndScene(isVictory);
+			playerIsVictory = true;
+			callloadEndScene(playerIsVictory);
 		}
-
+		bool existAlivePlayer = false;
+		foreach (GameObject player in allPlayers)
+		{		
+			CharacterController playerController = player.GetComponent<CharacterController>();
+			if (playerController.currentHealth <= 0)
+			{
+				playerController.checkSelfDeadState();
+			}
+			else
+			{
+				existAlivePlayer |= true; 
+			}			
+		}
+		if (!existAlivePlayer)
+		{
+			//monsterIsVictory = true;
+			callloadEndScene(playerIsVictory);
+		}
 	}
 
 	private void callloadEndScene(bool playersWin)
 	{
 		if (PhotonNetwork.IsMasterClient)
 		{
-			if (PhotonNetwork.IsMasterClient)
-			{
-				_gameSettings.masterClientWinState = false;
-			}
-			else
-			{
-				_gameSettings.masterClientWinState = true;
-			}
-			photonView.RPC("loadEndScene", RpcTarget.All);
+			photonView.RPC("loadEndScene", RpcTarget.All,playersWin);
 		}
 		
 	}
 
 	[PunRPC]
-	public void loadEndScene()
+	public void loadEndScene(bool playersWin)
 	{
-		Debug.Log("EndCalled");
+		_gameSettings.playerWin = playersWin;
 		SceneManager.LoadScene(2);
 	}
 }

@@ -9,9 +9,13 @@ public class EndPage : MonoBehaviour
     [SerializeField]
     private GameSettings _gameSettings;
     [SerializeField]
-    private Texture _textureOfWin;
+    private Texture _textureOfPlayersWin;
     [SerializeField]
-    private Texture _textureOfLose;
+    private Texture _textureOfPlayersLose;
+    [SerializeField]
+    private Texture _textureOfMonsterWin;
+    [SerializeField]
+    private Texture _textureOfMonsterLose;
     [SerializeField]
     private RawImage _backGround;
 
@@ -20,26 +24,26 @@ public class EndPage : MonoBehaviour
     public void Awake()
     {
         endingTime = 0;
-        if (_gameSettings.masterClientWinState)
+        if (_gameSettings.playerWin)
         {
             if (PhotonNetwork.IsMasterClient)
             {
-                _backGround.texture = _textureOfWin;
+                _backGround.texture = _textureOfMonsterLose;
             }
             else
             {
-                _backGround.texture = _textureOfLose;
+                _backGround.texture = _textureOfPlayersWin;
             }
         }
         else
         {
             if (PhotonNetwork.IsMasterClient)
             {
-                _backGround.texture = _textureOfLose;
+                _backGround.texture = _textureOfMonsterWin;
             }
             else
             {
-                _backGround.texture = _textureOfWin;
+                _backGround.texture = _textureOfPlayersLose;
             }
         }
     }

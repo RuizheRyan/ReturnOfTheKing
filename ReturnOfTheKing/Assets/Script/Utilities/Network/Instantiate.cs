@@ -19,13 +19,14 @@ public class Instantiate : MonoBehaviour
     {
         if (PhotonNetwork.IsMasterClient)
         {           
-            MainManager.NetworkInstantiate(_monsterPrefab, _startPointOfMonster, Quaternion.identity);
+             MainManager.NetworkInstantiate(_monsterPrefab, _startPointOfMonster, Quaternion.identity);
         }
         else
         {
             if (PhotonNetwork.LocalPlayer.ActorNumber == 2)
             {
                 MainManager.NetworkInstantiate(_playerPrefab, _startPointOfPlayer1, Quaternion.identity);
+                
             }
             else
             {
