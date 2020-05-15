@@ -10,20 +10,20 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 	#region IPunObservable implementation
 	public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
 	{
-		if (stream.IsWriting)
-		{
-			// We own this player: send the others our data
-			stream.SendNext(isDetected);
-			stream.SendNext(moveSpeed);
-			stream.SendNext(currentHealth);
-		}
-		else
-		{
-			// Network player, receive data
-			this.isDetected = (bool)stream.ReceiveNext();
-			this.moveSpeed = (float)stream.ReceiveNext();
-			this.currentHealth = (float)stream.ReceiveNext();
-		}
+		//if (stream.IsWriting)
+		//{
+		//	// We own this player: send the others our data
+		//	stream.SendNext(isDetected);
+		//	stream.SendNext(moveSpeed);
+		//	stream.SendNext(currentHealth);
+		//}
+		//else
+		//{
+		//	// Network player, receive data
+		//	this.isDetected = (bool)stream.ReceiveNext();
+		//	this.moveSpeed = (float)stream.ReceiveNext();
+		//	this.currentHealth = (float)stream.ReceiveNext();
+		//}
 	}
 	#endregion
 
@@ -39,6 +39,18 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 	[Header("Debugging")]
 	public bool hasThrown = false;
 	public bool isDetected = false;
+	public bool IsDetected
+	{
+		get
+		{
+			return  isDetected;
+		}
+		set
+		{
+			IsDetected = value;
+			photonView.RPC("SetDetectedStatus", RpcTarget.Others, photonView.ViewID, value);
+		}
+	}
 	public float currentHealth;
 	[SerializeField] private float timer = 0f;
 	public bool isHolding = false;
@@ -315,7 +327,16 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 		{
 			UnderAttack(damage);
 		}
-	} 
+	}
+
+	[PunRPC]
+	public void SetDetectedStatus(int victimID, bool value)
+	{
+		if (victimID == photonView.ViewID)
+		{
+			isDetected = value;
+		}
+	}
 
 	public void checkSelfDeadState()
 	{
