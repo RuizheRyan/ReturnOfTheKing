@@ -148,14 +148,21 @@ public class CharacterController : MonoBehaviourPun
 	{
 		//keep movespeed at normal speed when not hit by boss
 		moveSpeed += normalSpeed * Time.deltaTime;
-		moveSpeed = Mathf.Clamp(moveSpeed, slowDownSpeed, normalSpeed);
+		moveSpeed = Mathf.Clamp(moveSpeed, 0, normalSpeed);
 	}
 
 
 	public void UnderAttack(int damage)
 	{
 		currentHealth -= damage * Time.deltaTime;
-		moveSpeed -= 2 * normalSpeed;
+		if(moveSpeed > slowDownSpeed)
+		{
+			moveSpeed -= 2 * normalSpeed;
+		}
+		else
+		{
+			moveSpeed -= 0.5f * slowDownSpeed * Time.deltaTime;
+		}
 	}
 
 	void PickUpItem()
