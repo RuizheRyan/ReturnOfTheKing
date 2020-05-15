@@ -11,8 +11,6 @@ public class Boss : MonoBehaviourPun
 	[Header("Integer Angle & Times by 5")]
 	[SerializeField] private int detectingRange = 60;
 	[SerializeField] private int numberOfRays;
-	
-
 
 	[Header("Do not change")]
 	[SerializeField] private LayerMask layerMask;
@@ -23,9 +21,6 @@ public class Boss : MonoBehaviourPun
 	private const float MAX_RAY_DISTANCE = 1000f;
 	private bool isHit = false;
 	private RaycastHit hitsInfo;
-
-	public CharacterController firstPlayer;
-	public CharacterController secondPlayer;
 	// Start is called before the first frame update
 	void Start()
     {

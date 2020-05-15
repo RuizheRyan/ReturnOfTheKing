@@ -250,14 +250,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _gameSettings: {fileID: 11400000, guid: f44318aab84480d4793ca6476f3dacdf, type: 2}
-  _textureOfPlayersWin: {fileID: 2800000, guid: b9562a19dd12644f0aef084ca3ee39dd,
-    type: 3}
-  _textureOfPlayersLose: {fileID: 2800000, guid: ade1f325aa4df4d04a4b5c6d609287a6,
-    type: 3}
-  _textureOfMonsterWin: {fileID: 2800000, guid: 1dd6ad40b257bac44be3006ad9bcdd2a,
-    type: 3}
-  _textureOfMonsterLose: {fileID: 2800000, guid: e21f4644928b9ad48bcd0eae694c3b59,
-    type: 3}
+  _textureOfWin: {fileID: 2800000, guid: b9562a19dd12644f0aef084ca3ee39dd, type: 3}
+  _textureOfLose: {fileID: 2800000, guid: ade1f325aa4df4d04a4b5c6d609287a6, type: 3}
   _backGround: {fileID: 1782409751}
 --- !u!4 &974046529
 Transform:
