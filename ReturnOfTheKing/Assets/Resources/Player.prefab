@@ -286,6 +286,7 @@ MonoBehaviour:
   currentHealth: 0
   timer: 0
   isHolding: 0
+  dead: 0
   photonView: {fileID: 0}
   clientMat: {fileID: 2100000, guid: 8edb6c58ad4814d418ec833250b56986, type: 2}
   hostMat: {fileID: 2100000, guid: 023e6e34580533d4a8e4304bef482ef3, type: 2}
