@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: SpriteOccluded2
-  m_Shader: {fileID: 4800000, guid: 84400d497ad2e6d48a8c329b0bb7b2bf, type: 3}
+  m_Shader: {fileID: 4800000, guid: b6bc49c223b02894ba409dbe93d3e4ce, type: 3}
   m_ShaderKeywords: ETC1_EXTERNAL_ALPHA
   m_LightmapFlags: 5
   m_EnableInstancingVariants: 0
@@ -20,7 +20,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BaseTexture:
-        m_Texture: {fileID: 2800000, guid: 629e4aca5bc19e34fa5f3b08813740ea, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -76,4 +76,4 @@ Material:
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _OccludedColor: {r: 1, g: 1, b: 1, a: 1}
+    - _OccludedColor: {r: 0.7264151, g: 0.7264151, b: 0.7264151, a: 1}
