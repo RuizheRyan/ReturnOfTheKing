@@ -36,7 +36,7 @@ public class HealthBar : MonoBehaviourPun
         {
             transform.parent.SetParent(null);
         }
-        Vector2 screenPos = mainCam.WorldToScreenPoint(player.transform.position - Vector3.forward * 2);
+        Vector2 screenPos = mainCam.WorldToScreenPoint(player.transform.position - Vector3.forward * 3);
         transform.position = screenPos + offset;
         bar.fillAmount = player.currentHealth / maxHP;
     }
