@@ -9,6 +9,8 @@ public class GameManager : MonoBehaviourPun
 {
 	[SerializeField]
 	private GameSettings _gameSettings;
+
+	public GameObject currentTower;
 	//singleton
 	public static GameManager instance;
 	public static GameManager Instance
