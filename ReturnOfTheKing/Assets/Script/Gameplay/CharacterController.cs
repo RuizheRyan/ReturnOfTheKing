@@ -37,7 +37,11 @@ public class CharacterController : MonoBehaviourPun
 	Rigidbody rb;
 	GameObject theOneRing;
 
-	public PhotonView photonView;
+	PhotonView photonView;
+	[SerializeField]
+	Material clientMat;
+	[SerializeField]
+	Material hostMat;
 	// Start is called before the first frame update
 	void Start()
     {
@@ -53,6 +57,14 @@ public class CharacterController : MonoBehaviourPun
 		foreach(GameObject item in allItems)
 		{
 			Physics.IgnoreCollision(item.GetComponent<BoxCollider>(), GetComponent<Collider>());
+		}
+		if (PhotonNetwork.IsMasterClient)
+		{
+			GetComponentInChildren<Renderer>().material = hostMat;
+		}
+		else
+		{
+			GetComponentInChildren<Renderer>().material = clientMat;
 		}
 		//Physics.IgnoreCollision(PickableItemACollider, GetComponent<Collider>());
 		//Physics.IgnoreCollision(PickableItemBCollider, GetComponent<Collider>());
