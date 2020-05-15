@@ -9,7 +9,7 @@ public class GameSettings : ScriptableObject
     [SerializeField]
     private string _gameVersion = "V1.0";
     [SerializeField]
-    private bool _playerWin = false;
+    private bool _masterClientWinState = false;
 
     public string GameVersion
     {
@@ -19,15 +19,15 @@ public class GameSettings : ScriptableObject
         }
     }
 
-    public bool playerWin
+    public bool masterClientWinState
     {
         get
         {
-            return _playerWin;
+            return _masterClientWinState;
         }
         set
         {
-            _playerWin = value;
+            _masterClientWinState = value;
         }
     }
 }

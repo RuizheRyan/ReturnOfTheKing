@@ -28,10 +28,13 @@ public class CharacterController : MonoBehaviourPun
 
 	Vector3 forward, right;
 	private float moveSpeed;
+<<<<<<< HEAD
 	[SerializeField]private bool dead = false;
 
 	private GameManager _gameManager;
 	
+=======
+>>>>>>> parent of a8222a6... Dead
 
 	Transform mainCam;
 	Rigidbody rb;
@@ -75,8 +78,12 @@ public class CharacterController : MonoBehaviourPun
     // Update is called once per frame
     void Update()
     {
+<<<<<<< HEAD
 		Debug.Log(moveSpeed);
 		if (base.photonView.IsMine && !dead && moveSpeed > 0)
+=======
+		if (base.photonView.IsMine)
+>>>>>>> parent of a8222a6... Dead
 		{
 			ToggleSpeed();
 
@@ -295,19 +302,5 @@ public class CharacterController : MonoBehaviourPun
 			UnderAttack(damage);
 		}
 	} 
-
-	public void checkSelfDeadState()
-	{
-		photonView.RPC("amIDead", RpcTarget.All, photonView.ViewID);
-	}
-
-	[PunRPC]
-	public void amIDead(int deadManID)
-	{
-		if(deadManID == photonView.ViewID)
-		{
-			dead = true;
-		}
-	}
 
 }
