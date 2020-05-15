@@ -259,6 +259,11 @@ public class CharacterController : MonoBehaviourPun
 		}
 	}
 
+	public void callselfCheck(int damage)
+	{
+		photonView.RPC("checkUnderAttack", RpcTarget.Others, photonView.ViewID, damage);
+	}
+
 	[PunRPC]
 	public void checkUnderAttack(int victimID, int damage)
 	{

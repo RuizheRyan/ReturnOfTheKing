@@ -61,7 +61,7 @@ public class Boss : MonoBehaviourPun
 					//Debug.Log(i + " yes");
 					if(hitsInfo.transform.CompareTag("Player"))
 					{
-						photonView.RPC("checkUnderAttack", RpcTarget.Others, hitsInfo.collider.transform.GetComponent<CharacterController>().photonView.ViewID, damage);
+						hitsInfo.collider.transform.GetComponent<CharacterController>().callselfCheck(damage);
 					}
 					//if(hitsInfo[i].collider.tag == "Obstacle")
 					//{
