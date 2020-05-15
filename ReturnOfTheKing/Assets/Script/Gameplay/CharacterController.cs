@@ -48,7 +48,7 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 		set
 		{
 			isDetected = value;
-			photonView.RPC("SetDetectedStatus", RpcTarget.Others, photonView.ViewID, isDetected);
+			photonView.RPC("SetDetectedStatus", RpcTarget.Others, photonView.ViewID, value);
 		}
 	}
 	public float currentHealth;
