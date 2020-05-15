@@ -26,13 +26,16 @@ public class HealthBar : MonoBehaviourPun
         else
         {
             photonView.TransferOwnership(player.photonView.Owner);
-            transform.parent.SetParent(null);
         }
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(transform.parent.parent! == null)
+        {
+            transform.parent.SetParent(null);
+        }
         Vector2 screenPos = mainCam.WorldToScreenPoint(player.transform.position - Vector3.forward * 2);
         transform.position = screenPos + offset;
         bar.fillAmount = player.currentHealth / maxHP;
