@@ -43,6 +43,7 @@ MonoBehaviour:
   - PickedBy
   - RPC_Drop
   - RPC_PickUp
+  - checkDestroySelf
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1
