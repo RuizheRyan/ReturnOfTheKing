@@ -2,8 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class GameManager : MonoBehaviour
+public class GameManager : MonoBehaviourPun
 {
 	[SerializeField]
 	private GameSettings _gameSettings;
@@ -51,24 +52,33 @@ public class GameManager : MonoBehaviour
 		if(arrivedGoals == allGoals.Length)
 		{
 			isVictory = true;
-			loadEndScene(isVictory);
+			callloadEndScene(isVictory);
 		}
 
 	}
 
-	private void loadEndScene(bool playersWin)
+	private void callloadEndScene(bool playersWin)
 	{
 		if (PhotonNetwork.IsMasterClient)
 		{
-			_gameSettings.masterClientWinState = false;
-			PhotonNetwork.LoadLevel(2);
-		}
-		else
-		{
-			_gameSettings.masterClientWinState = true;
-			PhotonNetwork.LoadLevel(2);
+			if (PhotonNetwork.IsMasterClient)
+			{
+				_gameSettings.masterClientWinState = false;
+			}
+			else
+			{
+				_gameSettings.masterClientWinState = true;
+			}
+			photonView.RPC("loadEndScene", RpcTarget.All);
 		}
 		
 	}
 
+	[PunRPC]
+
+	public void loadEndScene()
+	{
+		Debug.Log("EndCalled");
+		SceneManager.LoadScene(2);
+	}
 }

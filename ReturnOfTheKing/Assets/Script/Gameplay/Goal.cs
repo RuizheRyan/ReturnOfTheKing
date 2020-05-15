@@ -42,7 +42,6 @@ public class Goal : MonoBehaviourPun
 					}
 				}
 				//Destroy(other.gameObject);
-				Debug.Log("calledInGoals");
 				myItemScript.callCheckSelf();
 				photonView.RPC("changeGoalState", RpcTarget.All);
 			}
@@ -57,7 +56,7 @@ public class Goal : MonoBehaviourPun
 	}
 
 	[PunRPC]
-	public void changeGoalState()
+	private void changeGoalState()
 	{
 		isArrived = true;
 	}
