@@ -74,7 +74,7 @@ public class GameManager : MonoBehaviourPun
 				existAlivePlayer |= true; 
 			}			
 		}
-		if (!existAlivePlayer)
+		if (!existAlivePlayer && allPlayers.Length != 0)
 		{
 			//monsterIsVictory = true;
 			callloadEndScene(playerIsVictory);
