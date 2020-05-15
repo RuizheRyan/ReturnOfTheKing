@@ -82,7 +82,7 @@ public class Boss : MonoBehaviourPun, IPunObservable
 			int rayMissNum = 0;
 			foreach(GameObject item in hitPlayers)
 			{
-				item.GetComponent<CharacterController>().isDetected = false;
+				item.GetComponent<CharacterController>().IsDetected = false;
 			}
 			hitPlayers.Clear();
 			for (int i = 0; i < numberOfRays; i++)
