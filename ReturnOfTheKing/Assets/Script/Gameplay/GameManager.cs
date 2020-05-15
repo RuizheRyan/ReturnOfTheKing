@@ -61,12 +61,14 @@ public class GameManager : MonoBehaviour
 		if (PhotonNetwork.IsMasterClient)
 		{
 			_gameSettings.masterClientWinState = false;
+			PhotonNetwork.LoadLevel(2);
 		}
 		else
 		{
 			_gameSettings.masterClientWinState = true;
+			PhotonNetwork.LoadLevel(2);
 		}
-		PhotonNetwork.LoadLevel(2);
+		
 	}
 
 }
