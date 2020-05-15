@@ -14,6 +14,7 @@ public class CharacterController : MonoBehaviourPun
 	[SerializeField] private float slowDownSpeed = 2f;
 	[SerializeField] private float coolDownTime = 10f;
 	[SerializeField] private float throwForce = 5;
+	[SerializeField] private float secondsToFrozen = 3f;
 
 	[Header("Debugging")]
 	public bool hasThrown = false;
@@ -164,7 +165,7 @@ public class CharacterController : MonoBehaviourPun
 		}
 		else
 		{
-			moveSpeed -= 1.33f * slowDownSpeed * Time.deltaTime;
+			moveSpeed -= (normalSpeed +  slowDownSpeed * Time.deltaTime / secondsToFrozen);
 		}
 	}
 
