@@ -61,7 +61,6 @@ public class EndPage : MonoBehaviour
             {
                 PhotonNetwork.LoadLevel(0);
             }
-            PhotonNetwork.LeaveRoom();
         }
     }
 }

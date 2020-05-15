@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Photon.Pun;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -32,6 +33,10 @@ public class PreparePage : MonoBehaviour
     {
         lobbyMenu.firstInitialize(this);
         inRoomPage.firstInitialize(this);
+        if (PhotonNetwork.InRoom)
+        {
+            _inRoomPage.gameObject.SetActive(true);
+        }
     }
 
 }
