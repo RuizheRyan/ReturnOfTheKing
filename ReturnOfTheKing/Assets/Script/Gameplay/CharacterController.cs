@@ -30,10 +30,13 @@ public class CharacterController : MonoBehaviourPun
 	private float moveSpeed;
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	[SerializeField]private bool dead = false;
 
 	private GameManager _gameManager;
 	
+=======
+>>>>>>> parent of a8222a6... Dead
 =======
 >>>>>>> parent of a8222a6... Dead
 =======
@@ -83,8 +86,12 @@ public class CharacterController : MonoBehaviourPun
     {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		Debug.Log(moveSpeed);
 		if (base.photonView.IsMine && !dead && moveSpeed > 0)
+=======
+		if (base.photonView.IsMine)
+>>>>>>> parent of a8222a6... Dead
 =======
 		if (base.photonView.IsMine)
 >>>>>>> parent of a8222a6... Dead
