@@ -82,7 +82,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HitCoolDown: 5
   damage: 1
-  detectingRange: 60
+  detectingRange: 25
+  numberOfRays: 40
   layerMask:
     serializedVersion: 2
     m_Bits: 3584
