@@ -29,10 +29,14 @@ public class GameManager : MonoBehaviourPun
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	[SerializeField]private bool playerIsVictory = false;
 	[SerializeField]private int numberOfDeadPlayer = 0;
 
 	//private bool monsterIsVictory = false;
+=======
+	[SerializeField]private bool isVictory = false;
+>>>>>>> parent of a8222a6... Dead
 =======
 	[SerializeField]private bool isVictory = false;
 >>>>>>> parent of a8222a6... Dead
@@ -45,7 +49,10 @@ public class GameManager : MonoBehaviourPun
 		allGoals = GameObject.FindGameObjectsWithTag("Goal");
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		numberOfDeadPlayer = 0;
+=======
+>>>>>>> parent of a8222a6... Dead
 =======
 >>>>>>> parent of a8222a6... Dead
 =======
@@ -73,12 +80,17 @@ public class GameManager : MonoBehaviourPun
 		{
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 			playerIsVictory = true;
 			callloadEndScene(playerIsVictory);
 		}
 		if (numberOfDeadPlayer >= (PhotonNetwork.PlayerList.Length - 1) && numberOfDeadPlayer != 0)
 		{
 			loadEndScene(playerIsVictory);
+=======
+			isVictory = true;
+			callloadEndScene(isVictory);
+>>>>>>> parent of a8222a6... Dead
 =======
 			isVictory = true;
 			callloadEndScene(isVictory);
