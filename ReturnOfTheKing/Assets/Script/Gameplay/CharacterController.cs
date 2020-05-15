@@ -161,7 +161,7 @@ public class CharacterController : MonoBehaviourPun
 		}
 		else
 		{
-			moveSpeed -= 0.5f * slowDownSpeed * Time.deltaTime;
+			moveSpeed -= 1.33f * slowDownSpeed * Time.deltaTime;
 		}
 	}
 
