@@ -5,8 +5,24 @@ using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 
-public class CharacterController : MonoBehaviourPun
+public class CharacterController : MonoBehaviourPun, IPunObservable
 {
+	#region IPunObservable implementation
+	public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+	{
+		if (stream.IsWriting)
+		{
+			// We own this player: send the others our data
+			stream.SendNext(isDetected);
+		}
+		else
+		{
+			// Network player, receive data
+			this.isDetected = (bool)stream.ReceiveNext();
+		}
+	}
+	#endregion
+
 	[Header("Attributes")]
 	public float fullHealth = 100f;
 	[SerializeField] private float rotateSpeed = 4f;
@@ -75,10 +91,17 @@ public class CharacterController : MonoBehaviourPun
     // Update is called once per frame
     void Update()
     {
+		if (isDetected)
+		{
+			UnderAttack(1);
+		}
+		else
+		{
+			moveSpeed = normalSpeed;
+		}
 		Debug.Log(moveSpeed);
 		if (base.photonView.IsMine && !dead && moveSpeed > 0)
 		{
-			ToggleSpeed();
 
 			Move();
 			ToggleCoolDown();
@@ -126,8 +149,8 @@ public class CharacterController : MonoBehaviourPun
 	void Move()
 	{
 		//Vector3 direction = new Vector3(Input.GetAxis("HorizontalKey"), 0, Input.GetAxis("VerticalKey"));
-		Vector3 rightMovement = mainCam.right * moveSpeed * Time.deltaTime * Input.GetAxis("HorizontalKey");
-		Vector3 upMovement = mainCam.forward * moveSpeed * Time.deltaTime * Input.GetAxis("VerticalKey");
+		Vector3 rightMovement = mainCam.right * Input.GetAxis("HorizontalKey");
+		Vector3 upMovement = mainCam.forward * Input.GetAxis("VerticalKey");
 		rightMovement.z = 0;
 		upMovement.z = 0;
 
@@ -140,6 +163,7 @@ public class CharacterController : MonoBehaviourPun
 		}
 
 		//transform.position += heading * moveSpeed * Time.deltaTime;
+		moveSpeed = Mathf.Clamp(moveSpeed, 0, normalSpeed);
 		rb.velocity = heading * moveSpeed;
 
 		//transform.position += rightMovement;
@@ -168,13 +192,6 @@ public class CharacterController : MonoBehaviourPun
 			hasThrown = false;
 			timer = 0;
 		}
-	}
-
-	void ToggleSpeed()
-	{
-		//keep movespeed at normal speed when not hit by boss
-		moveSpeed += normalSpeed * Time.deltaTime;
-		moveSpeed = Mathf.Clamp(moveSpeed, 0, normalSpeed);
 	}
 
 
@@ -281,6 +298,7 @@ public class CharacterController : MonoBehaviourPun
 			theOneRing = null;
 		}
 	}
+
 
 	public void callselfCheck(int damage)
 	{

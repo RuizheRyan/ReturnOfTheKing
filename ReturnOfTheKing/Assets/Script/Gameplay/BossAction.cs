@@ -33,7 +33,6 @@ public class BossAction : MonoBehaviourPun
 			gm.currentTower = gameObject;
 		}
 		targetDirection = transform.up;
-		
 	}
 
     // Update is called once per frame

@@ -3,8 +3,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Boss : MonoBehaviourPun
+public class Boss : MonoBehaviourPun, IPunObservable
 {
+	#region IPunObservable implementation
+	public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+	{
+		if (stream.IsWriting)
+		{
+			// We own this player: send the others our data
+			stream.SendNext(isAvailable);
+		}
+		else
+		{
+			// Network player, receive data
+			this.isAvailable = (bool)stream.ReceiveNext();
+		}
+	}
+	#endregion
+
 	[Header("Attributes")]
 	[SerializeField] private float HitCoolDown = 5f;
 	[SerializeField] private int damage = 1;
@@ -26,6 +42,8 @@ public class Boss : MonoBehaviourPun
 
 	public CharacterController firstPlayer;
 	public CharacterController secondPlayer;
+
+	List<GameObject> hitPlayers;
 	// Start is called before the first frame update
 	void Start()
     {
@@ -45,7 +63,10 @@ public class Boss : MonoBehaviourPun
 
 	private void FixedUpdate()
 	{
-		BossDetecting();
+		if (PhotonNetwork.IsMasterClient)
+		{
+			BossDetecting();
+		}
 	}
 
 	void BossDetecting()
@@ -57,6 +78,12 @@ public class Boss : MonoBehaviourPun
 			Vector3 startDirection = Quaternion.AngleAxis(-detectingRange / 2, -Vector3.forward) * transform.up;
 			float deltaAngle = (float)detectingRange / ((float)numberOfRays - 1f);
 			//Debug.Log(startDirection);
+			int rayMissNum = 0;
+			foreach(GameObject item in hitPlayers)
+			{
+				item.GetComponent<CharacterController>().isDetected = false;
+			}
+			hitPlayers.Clear();
 			for (int i = 0; i < numberOfRays; i++)
 			{
 				Vector3 rayDirection = Quaternion.AngleAxis(i * deltaAngle, -Vector3.forward) * startDirection;
@@ -64,23 +91,45 @@ public class Boss : MonoBehaviourPun
 				if(Physics.Raycast(ray, out hitsInfo, MAX_RAY_DISTANCE, layerMask))
 				{
 					//Debug.Log(i + " yes");
+					Debug.DrawRay(ray.origin, hitsInfo.point, Color.yellow);
 					if(hitsInfo.transform.CompareTag("Player"))
 					{
-						hitsInfo.collider.transform.GetComponent<CharacterController>().callselfCheck(damage);
+						//hitsInfo.collider.transform.GetComponent<CharacterController>().callselfCheck(damage);
+						foreach(GameObject item in hitPlayers)
+						{
+							if(item == hitsInfo.transform.gameObject)
+							{
+								continue;
+							}
+							hitPlayers.Add(hitsInfo.transform.gameObject);
+						}
+					}
+					else
+					{
+						rayMissNum++;
 					}
 					//if(hitsInfo[i].collider.tag == "Obstacle")
 					//{
 					//	Debug.Log(i+ " Obstacle");
 					//}
-					
-					Debug.DrawRay(ray.origin, hitsInfo.point, Color.yellow);
 				}
 				else
 				{
+					rayMissNum++;
 					Debug.DrawRay(ray.origin, ray.origin + ray.direction.normalized * 100, Color.yellow);
 				}
 			}
-			
+			foreach(GameObject item in hitPlayers)
+			{
+				item.GetComponent<CharacterController>().isDetected = true;
+			}
+			//if(rayMissNum >= numberOfRays)
+			//{
+			//	hitPlayers.Clear();
+			//}
+			//else
+			//{
+			//}
 		}
 	}
 
