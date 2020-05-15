@@ -7,14 +7,16 @@ public class BossAction : MonoBehaviourPun
 {
 	[Header("Attributes")]
 	[SerializeField] private float rotateSpeed = 10f;
-	[SerializeField] private float switchCoolDown = 5f;
+	public float switchCoolDown = 3f;
 	[Header("Do not Change")]
 	[SerializeField] private LayerMask layerMask;
 
 	[Header("Debugging")]
 	[SerializeField] GameObject nextBoss;
 	public bool isSwitched = false;
-	[SerializeField] private float switchTimer = 0f;
+	public float switchTimer = 0f;
+	public float delayTimer;
+	public float delay;
 
 	private const float MAX_RAY_DISTANCE = 100f;
 	private Vector3 targetDirection;
@@ -45,7 +47,16 @@ public class BossAction : MonoBehaviourPun
 			ControlBoss();
 			//ToggleSwitchCD();
 		}
-
+		if (isSwitched)
+		{
+			delayTimer += Time.deltaTime;
+			if(delayTimer >= delay)
+			{
+				delayTimer = 0;
+				isSwitched = false;
+				GetComponent<Boss>().isAvailable = true;
+			}
+		}
 	}
 
 
@@ -96,6 +107,10 @@ public class BossAction : MonoBehaviourPun
 
 	private void OnMouseDrag()
 	{
+		if (!PhotonNetwork.IsMasterClient)
+		{
+			return;
+		}
 		switchTimer += Time.deltaTime;
 		if(switchTimer >= switchCoolDown)
 		{
@@ -106,7 +121,7 @@ public class BossAction : MonoBehaviourPun
 			else
 			{
 				gm.currentTower.GetComponent<Boss>().isAvailable = false;
-				GetComponent<Boss>().isAvailable = true;
+				isSwitched = true;
 				gm.currentTower = gameObject;
 			}
 		}
@@ -114,6 +129,10 @@ public class BossAction : MonoBehaviourPun
 
 	private void OnMouseUpAsButton()
 	{
+		if (!PhotonNetwork.IsMasterClient)
+		{
+			return;
+		}
 		switchTimer = 0;
 	}
 	//void ToggleSwitchCD()
