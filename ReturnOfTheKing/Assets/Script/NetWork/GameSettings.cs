@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Photon.Pun;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,7 +9,7 @@ public class GameSettings : ScriptableObject
     [SerializeField]
     private string _gameVersion = "V1.0";
     [SerializeField]
-    private string _nickName = "TestPlayerName";
+    private bool _playerWin = false;
 
     public string GameVersion
     {
@@ -18,16 +19,15 @@ public class GameSettings : ScriptableObject
         }
     }
 
-    public string NickName
+    public bool playerWin
     {
         get
         {
-            int number = Random.Range(0, 9999);
-            return _nickName + number.ToString();
+            return _playerWin;
         }
         set
         {
-            _nickName = value;
+            _playerWin = value;
         }
     }
 }

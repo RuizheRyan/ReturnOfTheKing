@@ -1,9 +1,16 @@
-﻿using System.Collections;
+﻿using Photon.Pun;
+using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class GameManager : MonoBehaviour
+public class GameManager : MonoBehaviourPun
 {
+	[SerializeField]
+	private GameSettings _gameSettings;
+
+	public GameObject currentTower;
 	//singleton
 	public static GameManager instance;
 	public static GameManager Instance
@@ -21,18 +28,21 @@ public class GameManager : MonoBehaviour
 	public enum ItemType { A, B };
 	private GameObject[] allGoals;
 
-	[SerializeField]private bool isVictory = false;
+	[SerializeField]private bool playerIsVictory = false;
+	[SerializeField]private int numberOfDeadPlayer = 0;
+
+	//private bool monsterIsVictory = false;
 	// Start is called before the first frame update
 	void Start()
     {
 		allGoals = GameObject.FindGameObjectsWithTag("Goal");
+		numberOfDeadPlayer = 0;
 	}
 
     // Update is called once per frame
     void Update()
     {
-		//CheckWin();
-
+		CheckWin();
     }
 
 	public void CheckWin()
@@ -48,8 +58,41 @@ public class GameManager : MonoBehaviour
 
 		if(arrivedGoals == allGoals.Length)
 		{
-			isVictory = true;
+			playerIsVictory = true;
+			callloadEndScene(playerIsVictory);
 		}
+		if (numberOfDeadPlayer >= (PhotonNetwork.PlayerList.Length - 1) && numberOfDeadPlayer != 0)
+		{
+			loadEndScene(playerIsVictory);
+		}
+	}
 
+	private void callloadEndScene(bool playersWin)
+	{
+		if (PhotonNetwork.IsMasterClient)
+		{
+			photonView.RPC("loadEndScene", RpcTarget.All,playersWin);
+		}
+		
+	}
+
+	[PunRPC]
+	public void loadEndScene(bool playersWin)
+	{
+		_gameSettings.playerWin = playersWin;
+		if (PhotonNetwork.IsMasterClient)
+		{			
+			SceneManager.LoadScene(2);
+		}
+	}
+
+	public void checkSomeoneDead()
+	{
+		photonView.RPC("someoneDead", RpcTarget.All);
+	}
+	[PunRPC]
+	public void someoneDead()
+	{
+		numberOfDeadPlayer += 1;
 	}
 }

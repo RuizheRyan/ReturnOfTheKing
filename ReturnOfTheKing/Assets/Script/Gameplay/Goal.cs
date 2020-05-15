@@ -1,8 +1,9 @@
-﻿using System.Collections;
+﻿using Photon.Pun;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Goal : MonoBehaviour
+public class Goal : MonoBehaviourPun
 {
 	[SerializeField] private GameManager.ItemType thisGoalType;
 	[SerializeField] private bool isArrived = false;
@@ -40,8 +41,9 @@ public class Goal : MonoBehaviour
 						myCharacterController.isHolding = false;
 					}
 				}
-
-				Destroy(other.gameObject);
+				//Destroy(other.gameObject);
+				myItemScript.callCheckSelf();
+				photonView.RPC("changeGoalState", RpcTarget.All);
 			}
 		}
 
@@ -51,5 +53,11 @@ public class Goal : MonoBehaviour
 	public bool GetArrivalStatus()
 	{
 		return isArrived;
+	}
+
+	[PunRPC]
+	private void changeGoalState()
+	{
+		isArrived = true;
 	}
 }

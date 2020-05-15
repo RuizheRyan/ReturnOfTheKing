@@ -1,10 +1,32 @@
 ﻿using Photon.Pun;
+using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 
-public class CharacterController : MonoBehaviourPun
+public class CharacterController : MonoBehaviourPun, IPunObservable
 {
+	#region IPunObservable implementation
+	public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+	{
+		//if (stream.IsWriting)
+		//{
+		//	// We own this player: send the others our data
+		//	stream.SendNext(isDetected);
+		//	stream.SendNext(moveSpeed);
+		//	stream.SendNext(currentHealth);
+		//}
+		//else
+		//{
+		//	// Network player, receive data
+		//	this.isDetected = (bool)stream.ReceiveNext();
+		//	this.moveSpeed = (float)stream.ReceiveNext();
+		//	this.currentHealth = (float)stream.ReceiveNext();
+		//}
+	}
+	#endregion
+
 	[Header("Attributes")]
 	public float fullHealth = 100f;
 	[SerializeField] private float rotateSpeed = 4f;
@@ -12,18 +34,36 @@ public class CharacterController : MonoBehaviourPun
 	[SerializeField] private float slowDownSpeed = 2f;
 	[SerializeField] private float coolDownTime = 10f;
 	[SerializeField] private float throwForce = 5;
+	[SerializeField] private float secondsToFrozen = 3f;
 
 	[Header("Debugging")]
 	public bool hasThrown = false;
 	public bool isDetected = false;
+	public bool IsDetected
+	{
+		get
+		{
+			return  isDetected;
+		}
+		set
+		{
+			IsDetected = value;
+			photonView.RPC("SetDetectedStatus", RpcTarget.Others, photonView.ViewID, value);
+		}
+	}
 	public float currentHealth;
 	[SerializeField] private float timer = 0f;
 	public bool isHolding = false;
+
 	//[SerializeField] private Collider PickableItemACollider;
 	//[SerializeField] private Collider PickableItemBCollider;
 
 	Vector3 forward, right;
 	private float moveSpeed;
+	[SerializeField]private bool dead = false;
+
+	private GameManager _gameManager;
+	
 
 	Transform mainCam;
 	Rigidbody rb;
@@ -38,6 +78,7 @@ public class CharacterController : MonoBehaviourPun
 	void Start()
     {
 		photonView = PhotonView.Get(this);
+		_gameManager = GameManager.instance;
 		rb = GetComponent<Rigidbody>();
 		mainCam = Camera.main.transform;
 		CoordinationSetting();
@@ -66,9 +107,16 @@ public class CharacterController : MonoBehaviourPun
     // Update is called once per frame
     void Update()
     {
-		if (base.photonView.IsMine)
+		if (isDetected)
 		{
-			ToggleSpeed();
+			UnderAttack(10);
+		}
+		else
+		{
+			moveSpeed = normalSpeed;
+		}
+		if (base.photonView.IsMine && !dead && moveSpeed > 0)
+		{
 
 			Move();
 			ToggleCoolDown();
@@ -98,7 +146,11 @@ public class CharacterController : MonoBehaviourPun
 			{
 			}
 		}
-
+		if(currentHealth <= 0)
+		{
+			_gameManager.someoneDead();
+			checkSelfDeadState();
+		}
 	}
 
 	void CoordinationSetting()
@@ -112,8 +164,8 @@ public class CharacterController : MonoBehaviourPun
 	void Move()
 	{
 		//Vector3 direction = new Vector3(Input.GetAxis("HorizontalKey"), 0, Input.GetAxis("VerticalKey"));
-		Vector3 rightMovement = mainCam.right * moveSpeed * Time.deltaTime * Input.GetAxis("HorizontalKey");
-		Vector3 upMovement = mainCam.forward * moveSpeed * Time.deltaTime * Input.GetAxis("VerticalKey");
+		Vector3 rightMovement = mainCam.right * Input.GetAxis("HorizontalKey");
+		Vector3 upMovement = mainCam.forward * Input.GetAxis("VerticalKey");
 		rightMovement.z = 0;
 		upMovement.z = 0;
 
@@ -156,22 +208,24 @@ public class CharacterController : MonoBehaviourPun
 		}
 	}
 
-	void ToggleSpeed()
-	{
-		//keep movespeed at normal speed when not hit by boss
-		moveSpeed += normalSpeed * Time.deltaTime;
-		moveSpeed = Mathf.Clamp(moveSpeed, slowDownSpeed, normalSpeed);
-	}
-
 
 	public void UnderAttack(int damage)
 	{
 		currentHealth -= damage * Time.deltaTime;
-		moveSpeed -= 2 * normalSpeed;
+		if(moveSpeed > slowDownSpeed)
+		{
+			//moveSpeed -= 2 * normalSpeed;
+			moveSpeed = slowDownSpeed;
+		}
+		else
+		{
+			moveSpeed -= moveSpeed <= 0 ? 0 : slowDownSpeed * Time.deltaTime;
+		}
 	}
 
 	void PickUpItem()
 	{
+		
 		isHolding = true;
 		theOneRing.GetComponent<Rigidbody>().isKinematic = true;
 		theOneRing.transform.SetParent(transform);
@@ -259,4 +313,43 @@ public class CharacterController : MonoBehaviourPun
 			theOneRing = null;
 		}
 	}
+
+
+	public void callselfCheck(int damage)
+	{
+		photonView.RPC("checkUnderAttack", RpcTarget.Others, photonView.ViewID, damage);
+	}
+
+	[PunRPC]
+	public void checkUnderAttack(int victimID, int damage)
+	{
+		if(victimID == photonView.ViewID)
+		{
+			UnderAttack(damage);
+		}
+	}
+
+	[PunRPC]
+	public void SetDetectedStatus(int victimID, bool value)
+	{
+		if (victimID == photonView.ViewID)
+		{
+			isDetected = value;
+		}
+	}
+
+	public void checkSelfDeadState()
+	{
+		photonView.RPC("amIDead", RpcTarget.All, photonView.ViewID);
+	}
+
+	[PunRPC]
+	public void amIDead(int deadManID)
+	{
+		if(deadManID == photonView.ViewID)
+		{
+			dead = true;
+		}
+	}
+
 }

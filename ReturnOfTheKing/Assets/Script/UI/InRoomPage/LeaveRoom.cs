@@ -16,5 +16,6 @@ public class LeaveRoom : MonoBehaviour
     {
         PhotonNetwork.LeaveRoom(true);
         _preparePage.inRoomPage.hideSelf();
+        _preparePage.lobbyMenu.localPlayerInformation.Awake();
     }
 }

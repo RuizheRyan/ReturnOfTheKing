@@ -83,6 +83,7 @@ public class RoomBoard : MonoBehaviourPunCallbacks
         _preparePage.inRoomPage.showSelf();
         _content.destroyChildren();
         _roomBlockList.Clear();
+        _selectedRoomName = null;
         if (PhotonNetwork.IsMasterClient)
         {
             _preparePage.inRoomPage.startButton.interactable = true;
@@ -92,6 +93,7 @@ public class RoomBoard : MonoBehaviourPunCallbacks
         else
         {
             _preparePage.inRoomPage.startButton.interactable = false;
+            _preparePage.inRoomPage.readyButton.interactable = true;
         }
         _preparePage.inRoomPage.colorButton.image.color = _preparePage.lobbyMenu.colorButton.image.color;
     }
