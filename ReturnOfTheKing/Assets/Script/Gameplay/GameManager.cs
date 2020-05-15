@@ -35,7 +35,6 @@ public class GameManager : MonoBehaviour
     void Update()
     {
 		CheckWin();
-
     }
 
 	public void CheckWin()
