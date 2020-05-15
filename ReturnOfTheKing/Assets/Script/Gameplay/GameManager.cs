@@ -80,7 +80,10 @@ public class GameManager : MonoBehaviourPun
 	public void loadEndScene(bool playersWin)
 	{
 		_gameSettings.playerWin = playersWin;
-		SceneManager.LoadScene(2);
+		if (PhotonNetwork.IsMasterClient)
+		{			
+			SceneManager.LoadScene(2);
+		}
 	}
 
 	public void checkSomeoneDead()
