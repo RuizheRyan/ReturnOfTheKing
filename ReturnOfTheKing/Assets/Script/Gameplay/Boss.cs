@@ -43,7 +43,7 @@ public class Boss : MonoBehaviourPun, IPunObservable
 	public CharacterController firstPlayer;
 	public CharacterController secondPlayer;
 
-	List<GameObject> hitPlayers;
+	List<GameObject> hitPlayers = new List<GameObject>();
 	// Start is called before the first frame update
 	void Start()
     {
