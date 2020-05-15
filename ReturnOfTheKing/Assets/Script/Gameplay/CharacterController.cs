@@ -260,9 +260,9 @@ public class CharacterController : MonoBehaviourPun
 	}
 
 	[PunRPC]
-	public void checkUnderAttack(CharacterController victim, int damage)
+	public void checkUnderAttack(int victimID, int damage)
 	{
-		if(victim.photonView == photonView)
+		if(victimID == photonView.ViewID)
 		{
 			UnderAttack(damage);
 		}

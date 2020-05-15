@@ -137,9 +137,11 @@ public class PickableItem : MonoBehaviourPun
 	//}
 
 	[PunRPC]
-	public void checkDestroySelf(GameObject targetObject)
+	public void checkDestroySelf(int targetObjectID)
 	{
-		if (gameObject == targetObject)
+		if (PhotonView.Get(gameObject).ViewID == targetObjectID)
+		{
 			Destroy(gameObject);
+		}
 	}
 }

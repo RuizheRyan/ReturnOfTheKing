@@ -42,7 +42,7 @@ public class Goal : MonoBehaviourPun
 					}
 				}
 				//Destroy(other.gameObject);
-				photonView.RPC("checkDestroySelf", RpcTarget.All, other);
+				photonView.RPC("checkDestroySelf", RpcTarget.All, PhotonView.Get(other).ViewID);
 			}
 		}
 
