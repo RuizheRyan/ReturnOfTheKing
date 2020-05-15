@@ -106,6 +106,7 @@ public class CharacterController : MonoBehaviourPun
 		upMovement.z = 0;
 
 		Vector3 heading = Vector3.Normalize(rightMovement + upMovement);
+		heading = Quaternion.Euler(0, 0, 1) * heading;
 
 		if(Input.GetAxis("HorizontalKey") != 0 || Input.GetAxis("VerticalKey") != 0)
 		{

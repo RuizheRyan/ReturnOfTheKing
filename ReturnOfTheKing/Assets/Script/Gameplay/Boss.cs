@@ -28,19 +28,20 @@ public class Boss : MonoBehaviourPun
 
 		//numberOfRays = Mathf.FloorToInt(detectingRange / 5) + 1;
 		//hitsInfo = new RaycastHit[numberOfRays];
-        
-    }
+
+	}
 
     // Update is called once per frame
     void Update()
     {
 		//Debug.DrawRay(transform.position, transform.forward * 10f, Color.red);
-
-
-		BossDetecting();
 		ToggleCoolDown();
     }
 
+	private void FixedUpdate()
+	{
+		BossDetecting();
+	}
 
 	void BossDetecting()
 	{
@@ -55,11 +56,10 @@ public class Boss : MonoBehaviourPun
 			{
 				Vector3 rayDirection = Quaternion.AngleAxis(i * deltaAngle, -Vector3.forward) * startDirection;
 				Ray ray = new Ray(origin, rayDirection);
-				Debug.DrawRay(origin, rayDirection * 100f, Color.yellow);
 				if(Physics.Raycast(ray, out hitsInfo, MAX_RAY_DISTANCE, layerMask))
 				{
 					//Debug.Log(i + " yes");
-					if(hitsInfo.collider.tag == "Player")
+					if(hitsInfo.transform.CompareTag("Player"))
 					{
 						hitsInfo.collider.transform.GetComponent<CharacterController>().UnderAttack(damage);
 					}
@@ -68,8 +68,12 @@ public class Boss : MonoBehaviourPun
 					//	Debug.Log(i+ " Obstacle");
 					//}
 					
+					Debug.DrawRay(ray.origin, hitsInfo.point, Color.yellow);
 				}
-
+				else
+				{
+					Debug.DrawRay(ray.origin, ray.origin + ray.direction.normalized * 100, Color.yellow);
+				}
 			}
 			
 		}
