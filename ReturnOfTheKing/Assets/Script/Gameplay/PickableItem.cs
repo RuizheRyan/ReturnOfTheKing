@@ -135,7 +135,6 @@ public class PickableItem : MonoBehaviourPun
 	//{
 	//	return isPicked;
 	//}
-
 	public void callCheckSelf()
 	{
 		photonView.RPC("checkDestroySelf", RpcTarget.All, photonView.ViewID);
