@@ -6,7 +6,7 @@ using UnityEngine;
 public class CharacterController : MonoBehaviourPun
 {
 	[Header("Attributes")]
-	[SerializeField] private float fullHealth = 100f;
+	public float fullHealth = 100f;
 	[SerializeField] private float rotateSpeed = 4f;
 	[SerializeField] private float normalSpeed = 4f;
 	[SerializeField] private float slowDownSpeed = 2f;
@@ -16,8 +16,8 @@ public class CharacterController : MonoBehaviourPun
 	[Header("Debugging")]
 	public bool hasThrown = false;
 	public bool isDetected = false;
+	public float currentHealth;
 	[SerializeField] private float timer = 0f;
-	[SerializeField] private float currentHealth;
 	public bool isHolding = false;
 	//[SerializeField] private Collider PickableItemACollider;
 	//[SerializeField] private Collider PickableItemBCollider;
@@ -106,6 +106,7 @@ public class CharacterController : MonoBehaviourPun
 		upMovement.z = 0;
 
 		Vector3 heading = Vector3.Normalize(rightMovement + upMovement);
+		heading = Quaternion.Euler(0, 0, 1) * heading;
 
 		if(Input.GetAxis("HorizontalKey") != 0 || Input.GetAxis("VerticalKey") != 0)
 		{
