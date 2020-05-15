@@ -32,7 +32,7 @@ public class HealthBar : MonoBehaviourPun
     // Update is called once per frame
     void Update()
     {
-        if(transform.parent.parent! == null)
+        if(transform.parent.parent != null)
         {
             transform.parent.SetParent(null);
         }
