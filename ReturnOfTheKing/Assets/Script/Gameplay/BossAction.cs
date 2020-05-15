@@ -148,5 +148,13 @@ public class BossAction : MonoBehaviourPun
 	//		switchTimer = 0f;
 	//	}
 	//}
+	private void OnCollisionEnter(Collision collision)
+	{
+		if (collision.collider.CompareTag("PickableItem"))
+		{
+			myBoss.isAvailable = false;
+			isSwitched = true;
+		}
+	}
 
 }
