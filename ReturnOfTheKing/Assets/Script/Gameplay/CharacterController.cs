@@ -99,7 +99,6 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 		{
 			moveSpeed = normalSpeed;
 		}
-		Debug.Log(moveSpeed);
 		if (base.photonView.IsMine && !dead && moveSpeed > 0)
 		{
 
@@ -200,11 +199,12 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 		currentHealth -= damage * Time.deltaTime;
 		if(moveSpeed > slowDownSpeed)
 		{
-			moveSpeed -= 2 * normalSpeed;
+			//moveSpeed -= 2 * normalSpeed;
+			moveSpeed = slowDownSpeed;
 		}
 		else
 		{
-			moveSpeed -= (normalSpeed +  slowDownSpeed * Time.deltaTime / secondsToFrozen);
+			moveSpeed -= slowDownSpeed * Time.deltaTime;
 		}
 	}
 

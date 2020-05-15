@@ -277,7 +277,7 @@ MonoBehaviour:
   fullHealth: 100
   rotateSpeed: 4
   normalSpeed: 8
-  slowDownSpeed: 2
+  slowDownSpeed: 2.666667
   coolDownTime: 10
   throwForce: 5
   secondsToFrozen: 3

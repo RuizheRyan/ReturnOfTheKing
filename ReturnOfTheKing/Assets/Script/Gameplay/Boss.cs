@@ -63,10 +63,10 @@ public class Boss : MonoBehaviourPun, IPunObservable
 
 	private void FixedUpdate()
 	{
-		if (PhotonNetwork.IsMasterClient)
-		{
+		//if (PhotonNetwork.IsMasterClient)
+		//{
 			BossDetecting();
-		}
+		//}
 	}
 
 	void BossDetecting()
@@ -95,6 +95,10 @@ public class Boss : MonoBehaviourPun, IPunObservable
 					if(hitsInfo.transform.CompareTag("Player"))
 					{
 						//hitsInfo.collider.transform.GetComponent<CharacterController>().callselfCheck(damage);
+						if(hitPlayers.Count == 0)
+						{
+							hitPlayers.Add(hitsInfo.transform.gameObject);
+						}
 						foreach(GameObject item in hitPlayers)
 						{
 							if(item == hitsInfo.transform.gameObject)
