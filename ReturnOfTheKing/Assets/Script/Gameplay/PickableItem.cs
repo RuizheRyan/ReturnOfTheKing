@@ -20,19 +20,31 @@ public class PickableItem : MonoBehaviourPun
 	//[SerializeField] private Camera camera;
 	//[SerializeField] private bool inRange = false;
 	[SerializeField] private bool isPicked = false;
+	[SerializeField]
+	Material clientMat;
+	[SerializeField]
+	Material hostMat;
 
 	//private CharacterController myCharacterController;
 	//private Rigidbody rb;
 
 	//private const float MAX_RAY_DISTANCE = 100f;
 
-	//// Start is called before the first frame update
-	//void Start()
-	//{
-	//	rb = gameObject.GetComponent<Rigidbody>();
+	// Start is called before the first frame update
+	void Start()
+	{
+		//rb = gameObject.GetComponent<Rigidbody>();
+		if (PhotonNetwork.IsMasterClient)
+		{
+			GetComponent<Renderer>().material = hostMat;
+		}
+		else
+		{
+			GetComponent<Renderer>().material = clientMat;
+		}
 
 
-	//}
+	}
 	//private void OnValidate()
 	//{
 	//	if(camera == null)
