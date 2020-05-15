@@ -52,6 +52,15 @@ public class Boss : MonoBehaviourPun
 			Vector3 startDirection = Quaternion.AngleAxis(-detectingRange / 2, -Vector3.forward) * transform.up;
 			float deltaAngle = (float)detectingRange / ((float)numberOfRays - 1f);
 			//Debug.Log(startDirection);
+<<<<<<< Updated upstream
+=======
+			int rayMissNum = 0;
+			foreach(GameObject item in hitPlayers)
+			{
+				item.GetComponent<CharacterController>().IsDetected = false;
+			}
+			hitPlayers.Clear();
+>>>>>>> Stashed changes
 			for (int i = 0; i < numberOfRays; i++)
 			{
 				Vector3 rayDirection = Quaternion.AngleAxis(i * deltaAngle, -Vector3.forward) * startDirection;
@@ -75,7 +84,21 @@ public class Boss : MonoBehaviourPun
 					Debug.DrawRay(ray.origin, ray.origin + ray.direction.normalized * 100, Color.yellow);
 				}
 			}
+<<<<<<< Updated upstream
 			
+=======
+			foreach(GameObject item in hitPlayers)
+			{
+				item.GetComponent<CharacterController>().IsDetected = true;
+			}
+			//if(rayMissNum >= numberOfRays)
+			//{
+			//	hitPlayers.Clear();
+			//}
+			//else
+			//{
+			//}
+>>>>>>> Stashed changes
 		}
 	}
 
