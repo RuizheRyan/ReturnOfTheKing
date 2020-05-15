@@ -14,11 +14,15 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 		{
 			// We own this player: send the others our data
 			stream.SendNext(isDetected);
+			stream.SendNext(moveSpeed);
+			stream.SendNext(currentHealth);
 		}
 		else
 		{
 			// Network player, receive data
 			this.isDetected = (bool)stream.ReceiveNext();
+			this.moveSpeed = (float)stream.ReceiveNext();
+			this.currentHealth = (float)stream.ReceiveNext();
 		}
 	}
 	#endregion
@@ -93,7 +97,7 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
     {
 		if (isDetected)
 		{
-			UnderAttack(1);
+			UnderAttack(10);
 		}
 		else
 		{
@@ -162,7 +166,6 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 		}
 
 		//transform.position += heading * moveSpeed * Time.deltaTime;
-		moveSpeed = Mathf.Clamp(moveSpeed, 0, normalSpeed);
 		rb.velocity = heading * moveSpeed;
 
 		//transform.position += rightMovement;
@@ -204,7 +207,7 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 		}
 		else
 		{
-			moveSpeed -= slowDownSpeed * Time.deltaTime;
+			moveSpeed -= moveSpeed <= 0 ? 0 : slowDownSpeed * Time.deltaTime;
 		}
 	}
 
