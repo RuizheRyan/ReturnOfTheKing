@@ -63,10 +63,10 @@ public class Boss : MonoBehaviourPun, IPunObservable
 
 	private void FixedUpdate()
 	{
-		//if (PhotonNetwork.IsMasterClient)
-		//{
+		if (PhotonNetwork.IsMasterClient)
+		{
 			BossDetecting();
-		//}
+		}
 	}
 
 	void BossDetecting()
