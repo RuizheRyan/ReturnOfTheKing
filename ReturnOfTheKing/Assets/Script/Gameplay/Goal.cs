@@ -1,8 +1,9 @@
-﻿using System.Collections;
+﻿using Photon.Pun;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Goal : MonoBehaviour
+public class Goal : MonoBehaviourPun
 {
 	[SerializeField] private GameManager.ItemType thisGoalType;
 	[SerializeField] private bool isArrived = false;
@@ -40,8 +41,8 @@ public class Goal : MonoBehaviour
 						myCharacterController.isHolding = false;
 					}
 				}
-
-				Destroy(other.gameObject);
+				//Destroy(other.gameObject);
+				photonView.RPC("checkDestroySelf", RpcTarget.All, other);
 			}
 		}
 

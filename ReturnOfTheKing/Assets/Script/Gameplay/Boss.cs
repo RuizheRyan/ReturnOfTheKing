@@ -61,7 +61,7 @@ public class Boss : MonoBehaviourPun
 					//Debug.Log(i + " yes");
 					if(hitsInfo.transform.CompareTag("Player"))
 					{
-						hitsInfo.collider.transform.GetComponent<CharacterController>().UnderAttack(damage);
+						photonView.RPC("checkUnderAttack", RpcTarget.Others, hitsInfo.collider.transform.GetComponent<CharacterController>(), damage);
 					}
 					//if(hitsInfo[i].collider.tag == "Obstacle")
 					//{
@@ -111,4 +111,7 @@ public class Boss : MonoBehaviourPun
 			timer = 0;
 		}
 	}
+
+	
+
 }

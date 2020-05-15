@@ -1,6 +1,8 @@
 ﻿using Photon.Pun;
+using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 
 public class CharacterController : MonoBehaviourPun
@@ -19,6 +21,7 @@ public class CharacterController : MonoBehaviourPun
 	public float currentHealth;
 	[SerializeField] private float timer = 0f;
 	public bool isHolding = false;
+
 	//[SerializeField] private Collider PickableItemACollider;
 	//[SerializeField] private Collider PickableItemBCollider;
 
@@ -29,7 +32,7 @@ public class CharacterController : MonoBehaviourPun
 	Rigidbody rb;
 	GameObject theOneRing;
 
-	PhotonView photonView;
+	public PhotonView photonView;
 	// Start is called before the first frame update
 	void Start()
     {
@@ -255,4 +258,14 @@ public class CharacterController : MonoBehaviourPun
 			theOneRing = null;
 		}
 	}
+
+	[PunRPC]
+	public void checkUnderAttack(CharacterController victim, int damage)
+	{
+		if(victim.photonView == photonView)
+		{
+			UnderAttack(damage);
+		}
+	} 
+
 }

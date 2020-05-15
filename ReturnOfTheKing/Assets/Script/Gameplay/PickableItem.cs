@@ -135,4 +135,11 @@ public class PickableItem : MonoBehaviourPun
 	//{
 	//	return isPicked;
 	//}
+
+	[PunRPC]
+	public void checkDestroySelf(GameObject targetObject)
+	{
+		if (gameObject == targetObject)
+			Destroy(gameObject);
+	}
 }
