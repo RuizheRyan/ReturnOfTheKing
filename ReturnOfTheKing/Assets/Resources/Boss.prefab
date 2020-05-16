@@ -70,8 +70,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HitCoolDown: 5
   damage: 1
-  detectingRange: 25
-  numberOfRays: 40
+  detectingRange: 15
+  numberOfRays: 35
   layerMask:
     serializedVersion: 2
     m_Bits: 3072
@@ -91,7 +91,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a0fae5bacd2fb749b6b6b124444a727, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotateSpeed: 2
+  rotateSpeed: 1
   switchCoolDown: 3
   layerMask:
     serializedVersion: 2
@@ -211,8 +211,8 @@ Light:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 20
   m_Range: 100
-  m_SpotAngle: 25
-  m_InnerSpotAngle: 2
+  m_SpotAngle: 15
+  m_InnerSpotAngle: 1
   m_CookieSize: 10
   m_Shadows:
     m_Type: 0
@@ -664,7 +664,7 @@ MonoBehaviour:
   uv_Offset: {x: 0.5, y: 0.5}
   uv_Scale: {x: 0.5, y: 0.5}
   vertexWorking: 0
-  RangeAngle: 25
+  RangeAngle: 15
   staticScene: 1
   doNotRenderMesh: 0
   lastLight2DType: 0

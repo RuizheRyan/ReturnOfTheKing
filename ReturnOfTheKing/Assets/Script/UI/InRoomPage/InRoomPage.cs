@@ -16,6 +16,8 @@ public class InRoomPage : MonoBehaviour
     public Button colorButton;
     [SerializeField]
     public Button readyButton;
+    [SerializeField]
+    public GameObject readyInformation;
 
     public LeaveRoom leaveRoomButton
     {
@@ -24,6 +26,22 @@ public class InRoomPage : MonoBehaviour
             return _leaveRoomButton;
         }
     }
+    private void Awake()
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            readyButton.interactable = false;
+            startButton.interactable = false;
+            readyButton.GetComponentInChildren<Text>().text = "Ready";
+        }
+        else
+        {
+            readyButton.interactable = true;
+            startButton.interactable = false;
+            readyInformation.SetActive(false);
+        }
+    }
+
     private PreparePage _preparePage;
 
     public void firstInitialize(PreparePage page)

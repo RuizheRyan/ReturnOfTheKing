@@ -2713,6 +2713,7 @@ MonoBehaviour:
   startButton: {fileID: 818845426}
   colorButton: {fileID: 1369248985}
   readyButton: {fileID: 675950138}
+  readyInformation: {fileID: 976461457}
 --- !u!1 &1112694402
 GameObject:
   m_ObjectHideFlags: 0
@@ -3575,7 +3576,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2135125004}
   m_HandleRect: {fileID: 2135125003}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
