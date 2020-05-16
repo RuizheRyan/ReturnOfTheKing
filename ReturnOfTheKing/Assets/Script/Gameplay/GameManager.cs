@@ -88,7 +88,7 @@ public class GameManager : MonoBehaviourPun
 
 	public void checkSomeoneDead()
 	{
-		photonView.RPC("someoneDead", RpcTarget.All);
+		photonView.RPC("someoneDead", RpcTarget.MasterClient);
 	}
 	[PunRPC]
 	public void someoneDead()

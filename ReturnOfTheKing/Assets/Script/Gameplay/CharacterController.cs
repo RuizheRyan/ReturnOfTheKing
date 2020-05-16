@@ -146,7 +146,7 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 			{
 			}
 		}
-		if(currentHealth <= 0)
+		if (currentHealth <= 0 && dead == false)
 		{
 			_gameManager.someoneDead();
 			checkSelfDeadState();
