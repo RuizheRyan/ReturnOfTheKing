@@ -37,7 +37,7 @@ public class HealthBar : MonoBehaviourPun
         }
         else
         {
-            photonView.TransferOwnership(player.photonView.Owner);
+            GetComponentInParent<PhotonView>().TransferOwnership(player.photonView.Owner);
         }
     }
 

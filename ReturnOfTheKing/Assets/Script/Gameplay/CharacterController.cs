@@ -64,7 +64,7 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 
 	private GameManager _gameManager;
 	
-
+	[SerializeField]
 	Transform mainCam;
 	Rigidbody rb;
 	GameObject theOneRing;
@@ -80,7 +80,7 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 		photonView = PhotonView.Get(this);
 		_gameManager = GameManager.instance;
 		rb = GetComponent<Rigidbody>();
-		mainCam = Camera.main.transform;
+		mainCam = mainCam == null ? Camera.main.transform : mainCam;
 		CoordinationSetting();
 		currentHealth = fullHealth;
 
