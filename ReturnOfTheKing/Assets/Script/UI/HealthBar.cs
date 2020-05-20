@@ -7,21 +7,33 @@ using UnityEngine.UI;
 public class HealthBar : MonoBehaviourPun
 {
     public float maxHP = 100;
-    public Vector2 offset;
-    Camera mainCam;
+    //Camera mainCam;
     [SerializeField]
     CharacterController player;
     [SerializeField]
     Image bar;
+    Canvas canvas;
 
+    private void Awake()
+    {
+        if (transform.parent.parent != null)
+        {
+            transform.parent.SetParent(null);
+        }
+    }
 
     void Start()
     {
         maxHP = player.fullHealth;
-        mainCam = Camera.main;
+        //mainCam = Camera.main;
+        canvas = GetComponentInParent<Canvas>();
+        if (transform.parent.parent != null)
+        {
+            transform.parent.SetParent(null);
+        }
         if (PhotonNetwork.IsMasterClient)
         {
-            GetComponentInParent<Canvas>().enabled = false;
+            canvas.enabled = false;
         }
         else
         {
@@ -34,14 +46,11 @@ public class HealthBar : MonoBehaviourPun
     {
         if (PhotonNetwork.IsMasterClient)
         {
-            GetComponentInParent<Canvas>().enabled = player.isDetected;
+            canvas.enabled = player.isDetected;
         }
-        if (transform.parent.parent != null)
-        {
-            transform.parent.SetParent(null);
-        }
-        Vector2 screenPos = mainCam.WorldToScreenPoint(player.transform.position - Vector3.forward * 3);
-        transform.position = screenPos + offset;
+        //Vector2 screenPos = mainCam.WorldToScreenPoint(player.transform.position - Vector3.forward * 3);
+        //transform.position = screenPos + offset;
+        canvas.transform.position = player.transform.position + Vector3.forward * -1.5f;
         bar.fillAmount = player.currentHealth / maxHP;
     }
 }
