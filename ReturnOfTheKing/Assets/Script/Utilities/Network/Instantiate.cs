@@ -15,6 +15,8 @@ public class Instantiate : MonoBehaviour
     private Vector3 _startPointOfPlayer1 = new Vector3(0, 1, 10);
     [SerializeField]
     private Vector3 _startPointOfPlayer2 = new Vector3(20, 1, 10);
+
+    private ExitGames.Client.Photon.Hashtable _customProperties = new ExitGames.Client.Photon.Hashtable();
     private void Awake()
     {
         if (PhotonNetwork.IsMasterClient)
@@ -23,6 +25,9 @@ public class Instantiate : MonoBehaviour
         }
         else
         {
+            _customProperties = PhotonNetwork.LocalPlayer.CustomProperties;
+            _customProperties["ReadyState"] = 0;
+            PhotonNetwork.SetPlayerCustomProperties(_customProperties);
             if (PhotonNetwork.LocalPlayer.ActorNumber == 2)
             {
                 MainManager.NetworkInstantiate(_playerPrefab, _startPointOfPlayer1, Quaternion.identity);

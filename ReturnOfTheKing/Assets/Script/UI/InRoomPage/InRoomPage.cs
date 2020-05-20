@@ -244,13 +244,13 @@ public class InRoomPage : MonoBehaviourPunCallbacks
         }
         else
         {
-            if (!everyOneIsReady)
+            if (everyOneIsReady)
             {
-                photonView.RPC("RPC_ChangeClientInformation", RpcTarget.All, playerState.someOneIsUnready);
+                photonView.RPC("RPC_ChangeClientInformation", RpcTarget.All, playerState.everyIsReady);
             }
             else
             {
-                photonView.RPC("RPC_ChangeClientInformation", RpcTarget.All, playerState.everyIsReady);
+                photonView.RPC("RPC_ChangeClientInformation", RpcTarget.All, playerState.someOneIsUnready);
             }
         }
     }
