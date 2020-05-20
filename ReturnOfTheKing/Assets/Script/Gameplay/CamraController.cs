@@ -29,6 +29,10 @@ public class CamraController : MonoBehaviourPun
     // Update is called once per frame
     void LateUpdate()
     {
+        if (isBossCam)
+        {
+            return;
+        }
         transform.position = player.position;
     }
 }
