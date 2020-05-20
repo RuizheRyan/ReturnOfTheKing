@@ -101,6 +101,7 @@ MonoBehaviour:
   switchTimer: 0
   delayTimer: 0
   delay: 1
+  bossCamera: {fileID: 0}
 --- !u!135 &5096736554002590852
 SphereCollider:
   m_ObjectHideFlags: 0
