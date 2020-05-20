@@ -72,8 +72,7 @@ public class GameManager : MonoBehaviourPun
 		if (PhotonNetwork.IsMasterClient)
 		{
 			photonView.RPC("loadEndScene", RpcTarget.All,playersWin);
-		}
-		
+		}		
 	}
 
 	[PunRPC]

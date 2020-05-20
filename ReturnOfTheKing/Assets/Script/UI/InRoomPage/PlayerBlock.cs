@@ -57,7 +57,7 @@ public class PlayerBlock : MonoBehaviourPunCallbacks
             {
                 this.GetComponent<Button>().interactable = false;
             }
-            roomPage.checkReadyState();
+            //roomPage.checkReadyState();
         }
     } 
     public Player Player
@@ -69,7 +69,17 @@ public class PlayerBlock : MonoBehaviourPunCallbacks
     public void setPlayerInfo (Player player)
     {
         Player = player;
-        setPlayerBlock(player);
+        _text.text = (string)player.CustomProperties["PlayerName"];
+        int state = (int)player.CustomProperties["ReadyState"];
+        if (state == 0)
+        {
+            readyState = false;
+        }
+        else
+        {
+            readyState = true;
+        }
+        //setPlayerBlock(player);
     }
 
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)

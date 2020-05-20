@@ -1,5 +1,6 @@
 ﻿using Photon.Pun;
 using Photon.Realtime;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,7 +13,7 @@ public class InRoomPage : MonoBehaviourPunCallbacks
     [SerializeField]
     private Transform _content;
     [SerializeField]
-    public Button startButton;
+    private Button startButton;
     [SerializeField]
     public Button colorButton;
     [SerializeField]
@@ -27,9 +28,36 @@ public class InRoomPage : MonoBehaviourPunCallbacks
     private Texture _someoneNotReadyTexture;
     [SerializeField]
     private Texture _everyoneIsReadyTexture;
+    [SerializeField]
+    private GameObject _readyInformation;
+    [SerializeField]
+    private GameObject _playerNumebrInformation;
 
     private bool _everyOneIsReady = false;
     private bool _localReadyState = false;
+    private ExitGames.Client.Photon.Hashtable _customProperties = new ExitGames.Client.Photon.Hashtable();
+
+    public enum playerState {playersIsNotEnough,someOneIsUnready,everyIsReady}
+
+    public bool localReadyState
+    {
+        get
+        {
+            return _localReadyState;
+        }
+        set
+        {
+            _localReadyState = value;
+            if (_localReadyState)
+            {
+                _readyButton.GetComponent<RawImage>().texture = _readyTexture;
+            }
+            else
+            {
+                _readyButton.GetComponent<RawImage>().texture = _unreadyTexture;
+            }
+        }
+    }
 
     public bool everyOneIsReady
     {
@@ -92,21 +120,26 @@ public class InRoomPage : MonoBehaviourPunCallbacks
     public override void OnEnable()
     {
         base.OnEnable();
+        _customProperties = PhotonNetwork.LocalPlayer.CustomProperties;
         if (PhotonNetwork.IsMasterClient)
         {
             _readyButton.interactable = false;
-            startButton.interactable = false;
+            //changeAfterTest
+            startButton.interactable = true;
             _readyButton.GetComponent<RawImage>().texture = _readyTexture;
+            localReadyState = true;
+            _customProperties["ReadyState"] = 1;
         }
         else
         {
             _readyButton.interactable = true;
             startButton.interactable = false;
             readyInformation.SetActive(false);
+            localReadyState = false;
+            _customProperties["ReadyState"] = 0;
         }
-        setReadyUp(false);
+        PhotonNetwork.SetPlayerCustomProperties(_customProperties);
         getCurrentPlayersInTheRoom();
-
     }
 
 
@@ -119,20 +152,6 @@ public class InRoomPage : MonoBehaviourPunCallbacks
         }
         _playerBlockList.Clear();
     }
-
-    private void setReadyUp(bool state)
-    {
-        _localReadyState = state;
-        if (_localReadyState)
-        {
-            _readyButton.GetComponent<RawImage>().texture = _readyTexture;
-        }
-        else
-        {
-            _readyButton.GetComponent<RawImage>().texture = _unreadyTexture;
-        }
-    }
-
 
     private void getCurrentPlayersInTheRoom()
     {
@@ -159,15 +178,12 @@ public class InRoomPage : MonoBehaviourPunCallbacks
             if (block != null)
             {
                 block.setPlayerInfo(player);
-                block.roomPage = this;
                 if (player.IsMasterClient)
                 {
-                    block.readyState = true;
                     block.isSeeker = true;
                 }
                 else
                 {
-                    block.readyState = false;
                     block.isSeeker = false;
                 }
                 _playerBlockList.Add(block);
@@ -180,6 +196,7 @@ public class InRoomPage : MonoBehaviourPunCallbacks
         Debug.Log("PlayersEntered.");
         addPlayerBlockIntoPlayerBoard(newPlayer);
         everyOneIsReady = false;
+        checkReadyState();
     }
 
     public override void OnPlayerLeftRoom(Player leftPlayer)
@@ -196,15 +213,18 @@ public class InRoomPage : MonoBehaviourPunCallbacks
     {
         if (!PhotonNetwork.IsMasterClient)
         {
-            setReadyUp(!_localReadyState);
-            base.photonView.RPC("RPC_ChangeReadyState", RpcTarget.All, PhotonNetwork.LocalPlayer, _localReadyState);
+            localReadyState = !localReadyState;
+            _customProperties["ReadyState"] = Convert.ToInt32(localReadyState);
+            PhotonNetwork.SetPlayerCustomProperties(_customProperties);
+            base.photonView.RPC("RPC_ChangeReadyState", RpcTarget.All, PhotonNetwork.LocalPlayer, localReadyState);
         }
     }
 
-    public void checkReadyState()
+    private void checkReadyState()
     {
         if (PhotonNetwork.IsMasterClient)
         {
+            everyOneIsReady = true;
             for (int i = 0; i < _playerBlockList.Count; i++)
             {
                 if (_playerBlockList[i].Player != PhotonNetwork.LocalPlayer)
@@ -213,11 +233,25 @@ public class InRoomPage : MonoBehaviourPunCallbacks
                     {
                         everyOneIsReady = false;
                         Debug.Log("Someone is unready");
-                        return;
+                        break;
                     }
                 }
+            }                    
+        }
+        if (_playerBlockList.Count < 3)
+        {
+            photonView.RPC("RPC_ChangeClientInformation", RpcTarget.All, playerState.playersIsNotEnough);
+        }
+        else
+        {
+            if (!everyOneIsReady)
+            {
+                photonView.RPC("RPC_ChangeClientInformation", RpcTarget.All, playerState.someOneIsUnready);
             }
-            everyOneIsReady = true;
+            else
+            {
+                photonView.RPC("RPC_ChangeClientInformation", RpcTarget.All, playerState.everyIsReady);
+            }
         }
     }
 
@@ -236,12 +270,38 @@ public class InRoomPage : MonoBehaviourPunCallbacks
     }
 
     [PunRPC]
-    private void RPC_ChangeReadyState(Player player, bool ready)
+    private void RPC_ChangeReadyState(Player player, bool playerReadyState)
     {
         int index = _playerBlockList.FindIndex(x => x.Player == player);
         if (index != -1)
         {
-            _playerBlockList[index].readyState = ready;
+            _playerBlockList[index].readyState = playerReadyState;
+        }
+        checkReadyState();     
+    }
+
+    [PunRPC] void RPC_ChangeClientInformation(playerState state)
+    {
+        switch (state)
+        {
+            case playerState.everyIsReady:
+                {
+                    _playerNumebrInformation.SetActive(false);
+                    _readyInformation.SetActive(false);
+                    break;
+                }
+            case playerState.playersIsNotEnough:
+                {
+                    _playerNumebrInformation.SetActive(true);
+                    _readyInformation.SetActive(false);
+                    break;
+                }
+            case playerState.someOneIsUnready:
+                {
+                    _playerNumebrInformation.SetActive(false);
+                    _readyInformation.SetActive(true);
+                    break;
+                }
         }
     }
 }

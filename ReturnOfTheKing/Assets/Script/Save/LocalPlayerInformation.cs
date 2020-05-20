@@ -24,12 +24,12 @@ public class LocalPlayerInformation : MonoBehaviour
             {
                 _hostARoomMenu.upDateCreateButtonState();
                 _roomBoard.updateJoinButtonState();
-                _customProperties["CustomColor:Red"] = _playersColor.r;
-                _customProperties["CustomColor:Green"] = _playersColor.g;
-                _customProperties["CustomColor:Blue"] = _playersColor.b;
+                //_customProperties["CustomColor:Red"] = _playersColor.r;
+                //_customProperties["CustomColor:Green"] = _playersColor.g;
+                //_customProperties["CustomColor:Blue"] = _playersColor.b;
                 _customProperties["PlayerName"] = _playerText.text;
-                PhotonNetwork.SetPlayerCustomProperties(_customProperties);
-                
+                _customProperties["ReadyState"] = 0;
+                PhotonNetwork.SetPlayerCustomProperties(_customProperties);                
             }
         }
     }
@@ -44,8 +44,6 @@ public class LocalPlayerInformation : MonoBehaviour
     [SerializeField]
 
     private Color _playersColor;
-
-    [SerializeField]
 
     private ExitGames.Client.Photon.Hashtable _customProperties = new ExitGames.Client.Photon.Hashtable();
     public void getARandomColor()
