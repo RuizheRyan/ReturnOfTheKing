@@ -73,10 +73,7 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 			_dead = value;
 			if (_dead)
 			{
-				if (PhotonNetwork.IsMasterClient)
-				{
-					photonView.RPC("RPC_amIDead", RpcTarget.Others, photonView.ViewID);
-				}
+				_gameManager.someoneDead();
 			}
 		}
 	}

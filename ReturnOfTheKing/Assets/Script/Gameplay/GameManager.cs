@@ -87,15 +87,16 @@ public class GameManager : MonoBehaviourPun
 
 	public void someoneDead()
 	{
-		Debug.Log("someonedead");
-		photonView.RPC("RPC_knell", RpcTarget.MasterClient);
+		numberOfDeadPlayer += 1;
+		//Debug.Log("someonedead");
+		//photonView.RPC("RPC_knell", RpcTarget.MasterClient);
 	}
 
-	[PunRPC]
-	public void RPC_knell()
-	{
-		Debug.Log("knellCalled");
-		numberOfDeadPlayer += 1;
-	}
+	//[PunRPC]
+	//public void RPC_knell()
+	//{
+	//	Debug.Log("knellCalled");
+	//	numberOfDeadPlayer += 1;
+	//}
 
 }
