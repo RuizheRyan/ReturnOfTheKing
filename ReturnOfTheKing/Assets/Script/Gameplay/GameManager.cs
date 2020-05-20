@@ -63,7 +63,7 @@ public class GameManager : MonoBehaviourPun
 		}
 		if (numberOfDeadPlayer >= (PhotonNetwork.PlayerList.Length - 1) && numberOfDeadPlayer != 0)
 		{
-			loadEndScene(playerIsVictory);
+			callloadEndScene(playerIsVictory);
 		}
 	}
 
@@ -71,12 +71,12 @@ public class GameManager : MonoBehaviourPun
 	{
 		if (PhotonNetwork.IsMasterClient)
 		{
-			photonView.RPC("loadEndScene", RpcTarget.All,playersWin);
+			photonView.RPC("RPC_loadEndScene", RpcTarget.All,playersWin);
 		}		
 	}
 
 	[PunRPC]
-	public void loadEndScene(bool playersWin)
+	public void RPC_loadEndScene(bool playersWin)
 	{
 		_gameSettings.playerWin = playersWin;
 		if (PhotonNetwork.IsMasterClient)
@@ -85,13 +85,17 @@ public class GameManager : MonoBehaviourPun
 		}
 	}
 
-	public void checkSomeoneDead()
-	{
-		photonView.RPC("someoneDead", RpcTarget.MasterClient);
-	}
-	[PunRPC]
 	public void someoneDead()
 	{
+		Debug.Log("someonedead");
+		photonView.RPC("RPC_knell", RpcTarget.MasterClient);
+	}
+
+	[PunRPC]
+	public void RPC_knell()
+	{
+		Debug.Log("knellCalled");
 		numberOfDeadPlayer += 1;
 	}
+
 }

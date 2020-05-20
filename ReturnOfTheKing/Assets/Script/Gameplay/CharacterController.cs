@@ -1,4 +1,5 @@
-﻿using Photon.Pun;
+﻿using DynamicLight2D;
+using Photon.Pun;
 using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
@@ -48,7 +49,7 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 		set
 		{
 			isDetected = value;
-			photonView.RPC("SetDetectedStatus", RpcTarget.Others, photonView.ViewID, value);
+			photonView.RPC("RPC_SetDetectedStatus", RpcTarget.Others, photonView.ViewID, value);
 		}
 	}
 	public float currentHealth;
@@ -60,7 +61,8 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 
 	Vector3 forward, right;
 	private float moveSpeed;
-	[SerializeField]private bool dead = false;
+	//private bool _dead = false;
+	[SerializeField] public bool dead = false;
 
 	private GameManager _gameManager;
 	
@@ -69,7 +71,6 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 	Rigidbody rb;
 	GameObject theOneRing;
 
-	PhotonView photonView;
 	[SerializeField]
 	Material clientMat;
 	[SerializeField]
@@ -77,7 +78,6 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 	// Start is called before the first frame update
 	void Start()
     {
-		photonView = PhotonView.Get(this);
 		_gameManager = GameManager.instance;
 		rb = GetComponent<Rigidbody>();
 		mainCam = mainCam == null ? Camera.main.transform : mainCam;
@@ -155,7 +155,6 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 		}
 		if (currentHealth <= 0 && dead == false)
 		{
-			_gameManager.someoneDead();
 			checkSelfDeadState();
 		}
 	}
@@ -324,11 +323,11 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 
 	public void callselfCheck(int damage)
 	{
-		photonView.RPC("checkUnderAttack", RpcTarget.Others, photonView.ViewID, damage);
+		photonView.RPC("RPC_checkUnderAttack", RpcTarget.Others, photonView.ViewID, damage);
 	}
 
 	[PunRPC]
-	public void checkUnderAttack(int victimID, int damage)
+	public void RPC_checkUnderAttack(int victimID, int damage)
 	{
 		if(victimID == photonView.ViewID)
 		{
@@ -337,7 +336,7 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 	}
 
 	[PunRPC]
-	public void SetDetectedStatus(int victimID, bool value)
+	public void RPC_SetDetectedStatus(int victimID, bool value)
 	{
 		if (victimID == photonView.ViewID)
 		{
@@ -347,15 +346,17 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 
 	public void checkSelfDeadState()
 	{
-		photonView.RPC("amIDead", RpcTarget.All, photonView.ViewID);
+		photonView.RPC("RPC_amIDead", RpcTarget.All, photonView.ViewID);
 	}
 
 	[PunRPC]
-	public void amIDead(int deadManID)
+	public void RPC_amIDead(int deadManID)
 	{
-		if(deadManID == photonView.ViewID)
+		if (deadManID == photonView.ViewID && photonView.IsMine)
 		{
+			Debug.Log("Idead");
 			dead = true;
+			_gameManager.someoneDead();
 		}
 	}
 

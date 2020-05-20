@@ -107,16 +107,8 @@ public class LocalPlayerInformation : MonoBehaviour
 
     private void checkSelfInformation()
     {
-        bool validName = false;
+        //bool validName = false;
         if (_playerText.text != null && _playerText.text != "")
-        {
-            validName = true;
-        }
-        else
-        {
-            validName = false;
-        }
-        if (validName && _playersColor != Color.white)
         {
             getLocalPlayerInformation = true;
         }
@@ -124,6 +116,14 @@ public class LocalPlayerInformation : MonoBehaviour
         {
             getLocalPlayerInformation = false;
         }
+        //if (validName && _playersColor != Color.white)
+        //{
+        //    getLocalPlayerInformation = true;
+        //}
+        //else
+        //{
+        //    getLocalPlayerInformation = false;
+        //}
     }
 
 }
