@@ -61,8 +61,25 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 
 	Vector3 forward, right;
 	private float moveSpeed;
-	//private bool _dead = false;
-	[SerializeField] public bool dead = false;
+	private bool _dead = false;
+	[SerializeField] public bool dead
+	{
+		get
+		{
+			return _dead;
+		}
+		set
+		{
+			_dead = value;
+			if (_dead)
+			{
+				if (PhotonNetwork.IsMasterClient)
+				{
+					photonView.RPC("RPC_amIDead", RpcTarget.Others, photonView.ViewID);
+				}
+			}
+		}
+	}
 
 	private GameManager _gameManager;
 	
@@ -116,7 +133,7 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
     {
 		if (isDetected)
 		{
-			UnderAttack(10);
+			UnderAttack(20);
 		}
 		else
 		{
@@ -155,7 +172,7 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 		}
 		if (currentHealth <= 0 && dead == false)
 		{
-			checkSelfDeadState();
+			dead = true;
 		}
 	}
 
@@ -344,13 +361,14 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 		}
 	}
 
-	public void checkSelfDeadState()
-	{
-		if (PhotonNetwork.IsMasterClient)
-		{
-			photonView.RPC("RPC_amIDead", RpcTarget.Others, photonView.ViewID);
-		}
-	}
+	//public void checkSelfDeadState()
+	//{
+	//	if (PhotonNetwork.IsMasterClient)
+	//	{
+	//		Debug.Log("Broadcastdead");
+	//		photonView.RPC("RPC_amIDead", RpcTarget.Others, photonView.ViewID);
+	//	}
+	//}
 
 	[PunRPC]
 	public void RPC_amIDead(int deadManID)
