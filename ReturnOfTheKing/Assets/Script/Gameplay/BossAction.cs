@@ -18,6 +18,9 @@ public class BossAction : MonoBehaviourPun
 	public float delayTimer;
 	public float delay;
 
+	[SerializeField]
+	Camera bossCamera;
+
 	private const float MAX_RAY_DISTANCE = 100f;
 	private Vector3 targetDirection;
 
@@ -28,6 +31,7 @@ public class BossAction : MonoBehaviourPun
 	// Start is called before the first frame update
 	void Start()
     {
+		bossCamera = bossCamera == null ? Camera.main : bossCamera;
 		gm = GameManager.Instance;
 		myBoss = transform.GetComponent<Boss>();
 		if (myBoss.isAvailable)
@@ -69,7 +73,7 @@ public class BossAction : MonoBehaviourPun
 		if (myBoss.isAvailable)
 		{
 			Vector2 mousePosition = Input.mousePosition;
-			Ray ray = Camera.main.ScreenPointToRay(mousePosition);
+			Ray ray = bossCamera.ScreenPointToRay(mousePosition);
 			RaycastHit hit;
 			Physics.Raycast(ray, out hit, MAX_RAY_DISTANCE, layerMask);
 

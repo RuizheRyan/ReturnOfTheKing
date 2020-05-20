@@ -64,7 +64,7 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 
 	private GameManager _gameManager;
 	
-
+	[SerializeField]
 	Transform mainCam;
 	Rigidbody rb;
 	GameObject theOneRing;
@@ -80,8 +80,8 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 		photonView = PhotonView.Get(this);
 		_gameManager = GameManager.instance;
 		rb = GetComponent<Rigidbody>();
-		mainCam = Camera.main.transform;
-		CoordinationSetting();
+		mainCam = mainCam == null ? Camera.main.transform : mainCam;
+		//CoordinationSetting();
 		currentHealth = fullHealth;
 
 		GameObject[] allItems;
@@ -162,7 +162,7 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 
 	void CoordinationSetting()
 	{
-		forward = Camera.main.transform.forward;
+		forward = mainCam.forward;
 		forward.y = 0;
 		forward = Vector3.Normalize(forward);
 		right = Quaternion.Euler(new Vector3(0, 90, 0)) * forward;
