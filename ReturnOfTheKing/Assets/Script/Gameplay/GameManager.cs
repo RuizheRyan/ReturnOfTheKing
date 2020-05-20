@@ -61,7 +61,7 @@ public class GameManager : MonoBehaviourPun
 			playerIsVictory = true;
 			callloadEndScene(playerIsVictory);
 		}
-		if (numberOfDeadPlayer >= (PhotonNetwork.PlayerList.Length - 1) && numberOfDeadPlayer != 0)
+		if (numberOfDeadPlayer >= 2 /*(PhotonNetwork.PlayerList.Length - 1)*/ && numberOfDeadPlayer != 0)
 		{
 			callloadEndScene(playerIsVictory);
 		}

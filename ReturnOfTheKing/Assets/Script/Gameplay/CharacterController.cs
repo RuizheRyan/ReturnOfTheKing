@@ -346,7 +346,10 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 
 	public void checkSelfDeadState()
 	{
-		photonView.RPC("RPC_amIDead", RpcTarget.All, photonView.ViewID);
+		if (PhotonNetwork.IsMasterClient)
+		{
+			photonView.RPC("RPC_amIDead", RpcTarget.Others, photonView.ViewID);
+		}
 	}
 
 	[PunRPC]
