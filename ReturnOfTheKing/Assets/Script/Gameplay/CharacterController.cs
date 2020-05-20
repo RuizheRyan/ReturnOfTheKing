@@ -101,7 +101,14 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 		//Physics.IgnoreCollision(PickableItemACollider, GetComponent<Collider>());
 		//Physics.IgnoreCollision(PickableItemBCollider, GetComponent<Collider>());
 
-
+		foreach(var item in GameObject.FindGameObjectsWithTag("Caster"))
+		{
+			if(item.GetComponent<PlayerCasterController>().player == null)
+			{
+				item.GetComponent<PlayerCasterController>().player = gameObject;
+				break;
+			}
+		}
 	}
 
     // Update is called once per frame
