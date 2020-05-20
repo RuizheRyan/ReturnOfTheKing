@@ -17,7 +17,6 @@ public class PlayerBlock : MonoBehaviourPunCallbacks
     private Texture _hiderTexture;
 
     private bool _readyState = false;
-    public InRoomPage roomPage;
 
     private bool _isSeeker = false;
     public bool isSeeker
