@@ -61,7 +61,7 @@ public class GameManager : MonoBehaviourPun
 			playerIsVictory = true;
 			callloadEndScene(playerIsVictory);
 		}
-		if (numberOfDeadPlayer >= 2 /*(PhotonNetwork.PlayerList.Length - 1)*/ && numberOfDeadPlayer != 0)
+		if (numberOfDeadPlayer >= (PhotonNetwork.PlayerList.Length - 1) && numberOfDeadPlayer != 0)
 		{
 			callloadEndScene(playerIsVictory);
 		}
@@ -88,8 +88,6 @@ public class GameManager : MonoBehaviourPun
 	public void someoneDead()
 	{
 		numberOfDeadPlayer += 1;
-		//Debug.Log("someonedead");
-		//photonView.RPC("RPC_knell", RpcTarget.MasterClient);
 	}
 
 	//[PunRPC]

@@ -130,7 +130,7 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
     {
 		if (isDetected)
 		{
-			UnderAttack(20);
+			UnderAttack(10);
 		}
 		else
 		{
@@ -367,15 +367,15 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 	//	}
 	//}
 
-	[PunRPC]
-	public void RPC_amIDead(int deadManID)
-	{
-		if (deadManID == photonView.ViewID && photonView.IsMine)
-		{
-			Debug.Log("Idead");
-			dead = true;
-			_gameManager.someoneDead();
-		}
-	}
+	//[PunRPC]
+	//public void RPC_amIDead(int deadManID)
+	//{
+	//	if (deadManID == photonView.ViewID && photonView.IsMine)
+	//	{
+	//		Debug.Log("Idead");
+	//		dead = true;
+	//		_gameManager.someoneDead();
+	//	}
+	//}
 
 }
