@@ -15,7 +15,7 @@ public class CamraController : MonoBehaviourPun
         {
             gameObject.SetActive(false);
         }
-        else
+        else if(!isBossCam)
         {
             player = player == null ? transform.parent : player;
             if (!player.GetComponent<PhotonView>().IsMine)
