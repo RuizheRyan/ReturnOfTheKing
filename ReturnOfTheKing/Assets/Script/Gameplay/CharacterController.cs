@@ -14,6 +14,7 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 		//if (stream.IsWriting)
 		//{
 		//	// We own this player: send the others our data
+
 		//	stream.SendNext(isDetected);
 		//	stream.SendNext(moveSpeed);
 		//	stream.SendNext(currentHealth);
@@ -177,6 +178,7 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 			if (rescueTimer >= rescueCoolDown)
 			{
 				rescueTimer = 0;
+				_gameManager.deadPlayer.GetComponent<CharacterController>().currentHealth = 50;
 				_gameManager.deadPlayer.GetComponent<CharacterController>().Dead = false;
 				_gameManager.deadPlayer = null;
 			}
