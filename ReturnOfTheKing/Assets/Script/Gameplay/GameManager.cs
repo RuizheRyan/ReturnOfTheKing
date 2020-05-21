@@ -106,10 +106,6 @@ public class GameManager : MonoBehaviourPun
 	{
 		numberOfDeadPlayer -= 1;
 	}
-	public void someoneRelive()
-	{
-		numberOfDeadPlayer -= 1;
-	}
 
 	//[PunRPC]
 	//public void RPC_knell()
