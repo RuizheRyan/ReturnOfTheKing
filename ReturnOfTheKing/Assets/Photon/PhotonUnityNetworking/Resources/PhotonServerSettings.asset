@@ -50,6 +50,7 @@ MonoBehaviour:
   - RPC_checkUnderAttack
   - RPC_loadEndScene
   - RPC_knell
+  - RPC_SetCurrentTower
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

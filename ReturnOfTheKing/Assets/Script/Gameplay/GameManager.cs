@@ -10,7 +10,6 @@ public class GameManager : MonoBehaviourPun
 	[SerializeField]
 	private GameSettings _gameSettings;
 
-	public GameObject currentTower;
 	//singleton
 	public static GameManager instance;
 	public static GameManager Instance
@@ -22,6 +21,20 @@ public class GameManager : MonoBehaviourPun
 				instance = FindObjectOfType<GameManager>();
 			}
 			return instance;
+		}
+	}
+
+	public GameObject currentTower;
+	public GameObject CurrentTower
+	{
+		set
+		{
+			currentTower = value;
+			photonView.RPC("RPC_SetCurrentTower", RpcTarget.Others, currentTower.GetComponent<PhotonView>().ViewID);
+		}
+		get
+		{
+			return currentTower;
 		}
 	}
 
@@ -96,5 +109,9 @@ public class GameManager : MonoBehaviourPun
 	//	Debug.Log("knellCalled");
 	//	numberOfDeadPlayer += 1;
 	//}
-
+	[PunRPC]
+	public void RPC_SetCurrentTower(int viewID)
+	{
+		currentTower = PhotonView.Find(viewID).gameObject;
+	}
 }

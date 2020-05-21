@@ -49,6 +49,7 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 		set
 		{
 			isDetected = value;
+			GetComponentInChildren<Renderer>().material.SetFloat("_Alpha", isDetected ? 1 : 0);
 			photonView.RPC("RPC_SetDetectedStatus", RpcTarget.Others, photonView.ViewID, value);
 		}
 	}
@@ -81,7 +82,7 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 	private GameManager _gameManager;
 	
 	[SerializeField]
-	Transform mainCam;
+	Camera mainCam;
 	Rigidbody rb;
 	GameObject theOneRing;
 
@@ -94,7 +95,7 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
     {
 		_gameManager = GameManager.instance;
 		rb = GetComponent<Rigidbody>();
-		mainCam = mainCam == null ? Camera.main.transform : mainCam;
+		mainCam = mainCam == null ? Camera.main : mainCam;
 		//CoordinationSetting();
 		currentHealth = fullHealth;
 
@@ -175,7 +176,7 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 
 	void CoordinationSetting()
 	{
-		forward = mainCam.forward;
+		forward = mainCam.transform.forward;
 		forward.y = 0;
 		forward = Vector3.Normalize(forward);
 		right = Quaternion.Euler(new Vector3(0, 90, 0)) * forward;
@@ -184,8 +185,8 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 	void Move()
 	{
 		//Vector3 direction = new Vector3(Input.GetAxis("HorizontalKey"), 0, Input.GetAxis("VerticalKey"));
-		Vector3 rightMovement = mainCam.right * Input.GetAxis("HorizontalKey");
-		Vector3 upMovement = mainCam.forward * Input.GetAxis("VerticalKey");
+		Vector3 rightMovement = mainCam.transform.right * Input.GetAxis("HorizontalKey");
+		Vector3 upMovement = mainCam.transform.forward * Input.GetAxis("VerticalKey");
 		rightMovement.z = 0;
 		upMovement.z = 0;
 
@@ -290,9 +291,9 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 	void ThrowItem()
 	{
 		Vector2 mousePosition = Input.mousePosition;
-		Ray ray = Camera.main.ScreenPointToRay(mousePosition);
+		Ray ray = mainCam.ScreenPointToRay(mousePosition);
 		RaycastHit hit;
-		if (Physics.Raycast(ray, out hit, 100, 1 << 8))
+		if (Physics.Raycast(ray, out hit, 100, 1 << 8 | 1 << 12))
 		{
 			Vector3 targetDirection = hit.point - transform.position;
 			targetDirection.z = 0;
