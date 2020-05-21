@@ -10,7 +10,6 @@ public class GameManager : MonoBehaviourPun
 	[SerializeField]
 	private GameSettings _gameSettings;
 
-	public GameObject currentTower;
 	//singleton
 	public static GameManager instance;
 	public static GameManager Instance
@@ -25,8 +24,11 @@ public class GameManager : MonoBehaviourPun
 		}
 	}
 
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
+=======
+>>>>>>> master
 	public GameObject currentTower;
 	public GameObject CurrentTower
 	{
@@ -41,9 +43,12 @@ public class GameManager : MonoBehaviourPun
 		}
 	}
 
+<<<<<<< HEAD
 	public GameObject deadPlayer;
 
 >>>>>>> Stashed changes
+=======
+>>>>>>> master
 	public enum ItemType { A, B };
 	private GameObject[] allGoals;
 
@@ -82,7 +87,7 @@ public class GameManager : MonoBehaviourPun
 		}
 		if (numberOfDeadPlayer >= (PhotonNetwork.PlayerList.Length - 1) && numberOfDeadPlayer != 0)
 		{
-			loadEndScene(playerIsVictory);
+			callloadEndScene(playerIsVictory);
 		}
 	}
 
@@ -90,13 +95,12 @@ public class GameManager : MonoBehaviourPun
 	{
 		if (PhotonNetwork.IsMasterClient)
 		{
-			photonView.RPC("loadEndScene", RpcTarget.All,playersWin);
-		}
-		
+			photonView.RPC("RPC_loadEndScene", RpcTarget.All,playersWin);
+		}		
 	}
 
 	[PunRPC]
-	public void loadEndScene(bool playersWin)
+	public void RPC_loadEndScene(bool playersWin)
 	{
 		_gameSettings.playerWin = playersWin;
 		if (PhotonNetwork.IsMasterClient)
@@ -105,8 +109,9 @@ public class GameManager : MonoBehaviourPun
 		}
 	}
 
-	public void checkSomeoneDead()
+	public void someoneDead()
 	{
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 		photonView.RPC("someoneDead", RpcTarget.MasterClient);
 =======
@@ -116,10 +121,20 @@ public class GameManager : MonoBehaviourPun
 	{
 		numberOfDeadPlayer -= 1;
 >>>>>>> Stashed changes
-	}
-	[PunRPC]
-	public void someoneDead()
-	{
+=======
 		numberOfDeadPlayer += 1;
+>>>>>>> master
+	}
+
+	//[PunRPC]
+	//public void RPC_knell()
+	//{
+	//	Debug.Log("knellCalled");
+	//	numberOfDeadPlayer += 1;
+	//}
+	[PunRPC]
+	public void RPC_SetCurrentTower(int viewID)
+	{
+		currentTower = PhotonView.Find(viewID).gameObject;
 	}
 }

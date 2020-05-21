@@ -71,7 +71,7 @@ MonoBehaviour:
   HitCoolDown: 5
   damage: 1
   detectingRange: 15
-  numberOfRays: 35
+  numberOfRays: 45
   layerMask:
     serializedVersion: 2
     m_Bits: 3072

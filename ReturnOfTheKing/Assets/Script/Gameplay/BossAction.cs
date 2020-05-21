@@ -21,7 +21,7 @@ public class BossAction : MonoBehaviourPun
 	[SerializeField]
 	Camera bossCamera;
 
-	private const float MAX_RAY_DISTANCE = 100f;
+	private const float MAX_RAY_DISTANCE = 1000f;
 	private Vector3 targetDirection;
 
 	//private bool isAvailable;
@@ -36,7 +36,7 @@ public class BossAction : MonoBehaviourPun
 		myBoss = transform.GetComponent<Boss>();
 		if (myBoss.isAvailable)
 		{
-			gm.currentTower = gameObject;
+			gm.CurrentTower = gameObject;
 		}
 		targetDirection = transform.up;
 	}
@@ -111,23 +111,25 @@ public class BossAction : MonoBehaviourPun
 
 	private void OnMouseDrag()
 	{
-		if (!PhotonNetwork.IsMasterClient)
+		if (!PhotonNetwork.IsMasterClient || isSwitched || myBoss.isAvailable)
 		{
 			return;
 		}
 		switchTimer += Time.deltaTime;
 		if(switchTimer >= switchCoolDown)
 		{
-			if(gm.currentTower == null)
+			if(gm.CurrentTower == null)
 			{
-				gm.currentTower = gameObject;
+				isSwitched = true;
+				gm.CurrentTower = gameObject;
 			}
 			else
 			{
-				gm.currentTower.GetComponent<Boss>().isAvailable = false;
+				gm.CurrentTower.GetComponent<Boss>().isAvailable = false;
 				isSwitched = true;
-				gm.currentTower = gameObject;
+				gm.CurrentTower = gameObject;
 			}
+			switchTimer = 0;
 		}
 	}
 

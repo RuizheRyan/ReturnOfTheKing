@@ -46,7 +46,7 @@ public class HealthBar : MonoBehaviourPun
     {
         if (PhotonNetwork.IsMasterClient)
         {
-            canvas.enabled = player.isDetected;
+            canvas.enabled = player._isDetected;
         }
         //Vector2 screenPos = mainCam.WorldToScreenPoint(player.transform.position - Vector3.forward * 3);
         //transform.position = screenPos + offset;

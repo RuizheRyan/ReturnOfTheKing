@@ -36,7 +36,7 @@ public class Boss : MonoBehaviourPun, IPunObservable
 	[SerializeField] private float timer = 0f;
 
 
-	private const float MAX_RAY_DISTANCE = 1000f;
+	private const float MAX_RAY_DISTANCE = 100f;
 	private bool isHit = false;
 	private RaycastHit hitsInfo;
 
@@ -100,12 +100,16 @@ public class Boss : MonoBehaviourPun, IPunObservable
 						{
 							hitPlayers.Add(hitsInfo.transform.gameObject);
 						}
-						foreach(GameObject item in hitPlayers)
+						//foreach(GameObject item in hitPlayers)
+						//{
+						//	if(item == hitsInfo.transform.gameObject)
+						//	{
+						//		continue;
+						//	}
+						//	hitPlayers.Add(hitsInfo.transform.gameObject);
+						//}
+						if (!hitPlayers.Contains(hitsInfo.transform.gameObject))
 						{
-							if(item == hitsInfo.transform.gameObject)
-							{
-								continue;
-							}
 							hitPlayers.Add(hitsInfo.transform.gameObject);
 						}
 					}
