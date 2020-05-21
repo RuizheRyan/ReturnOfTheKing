@@ -21,7 +21,7 @@ public class BossAction : MonoBehaviourPun
 	[SerializeField]
 	Camera bossCamera;
 
-	private const float MAX_RAY_DISTANCE = 100f;
+	private const float MAX_RAY_DISTANCE = 1000f;
 	private Vector3 targetDirection;
 
 	//private bool isAvailable;
