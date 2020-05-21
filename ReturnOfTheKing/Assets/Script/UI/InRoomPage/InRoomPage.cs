@@ -235,7 +235,6 @@ public class InRoomPage : MonoBehaviourPunCallbacks
                     if (!_playerBlockList[i].readyState)
                     {
                         everyOneIsReady = false;
-                        Debug.Log("Someone is unready");
                         break;
                     }
                 }
@@ -243,19 +242,16 @@ public class InRoomPage : MonoBehaviourPunCallbacks
         }
         if (_playerBlockList.Count < 3)
         {
-            Debug.Log("less than 3");
             photonView.RPC("RPC_ChangeClientInformation", RpcTarget.All, playerState.playersIsNotEnough);
         }
         else
         {
             if (everyOneIsReady)
             {
-                Debug.Log("everyone ready");
                 photonView.RPC("RPC_ChangeClientInformation", RpcTarget.All, playerState.everyIsReady);
             }
             else
             {
-                Debug.Log("someoneUnready");
                 photonView.RPC("RPC_ChangeClientInformation", RpcTarget.All, playerState.someOneIsUnready);
             }
         }
@@ -295,23 +291,18 @@ public class InRoomPage : MonoBehaviourPunCallbacks
         {
             case playerState.everyIsReady:
                 {
-                    Debug.Log("set active false");
                     _playerNumebrInformation.SetActive(false);
                     _readyInformation.SetActive(false);
-                    Debug.Log(_readyInformation.activeSelf);
-                    Debug.Log("finished");
                     break;
                 }
             case playerState.playersIsNotEnough:
                 {
-                    Debug.Log("not enough called");
                     _playerNumebrInformation.SetActive(true);
                     _readyInformation.SetActive(false);
                     break;
                 }
             case playerState.someOneIsUnready:
                 {
-                    Debug.Log("Unready called");
                     _playerNumebrInformation.SetActive(false);
                     _readyInformation.SetActive(true);
                     break;

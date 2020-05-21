@@ -37,7 +37,7 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 	[SerializeField] private float coolDownTime = 10f;
 	[SerializeField] private float throwForce = 5;
 	[SerializeField] private float secondsToFrozen = 3f;
-	public float rescueCoolDown = 5;
+	public float rescueCoolDown = 2;
 	public float rescueTimer = 0;
 	[HideInInspector]
 	public bool rescuable = false;
@@ -67,25 +67,32 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 
 	Vector3 forward, right;
 	private float moveSpeed;
-	[SerializeField] private bool dead = false;
+	[SerializeField] private bool _dead = false;
 	[SerializeField]
 	public bool Dead
 	{
 		get
 		{
-			return dead;
+			return _dead;
 		}
 		set
 		{
-			dead = value;
-			if (dead)
+			Debug.Log("I dead");
+			_dead = value;
+			if (_dead)
 			{
-				_gameManager.someoneDead();
-				_gameManager.deadPlayer = gameObject;
+				if(gameObject.GetPhotonView().IsMine)
+				{
+					_gameManager.someoneDead();
+					_gameManager.deadPlayer = gameObject;
+				}				
 			}
 			else
 			{
-				_gameManager.someoneRelive();
+				if (gameObject.GetPhotonView().IsMine)
+				{
+					_gameManager.someoneRelive();
+				}				
 			}
 		}
 	}
@@ -104,7 +111,7 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 	// Start is called before the first frame update
 	void Start()
 	{
-		_gameManager = GameManager.instance;
+		_gameManager = GameManager.Instance;
 		rb = GetComponent<Rigidbody>();
 		mainCam = mainCam == null ? Camera.main : mainCam;
 		//CoordinationSetting();
@@ -166,7 +173,7 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 	{
 		if (_isDetected)
 		{
-			UnderAttack(10);
+			UnderAttack(20);
 		}
 		else
 		{
@@ -178,6 +185,7 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 			if (rescueTimer >= rescueCoolDown)
 			{
 				rescueTimer = 0;
+				photonView.RPC("RPC_IamBack", RpcTarget.All, _gameManager.deadPlayer.GetPhotonView());
 				_gameManager.deadPlayer.GetComponent<CharacterController>().currentHealth = 50;
 				_gameManager.deadPlayer.GetComponent<CharacterController>().Dead = false;
 				_gameManager.deadPlayer = null;
@@ -185,7 +193,6 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 		}
 		if (base.photonView.IsMine && !Dead && moveSpeed > 0)
 		{
-
 			Move();
 			ToggleCoolDown();
 
@@ -216,7 +223,7 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 		}
 		if (currentHealth <= 0 && Dead == false)
 		{
-			_gameManager.someoneDead();
+			Dead = true;
 		}
 	}
 
@@ -402,6 +409,18 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 		if (victimID == photonView.ViewID)
 		{
 			_isDetected = value;
+		}
+	}
+
+	[PunRPC]
+
+	public void RPC_IamBack(int rebornID)
+	{
+		if(rebornID == photonView.ViewID)
+		{
+			Dead = false;
+			currentHealth = 50;
+			_gameManager.deadPlayer = null;
 		}
 	}
 

@@ -51,6 +51,8 @@ MonoBehaviour:
   - RPC_loadEndScene
   - RPC_knell
   - RPC_SetCurrentTower
+  - RPC_Iamback
+  - RPC_IamBack
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1
