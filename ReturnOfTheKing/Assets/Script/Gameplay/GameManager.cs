@@ -23,7 +23,6 @@ public class GameManager : MonoBehaviourPun
 			return instance;
 		}
 	}
-
 	public GameObject currentTower;
 	public GameObject CurrentTower
 	{
@@ -37,6 +36,8 @@ public class GameManager : MonoBehaviourPun
 			return currentTower;
 		}
 	}
+
+	public GameObject deadPlayer;
 
 	public enum ItemType { A, B };
 	private GameObject[] allGoals;
@@ -101,6 +102,10 @@ public class GameManager : MonoBehaviourPun
 	public void someoneDead()
 	{
 		numberOfDeadPlayer += 1;
+	}	
+	public void someoneRelive()
+	{
+		numberOfDeadPlayer -= 1;
 	}
 
 	//[PunRPC]

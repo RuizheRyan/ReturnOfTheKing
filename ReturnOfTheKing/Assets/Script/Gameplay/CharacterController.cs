@@ -36,6 +36,10 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 	[SerializeField] private float coolDownTime = 10f;
 	[SerializeField] private float throwForce = 5;
 	[SerializeField] private float secondsToFrozen = 3f;
+    public float rescueCoolDown = 5;
+	public float rescueTimer = 0;
+	[HideInInspector]
+	public bool rescuable = false;
 
 	[Header("Debugging")]
 	public bool hasThrown = false;
@@ -62,19 +66,24 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 
 	Vector3 forward, right;
 	private float moveSpeed;
-	private bool _dead = false;
-	[SerializeField] public bool dead
+	[SerializeField]private bool dead = false;
+	[SerializeField] public bool Dead
 	{
 		get
 		{
-			return _dead;
+			return dead;
 		}
 		set
 		{
-			_dead = value;
-			if (_dead)
+			dead = value;
+			if (dead)
 			{
 				_gameManager.someoneDead();
+				_gameManager.deadPlayer = gameObject;
+			}
+			else
+			{
+				_gameManager.someoneRelive();
 			}
 		}
 	}
@@ -126,8 +135,32 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 		}
 	}
 
-    // Update is called once per frame
-    void Update()
+	private void FixedUpdate()
+	{
+		float detectingRange = 30;
+		Vector3 origin = transform.position;
+		origin.z += 1;
+		Vector3 startDirection = Quaternion.AngleAxis(-detectingRange / 2, -Vector3.forward) * transform.up;
+		float deltaAngle = detectingRange / (3 - 1f);
+		RaycastHit hitInfo;
+		rescuable = false;
+		for (int i = 0; i < 3; i++)
+		{
+			Vector3 rayDirection = Quaternion.AngleAxis(i * deltaAngle, -Vector3.forward) * startDirection;
+			Ray ray = new Ray(origin, rayDirection);
+			if (Physics.Raycast(ray, out hitInfo, 0.2f, 1 << 11) && hitInfo.transform.GetComponent<CharacterController>().Dead)
+			{
+				Debug.DrawRay(ray.origin, hitInfo.point, Color.green);
+				rescuable = true;
+			}
+			else
+			{
+				Debug.DrawRay(ray.origin, ray.origin + ray.direction.normalized * 2, Color.green);
+			}
+		}
+	}
+	// Update is called once per frame
+	void Update()
     {
 		if (_isDetected)
 		{
@@ -137,7 +170,17 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 		{
 			moveSpeed = normalSpeed;
 		}
-		if (base.photonView.IsMine && !dead && moveSpeed > 0)
+		if(_gameManager.deadPlayer != null && rescuable && Input.GetKey(KeyCode.Space))
+		{
+			rescueTimer += Time.deltaTime;
+			if(rescueTimer >= rescueCoolDown)
+			{
+				rescueTimer = 0;
+				_gameManager.deadPlayer.GetComponent<CharacterController>().Dead = false;
+				_gameManager.deadPlayer = null;
+			}
+		}
+		if (base.photonView.IsMine && !Dead && moveSpeed > 0)
 		{
 
 			Move();
@@ -168,9 +211,9 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 			{
 			}
 		}
-		if (currentHealth <= 0 && dead == false)
+		if (currentHealth <= 0 && Dead == false)
 		{
-			dead = true;
+			_gameManager.someoneDead();
 		}
 	}
 
