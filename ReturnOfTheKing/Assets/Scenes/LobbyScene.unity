@@ -2734,7 +2734,7 @@ MonoBehaviour:
   startButton: {fileID: 818845426}
   colorButton: {fileID: 1369248985}
   _readyButton: {fileID: 675950138}
-  readyInformation: {fileID: 976461457}
+  readyInformationForMasterClient: {fileID: 976461457}
   _readyTexture: {fileID: 2800000, guid: 20975adfe0dd04349a6b32e9aecd2244, type: 3}
   _unreadyTexture: {fileID: 2800000, guid: 99df79aa7ca572d45bcb23b29fcb2edd, type: 3}
   _someoneNotReadyTexture: {fileID: 2800000, guid: 6accd2391956aa54488f6c81ed3572cc,

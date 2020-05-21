@@ -39,17 +39,17 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 
 	[Header("Debugging")]
 	public bool hasThrown = false;
-	public bool isDetected = false;
+	public bool _isDetected = false;
 	public bool IsDetected
 	{
 		get
 		{
-			return  isDetected;
+			return  _isDetected;
 		}
 		set
 		{
-			isDetected = value;
-			GetComponentInChildren<Renderer>().material.SetFloat("_Alpha", isDetected ? 1 : 0);
+			_isDetected = value;
+			GetComponentInChildren<Renderer>().material.SetFloat("_Alpha", _isDetected ? 1 : 0);
 			photonView.RPC("RPC_SetDetectedStatus", RpcTarget.Others, photonView.ViewID, value);
 		}
 	}
@@ -129,7 +129,7 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
     // Update is called once per frame
     void Update()
     {
-		if (isDetected)
+		if (_isDetected)
 		{
 			UnderAttack(10);
 		}
@@ -355,7 +355,7 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 	{
 		if (victimID == photonView.ViewID)
 		{
-			isDetected = value;
+			_isDetected = value;
 		}
 	}
 
