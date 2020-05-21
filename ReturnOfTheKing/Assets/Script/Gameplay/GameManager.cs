@@ -25,6 +25,25 @@ public class GameManager : MonoBehaviourPun
 		}
 	}
 
+<<<<<<< Updated upstream
+=======
+	public GameObject currentTower;
+	public GameObject CurrentTower
+	{
+		set
+		{
+			currentTower = value;
+			photonView.RPC("RPC_SetCurrentTower", RpcTarget.Others, currentTower.GetComponent<PhotonView>().ViewID);
+		}
+		get
+		{
+			return currentTower;
+		}
+	}
+
+	public GameObject deadPlayer;
+
+>>>>>>> Stashed changes
 	public enum ItemType { A, B };
 	private GameObject[] allGoals;
 
@@ -88,7 +107,15 @@ public class GameManager : MonoBehaviourPun
 
 	public void checkSomeoneDead()
 	{
+<<<<<<< Updated upstream
 		photonView.RPC("someoneDead", RpcTarget.MasterClient);
+=======
+		numberOfDeadPlayer += 1;
+	}	
+	public void someoneRelive()
+	{
+		numberOfDeadPlayer -= 1;
+>>>>>>> Stashed changes
 	}
 	[PunRPC]
 	public void someoneDead()
