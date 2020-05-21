@@ -23,12 +23,6 @@ public class GameManager : MonoBehaviourPun
 			return instance;
 		}
 	}
-
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-=======
-=======
->>>>>>> master
 	public GameObject currentTower;
 	public GameObject CurrentTower
 	{
@@ -43,12 +37,8 @@ public class GameManager : MonoBehaviourPun
 		}
 	}
 
-<<<<<<< HEAD
 	public GameObject deadPlayer;
 
->>>>>>> Stashed changes
-=======
->>>>>>> master
 	public enum ItemType { A, B };
 	private GameObject[] allGoals;
 
@@ -111,19 +101,11 @@ public class GameManager : MonoBehaviourPun
 
 	public void someoneDead()
 	{
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-		photonView.RPC("someoneDead", RpcTarget.MasterClient);
-=======
 		numberOfDeadPlayer += 1;
 	}	
 	public void someoneRelive()
 	{
 		numberOfDeadPlayer -= 1;
->>>>>>> Stashed changes
-=======
-		numberOfDeadPlayer += 1;
->>>>>>> master
 	}
 
 	//[PunRPC]

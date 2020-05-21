@@ -66,11 +66,7 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 
 	Vector3 forward, right;
 	private float moveSpeed;
-<<<<<<< HEAD
-<<<<<<< Updated upstream
 	[SerializeField]private bool dead = false;
-=======
-	private bool dead = false;
 	[SerializeField] public bool Dead
 	{
 		get
@@ -91,25 +87,6 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 			}
 		}
 	}
->>>>>>> Stashed changes
-=======
-	private bool _dead = false;
-	[SerializeField] public bool dead
-	{
-		get
-		{
-			return _dead;
-		}
-		set
-		{
-			_dead = value;
-			if (_dead)
-			{
-				_gameManager.someoneDead();
-			}
-		}
-	}
->>>>>>> master
 
 	private GameManager _gameManager;
 	
@@ -236,16 +213,7 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 		}
 		if (currentHealth <= 0 && Dead == false)
 		{
-<<<<<<< HEAD
-<<<<<<< Updated upstream
 			_gameManager.someoneDead();
-			checkSelfDeadState();
-=======
-			Dead = true;
->>>>>>> Stashed changes
-=======
-			dead = true;
->>>>>>> master
 		}
 	}
 
