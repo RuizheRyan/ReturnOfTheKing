@@ -31,7 +31,7 @@ public class HelpBar : MonoBehaviourPun
     // Update is called once per frame
     void Update()
     {
-        if(gm.deadPlayer != null && !playerController.Dead)
+        if (gm.deadPlayer != null && !playerController.Dead)
         {
             canvas.enabled = true;
             Vector2 pos = localCam.WorldToScreenPoint(gm.deadPlayer.transform.position);

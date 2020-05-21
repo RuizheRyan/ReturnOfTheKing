@@ -402,8 +402,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 332e6f63485c8084aa361b16231f862b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerController: {fileID: 0}
-  canvas: {fileID: 0}
+  playerController: {fileID: 3703448915361641216}
+  canvas: {fileID: 9036970337677584919}
   bar: {fileID: 1315356246719217110}
   localCam: {fileID: 582471231184517572}
 --- !u!1 &3703448915361641223
@@ -502,6 +502,7 @@ MonoBehaviour:
   currentHealth: 0
   timer: 0
   isHolding: 0
+  dead: 0
   mainCam: {fileID: 582471231184517572}
   clientMat: {fileID: 2100000, guid: 97833a58fcbfd274a86491655cf683da, type: 2}
   hostMat: {fileID: 2100000, guid: 11ac2c14cd846ae4e8de985baacf848e, type: 2}
