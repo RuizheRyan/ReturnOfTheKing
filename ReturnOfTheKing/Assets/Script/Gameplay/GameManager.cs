@@ -69,7 +69,7 @@ public class GameManager : MonoBehaviourPun
 			}
 		}
 
-		if(arrivedGoals == allGoals.Length)
+		if(arrivedGoals >= allGoals.Length - 1)
 		{
 			playerIsVictory = true;
 			callloadEndScene(playerIsVictory);
