@@ -14,6 +14,7 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 		//if (stream.IsWriting)
 		//{
 		//	// We own this player: send the others our data
+
 		//	stream.SendNext(isDetected);
 		//	stream.SendNext(moveSpeed);
 		//	stream.SendNext(currentHealth);
@@ -36,6 +37,10 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 	[SerializeField] private float coolDownTime = 10f;
 	[SerializeField] private float throwForce = 5;
 	[SerializeField] private float secondsToFrozen = 3f;
+	public float rescueCoolDown = 5;
+	public float rescueTimer = 0;
+	[HideInInspector]
+	public bool rescuable = false;
 
 	[Header("Debugging")]
 	public bool hasThrown = false;
@@ -44,7 +49,7 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 	{
 		get
 		{
-			return  _isDetected;
+			return _isDetected;
 		}
 		set
 		{
@@ -62,25 +67,31 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 
 	Vector3 forward, right;
 	private float moveSpeed;
-	private bool _dead = false;
-	[SerializeField] public bool dead
+	[SerializeField] private bool dead = false;
+	[SerializeField]
+	public bool Dead
 	{
 		get
 		{
-			return _dead;
+			return dead;
 		}
 		set
 		{
-			_dead = value;
-			if (_dead)
+			dead = value;
+			if (dead)
 			{
 				_gameManager.someoneDead();
+				_gameManager.deadPlayer = gameObject;
+			}
+			else
+			{
+				_gameManager.someoneRelive();
 			}
 		}
 	}
 
 	private GameManager _gameManager;
-	
+
 	[SerializeField]
 	Camera mainCam;
 	Rigidbody rb;
@@ -92,7 +103,7 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 	Material hostMat;
 	// Start is called before the first frame update
 	void Start()
-    {
+	{
 		_gameManager = GameManager.instance;
 		rb = GetComponent<Rigidbody>();
 		mainCam = mainCam == null ? Camera.main : mainCam;
@@ -101,7 +112,7 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 
 		GameObject[] allItems;
 		allItems = GameObject.FindGameObjectsWithTag("PickableItem");
-		foreach(GameObject item in allItems)
+		foreach (GameObject item in allItems)
 		{
 			Physics.IgnoreCollision(item.GetComponent<BoxCollider>(), GetComponent<Collider>());
 		}
@@ -116,9 +127,9 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 		//Physics.IgnoreCollision(PickableItemACollider, GetComponent<Collider>());
 		//Physics.IgnoreCollision(PickableItemBCollider, GetComponent<Collider>());
 
-		foreach(var item in GameObject.FindGameObjectsWithTag("Caster"))
+		foreach (var item in GameObject.FindGameObjectsWithTag("Caster"))
 		{
-			if(item.GetComponent<PlayerCasterController>().player == null)
+			if (item.GetComponent<PlayerCasterController>().player == null)
 			{
 				item.GetComponent<PlayerCasterController>().player = gameObject;
 				break;
@@ -126,9 +137,33 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 		}
 	}
 
-    // Update is called once per frame
-    void Update()
-    {
+	private void FixedUpdate()
+	{
+		float detectingRange = 30;
+		Vector3 origin = transform.position;
+		origin.z += 1;
+		Vector3 startDirection = Quaternion.AngleAxis(-detectingRange / 2, -Vector3.forward) * transform.up;
+		float deltaAngle = detectingRange / (3 - 1f);
+		RaycastHit hitInfo;
+		rescuable = false;
+		for (int i = 0; i < 3; i++)
+		{
+			Vector3 rayDirection = Quaternion.AngleAxis(i * deltaAngle, -Vector3.forward) * startDirection;
+			Ray ray = new Ray(origin, rayDirection);
+			if (Physics.Raycast(ray, out hitInfo, 0.2f, 1 << 11) && hitInfo.transform.GetComponent<CharacterController>().Dead)
+			{
+				Debug.DrawRay(ray.origin, hitInfo.point, Color.green);
+				rescuable = true;
+			}
+			else
+			{
+				Debug.DrawRay(ray.origin, ray.origin + ray.direction.normalized * 2, Color.green);
+			}
+		}
+	}
+	// Update is called once per frame
+	void Update()
+	{
 		if (_isDetected)
 		{
 			UnderAttack(10);
@@ -137,7 +172,18 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 		{
 			moveSpeed = normalSpeed;
 		}
-		if (base.photonView.IsMine && !dead && moveSpeed > 0)
+		if (_gameManager.deadPlayer != null && rescuable && Input.GetKey(KeyCode.Space))
+		{
+			rescueTimer += Time.deltaTime;
+			if (rescueTimer >= rescueCoolDown)
+			{
+				rescueTimer = 0;
+				_gameManager.deadPlayer.GetComponent<CharacterController>().currentHealth = 50;
+				_gameManager.deadPlayer.GetComponent<CharacterController>().Dead = false;
+				_gameManager.deadPlayer = null;
+			}
+		}
+		if (base.photonView.IsMine && !Dead && moveSpeed > 0)
 		{
 
 			Move();
@@ -168,9 +214,9 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 			{
 			}
 		}
-		if (currentHealth <= 0 && dead == false)
+		if (currentHealth <= 0 && Dead == false)
 		{
-			dead = true;
+			_gameManager.someoneDead();
 		}
 	}
 
@@ -193,7 +239,7 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 		Vector3 heading = Vector3.Normalize(rightMovement + upMovement);
 		heading = Quaternion.Euler(0, 0, 1) * heading;
 
-		if(Input.GetAxis("HorizontalKey") != 0 || Input.GetAxis("VerticalKey") != 0)
+		if (Input.GetAxis("HorizontalKey") != 0 || Input.GetAxis("VerticalKey") != 0)
 		{
 			transform.up = Vector3.RotateTowards(transform.up, heading, rotateSpeed, 0f);
 		}
@@ -222,7 +268,7 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 		{
 			timer += Time.deltaTime;
 		}
-		if(timer >= coolDownTime)
+		if (timer >= coolDownTime)
 		{
 			hasThrown = false;
 			timer = 0;
@@ -233,7 +279,7 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 	public void UnderAttack(int damage)
 	{
 		currentHealth -= damage * Time.deltaTime;
-		if(moveSpeed > normalSpeed / 2)
+		if (moveSpeed > normalSpeed / 2)
 		{
 			//moveSpeed -= 2 * normalSpeed;
 			moveSpeed = normalSpeed / 2;
@@ -246,7 +292,7 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 
 	void PickUpItem()
 	{
-		
+
 		isHolding = true;
 		theOneRing.GetComponent<Rigidbody>().isKinematic = true;
 		theOneRing.transform.SetParent(transform);
@@ -316,12 +362,12 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 		temp.transform.SetParent(null);
 		temp.GetComponent<PhotonView>().Synchronization = ViewSynchronization.UnreliableOnChange;
 		theOneRing = null;
-		
+
 	}
 
 	private void OnTriggerStay(Collider other)
 	{
-		if(theOneRing == null && other.CompareTag("PickableItem"))
+		if (theOneRing == null && other.CompareTag("PickableItem"))
 		{
 			theOneRing = other.gameObject;
 		}
@@ -329,7 +375,7 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 
 	private void OnTriggerExit(Collider other)
 	{
-		if(!isHolding && other.CompareTag("PickableItem"))
+		if (!isHolding && other.CompareTag("PickableItem"))
 		{
 			theOneRing = null;
 		}
@@ -344,7 +390,7 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 	[PunRPC]
 	public void RPC_checkUnderAttack(int victimID, int damage)
 	{
-		if(victimID == photonView.ViewID)
+		if (victimID == photonView.ViewID)
 		{
 			UnderAttack(damage);
 		}
