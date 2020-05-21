@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Photon.Pun;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,5 +9,13 @@ public class StartPage : MonoBehaviour
     public void enterLobby()
     {
         gameObject.SetActive(false);
+    }
+
+    private void OnEnable()
+    {
+        if (PhotonNetwork.InRoom)
+        {
+            gameObject.SetActive(false);
+        }
     }
 }
