@@ -18,6 +18,9 @@ public class BossAction : MonoBehaviourPun
 	public float delayTimer;
 	public float delay;
 
+	[SerializeField]
+	Camera bossCamera;
+
 	private const float MAX_RAY_DISTANCE = 100f;
 	private Vector3 targetDirection;
 
@@ -28,11 +31,12 @@ public class BossAction : MonoBehaviourPun
 	// Start is called before the first frame update
 	void Start()
     {
+		bossCamera = bossCamera == null ? Camera.main : bossCamera;
 		gm = GameManager.Instance;
 		myBoss = transform.GetComponent<Boss>();
 		if (myBoss.isAvailable)
 		{
-			gm.currentTower = gameObject;
+			gm.CurrentTower = gameObject;
 		}
 		targetDirection = transform.up;
 	}
@@ -69,7 +73,7 @@ public class BossAction : MonoBehaviourPun
 		if (myBoss.isAvailable)
 		{
 			Vector2 mousePosition = Input.mousePosition;
-			Ray ray = Camera.main.ScreenPointToRay(mousePosition);
+			Ray ray = bossCamera.ScreenPointToRay(mousePosition);
 			RaycastHit hit;
 			Physics.Raycast(ray, out hit, MAX_RAY_DISTANCE, layerMask);
 
@@ -107,23 +111,25 @@ public class BossAction : MonoBehaviourPun
 
 	private void OnMouseDrag()
 	{
-		if (!PhotonNetwork.IsMasterClient)
+		if (!PhotonNetwork.IsMasterClient || isSwitched || myBoss.isAvailable)
 		{
 			return;
 		}
 		switchTimer += Time.deltaTime;
 		if(switchTimer >= switchCoolDown)
 		{
-			if(gm.currentTower == null)
+			if(gm.CurrentTower == null)
 			{
-				gm.currentTower = gameObject;
+				isSwitched = true;
+				gm.CurrentTower = gameObject;
 			}
 			else
 			{
-				gm.currentTower.GetComponent<Boss>().isAvailable = false;
+				gm.CurrentTower.GetComponent<Boss>().isAvailable = false;
 				isSwitched = true;
-				gm.currentTower = gameObject;
+				gm.CurrentTower = gameObject;
 			}
+			switchTimer = 0;
 		}
 	}
 

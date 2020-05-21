@@ -24,13 +24,12 @@ public class LocalPlayerInformation : MonoBehaviour
             {
                 _hostARoomMenu.upDateCreateButtonState();
                 _roomBoard.updateJoinButtonState();
-                _colorButton.GetComponent<Image>().color = _playersColor;
-                _customProperties["CustomColor:Red"] = _playersColor.r;
-                _customProperties["CustomColor:Green"] = _playersColor.g;
-                _customProperties["CustomColor:Blue"] = _playersColor.b;
+                //_customProperties["CustomColor:Red"] = _playersColor.r;
+                //_customProperties["CustomColor:Green"] = _playersColor.g;
+                //_customProperties["CustomColor:Blue"] = _playersColor.b;
                 _customProperties["PlayerName"] = _playerText.text;
-                PhotonNetwork.SetPlayerCustomProperties(_customProperties);
-                
+                _customProperties["ReadyState"] = 0;
+                PhotonNetwork.SetPlayerCustomProperties(_customProperties);                
             }
         }
     }
@@ -45,19 +44,6 @@ public class LocalPlayerInformation : MonoBehaviour
     [SerializeField]
 
     private Color _playersColor;
-    public Color playersColor
-    {
-        get
-        {
-            return _playersColor;
-        }
-        set
-        {
-            _playersColor = value;
-            setPlayerColor(_playersColor);
-        }
-    }
-    [SerializeField]
 
     private ExitGames.Client.Photon.Hashtable _customProperties = new ExitGames.Client.Photon.Hashtable();
     public void getARandomColor()
@@ -65,14 +51,15 @@ public class LocalPlayerInformation : MonoBehaviour
         float r = Random.Range(0, 1.0f);
         float g = Random.Range(0, 1.0f);
         float b = Random.Range(0, 1.0f);
-        playersColor = new Color(r, g, b);
-        setPlayerColor(playersColor);
+        _playersColor = new Color(r, g, b);
+        setPlayerColor(_playersColor);
     }
 
     public void Awake()
     {
+        Debug.Log("CalledAwake");
         _playerText.text = checkSavedName();
-        playersColor = checkSavedColor();
+        checkSavedColor();     
         checkSelfInformation();
     }
     public string checkSavedName()
@@ -87,16 +74,17 @@ public class LocalPlayerInformation : MonoBehaviour
         }
     }
 
-    public Color checkSavedColor()
+    public void checkSavedColor()
     {
         if (!PlayerPrefs.HasKey("RedColor") || !PlayerPrefs.HasKey("GreenColor")|| !PlayerPrefs.HasKey("BlueColor"))
         {
-            return Color.white;
+            _playersColor = Color.white;
         }
         else
         {
-            return new Color(PlayerPrefs.GetFloat("RedColor"), PlayerPrefs.GetFloat("GreenColor"), PlayerPrefs.GetFloat("BlueColor"));
+            _playersColor = new Color(PlayerPrefs.GetFloat("RedColor"), PlayerPrefs.GetFloat("GreenColor"), PlayerPrefs.GetFloat("BlueColor"));
         }
+        _colorButton.GetComponent<Image>().color = _playersColor;
     }
 
     public void setPlayerName(string name)
@@ -113,31 +101,29 @@ public class LocalPlayerInformation : MonoBehaviour
         PlayerPrefs.SetFloat("GreenColor", color.g);
         PlayerPrefs.SetFloat("BlueColor", color.b);
         PlayerPrefs.Save();
+        _colorButton.GetComponent<Image>().color = color;
         checkSelfInformation();
     }
 
     private void checkSelfInformation()
     {
-        bool validName = false;
+        //bool validName = false;
         if (_playerText.text != null && _playerText.text != "")
         {
-            Debug.Log("content:" + _playerText.text);
-            validName = true;
-        }
-        else
-        {
-            validName = false;
-        }
-        if (validName && playersColor != Color.white)
-        {
             getLocalPlayerInformation = true;
-            Debug.Log("Valid");
         }
         else
         {
             getLocalPlayerInformation = false;
-            Debug.Log("InValid");
         }
+        //if (validName && _playersColor != Color.white)
+        //{
+        //    getLocalPlayerInformation = true;
+        //}
+        //else
+        //{
+        //    getLocalPlayerInformation = false;
+        //}
     }
 
 }

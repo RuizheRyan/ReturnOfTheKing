@@ -10,7 +10,6 @@ public class GameManager : MonoBehaviourPun
 	[SerializeField]
 	private GameSettings _gameSettings;
 
-	public GameObject currentTower;
 	//singleton
 	public static GameManager instance;
 	public static GameManager Instance
@@ -22,6 +21,20 @@ public class GameManager : MonoBehaviourPun
 				instance = FindObjectOfType<GameManager>();
 			}
 			return instance;
+		}
+	}
+
+	public GameObject currentTower;
+	public GameObject CurrentTower
+	{
+		set
+		{
+			currentTower = value;
+			photonView.RPC("RPC_SetCurrentTower", RpcTarget.Others, currentTower.GetComponent<PhotonView>().ViewID);
+		}
+		get
+		{
+			return currentTower;
 		}
 	}
 
@@ -63,7 +76,7 @@ public class GameManager : MonoBehaviourPun
 		}
 		if (numberOfDeadPlayer >= (PhotonNetwork.PlayerList.Length - 1) && numberOfDeadPlayer != 0)
 		{
-			loadEndScene(playerIsVictory);
+			callloadEndScene(playerIsVictory);
 		}
 	}
 
@@ -71,13 +84,12 @@ public class GameManager : MonoBehaviourPun
 	{
 		if (PhotonNetwork.IsMasterClient)
 		{
-			photonView.RPC("loadEndScene", RpcTarget.All,playersWin);
-		}
-		
+			photonView.RPC("RPC_loadEndScene", RpcTarget.All,playersWin);
+		}		
 	}
 
 	[PunRPC]
-	public void loadEndScene(bool playersWin)
+	public void RPC_loadEndScene(bool playersWin)
 	{
 		_gameSettings.playerWin = playersWin;
 		if (PhotonNetwork.IsMasterClient)
@@ -86,13 +98,20 @@ public class GameManager : MonoBehaviourPun
 		}
 	}
 
-	public void checkSomeoneDead()
-	{
-		photonView.RPC("someoneDead", RpcTarget.MasterClient);
-	}
-	[PunRPC]
 	public void someoneDead()
 	{
 		numberOfDeadPlayer += 1;
+	}
+
+	//[PunRPC]
+	//public void RPC_knell()
+	//{
+	//	Debug.Log("knellCalled");
+	//	numberOfDeadPlayer += 1;
+	//}
+	[PunRPC]
+	public void RPC_SetCurrentTower(int viewID)
+	{
+		currentTower = PhotonView.Find(viewID).gameObject;
 	}
 }

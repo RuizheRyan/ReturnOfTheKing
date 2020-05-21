@@ -44,6 +44,13 @@ MonoBehaviour:
   - amIDead
   - someoneDead
   - SetDetectedStatus
+  - RPC_ChangeClientInformation
+  - RPC_amIDead
+  - RPC_SetDetectedStatus
+  - RPC_checkUnderAttack
+  - RPC_loadEndScene
+  - RPC_knell
+  - RPC_SetCurrentTower
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

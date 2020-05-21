@@ -71,7 +71,7 @@ MonoBehaviour:
   HitCoolDown: 5
   damage: 1
   detectingRange: 15
-  numberOfRays: 35
+  numberOfRays: 45
   layerMask:
     serializedVersion: 2
     m_Bits: 3072
@@ -101,6 +101,7 @@ MonoBehaviour:
   switchTimer: 0
   delayTimer: 0
   delay: 1
+  bossCamera: {fileID: 0}
 --- !u!135 &5096736554002590852
 SphereCollider:
   m_ObjectHideFlags: 0

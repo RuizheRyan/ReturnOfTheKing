@@ -100,12 +100,16 @@ public class Boss : MonoBehaviourPun, IPunObservable
 						{
 							hitPlayers.Add(hitsInfo.transform.gameObject);
 						}
-						foreach(GameObject item in hitPlayers)
+						//foreach(GameObject item in hitPlayers)
+						//{
+						//	if(item == hitsInfo.transform.gameObject)
+						//	{
+						//		continue;
+						//	}
+						//	hitPlayers.Add(hitsInfo.transform.gameObject);
+						//}
+						if (!hitPlayers.Contains(hitsInfo.transform.gameObject))
 						{
-							if(item == hitsInfo.transform.gameObject)
-							{
-								continue;
-							}
 							hitPlayers.Add(hitsInfo.transform.gameObject);
 						}
 					}
