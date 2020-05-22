@@ -425,10 +425,10 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 	[PunRPC]
 	public void RPC_IamBack(int rebornID)
 	{
-		print("0");
+		print("Iambackcalled");
 		if(rebornID == photonView.ViewID)
 		{
-			print("1");
+			print("Yesitsme");
 			Dead = false;
 		}
 	}
