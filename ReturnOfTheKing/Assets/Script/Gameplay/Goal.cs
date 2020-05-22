@@ -59,5 +59,8 @@ public class Goal : MonoBehaviourPun
 	private void changeGoalState()
 	{
 		isArrived = true;
+		GetComponent<Collider>().enabled = false;
+		GetComponentInChildren<Collider>().enabled = false;
+		GetComponentInChildren<Renderer>().enabled = false;
 	}
 }

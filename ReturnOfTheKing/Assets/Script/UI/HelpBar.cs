@@ -38,7 +38,7 @@ public class HelpBar : MonoBehaviourPun
         if (gm.deadPlayer != null && !playerController.Dead && canvas.GetComponent<PhotonView>().IsMine)
         {
             canvas.enabled = true;
-            Vector2 pos = localCam.WorldToScreenPoint(gm.deadPlayer.transform.position);
+            Vector2 pos = localCam.WorldToScreenPoint(gm.deadPlayer.transform.position - Vector3.forward);
             pos.x = Mathf.Clamp(pos.x, 50, 1870);
             pos.y = Mathf.Clamp(pos.y, 50, 1030);
             transform.position = pos;
