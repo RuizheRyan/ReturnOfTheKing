@@ -93,7 +93,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotateSpeed: 1
-  switchCoolDown: 1.75
+  switchCoolDown: 1.5
   layerMask:
     serializedVersion: 2
     m_Bits: 4352

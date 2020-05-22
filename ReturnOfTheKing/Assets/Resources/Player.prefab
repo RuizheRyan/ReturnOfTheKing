@@ -494,7 +494,7 @@ MonoBehaviour:
   coolDownTime: 10
   throwForce: 5
   secondsToFrozen: 3
-  rescueCoolDown: 5
+  rescueCoolDown: 4
   rescueTimer: 0
   rescuable: 0
   hasThrown: 0
