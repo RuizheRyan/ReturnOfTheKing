@@ -8,6 +8,11 @@ public class CamraController : MonoBehaviourPun
     public bool isBossCam;
     [SerializeField]
     Transform player;
+    [SerializeField]
+    Camera mainCam;
+    Vector3 lastMousePos;
+    private float minSize = 25f;
+    private float maxSize = 35f;
     // Start is called before the first frame update
     void Start()
     {
@@ -31,8 +36,31 @@ public class CamraController : MonoBehaviourPun
     {
         if (isBossCam)
         {
-            return;
+            if (Input.GetAxis("Mouse ScrollWheel") < 0 && Camera.main.orthographicSize < maxSize)
+            {
+                mainCam.orthographicSize += 0.5f;
+            }
+            if (Input.GetAxis("Mouse ScrollWheel") > 0 && Camera.main.orthographicSize > minSize)
+            {
+                mainCam.orthographicSize -= 0.5f;
+            }
+            if (Input.GetMouseButton(2) || Input.GetMouseButton(0))
+            {
+                if (lastMousePos != Vector3.zero)
+                {
+                    Vector3 offset = (lastMousePos - Input.mousePosition) * 0.1f;
+                    transform.position += new Vector3(offset.x, offset.y, 0);
+                }
+            }
+            if (Input.GetMouseButtonUp(2) || Input.GetMouseButton(0))
+            {
+                lastMousePos = Vector3.zero;
+            }
+            lastMousePos = Input.mousePosition;
         }
-        transform.position = player.position;
+        else
+        {
+            transform.position = player.position;
+        }
     }
 }

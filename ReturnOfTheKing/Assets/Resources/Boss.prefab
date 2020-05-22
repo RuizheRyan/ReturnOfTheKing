@@ -92,7 +92,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotateSpeed: 1
-  switchCoolDown: 3
+  switchCoolDown: 2.25
   layerMask:
     serializedVersion: 2
     m_Bits: 4352
@@ -100,7 +100,7 @@ MonoBehaviour:
   isSwitched: 0
   switchTimer: 0
   delayTimer: 0
-  delay: 1
+  delay: 1.75
   bossCamera: {fileID: 0}
 --- !u!135 &5096736554002590852
 SphereCollider:
@@ -216,7 +216,7 @@ Light:
   m_InnerSpotAngle: 1
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 0
+    m_Type: 1
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
