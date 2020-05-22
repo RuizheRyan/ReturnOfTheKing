@@ -11,16 +11,16 @@ public class GameManager : MonoBehaviourPun
 	private GameSettings _gameSettings;
 
 	//singleton
-	public static GameManager instance;
+	private static GameManager _instance;
 	public static GameManager Instance
 	{
 		get
 		{
-			if (instance == null)
+			if (_instance == null)
 			{
-				instance = FindObjectOfType<GameManager>();
+				_instance = FindObjectOfType<GameManager>();
 			}
-			return instance;
+			return _instance;
 		}
 	}
 
@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviourPun
 			return currentTower;
 		}
 	}
-
+	public GameObject deadPlayer = null;
 	public enum ItemType { A, B };
 	private GameObject[] allGoals;
 
@@ -69,7 +69,7 @@ public class GameManager : MonoBehaviourPun
 			}
 		}
 
-		if(arrivedGoals == allGoals.Length)
+		if(arrivedGoals >= allGoals.Length)
 		{
 			playerIsVictory = true;
 			callloadEndScene(playerIsVictory);
@@ -100,15 +100,30 @@ public class GameManager : MonoBehaviourPun
 
 	public void someoneDead()
 	{
-		numberOfDeadPlayer += 1;
+		Debug.Log("someoneDead");
+		//numberOfDeadPlayer += 1;
+		Debug.Log("deadNumber:" + numberOfDeadPlayer);
+		photonView.RPC("RPC_knell", RpcTarget.MasterClient);
+	}
+	public void someoneRelive()
+	{
+		//numberOfDeadPlayer -= 1;
+		photonView.RPC("RPC_Relive", RpcTarget.MasterClient);
 	}
 
-	//[PunRPC]
-	//public void RPC_knell()
-	//{
-	//	Debug.Log("knellCalled");
-	//	numberOfDeadPlayer += 1;
-	//}
+	[PunRPC]
+	public void RPC_knell()
+	{
+		Debug.Log("knellCalled");
+		numberOfDeadPlayer += 1;
+		Debug.Log("deadNumber:" + numberOfDeadPlayer);
+	}
+	[PunRPC]
+	public void RPC_Relive()
+	{
+		numberOfDeadPlayer -= 1;
+		Debug.Log("deadNumber:" + numberOfDeadPlayer);
+	}
 	[PunRPC]
 	public void RPC_SetCurrentTower(int viewID)
 	{

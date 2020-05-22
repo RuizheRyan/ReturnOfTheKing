@@ -16,6 +16,8 @@ public class RoomBoard : MonoBehaviourPunCallbacks
     private Button _joinButton;
     [SerializeField]
     private LocalPlayerInformation _localPlayerInformation;
+	[SerializeField]
+	private InstructionPage myInstruction;
 
     private List<RoomBlock> _roomBlockList = new List<RoomBlock>();
 
@@ -85,6 +87,15 @@ public class RoomBoard : MonoBehaviourPunCallbacks
         _roomBlockList.Clear();
         _selectedRoomName = null;
         _preparePage.inRoomPage.colorButton.image.color = _preparePage.lobbyMenu.colorButton.image.color;
+		if (PhotonNetwork.IsMasterClient)
+		{
+			myInstruction.ShowSeeker();
+		}
+		else
+		{
+			myInstruction.ShowHider();
+		}
+		
     }
 
     public void joinSelectedRoom()

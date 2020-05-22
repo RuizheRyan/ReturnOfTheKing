@@ -19,7 +19,7 @@ public class InRoomPage : MonoBehaviourPunCallbacks
     [SerializeField]
     private Button _readyButton;
     [SerializeField]
-    public GameObject readyInformation;
+    public GameObject readyInformationForMasterClient;
     [SerializeField]
     private Texture _readyTexture;
     [SerializeField]
@@ -72,13 +72,13 @@ public class InRoomPage : MonoBehaviourPunCallbacks
             {
                 _preparePage.inRoomPage.startButton.interactable = true;
                 //_everyOneIsReadyText.text = "Everyone is ready";
-                readyInformation.GetComponent<RawImage>().texture = _everyoneIsReadyTexture;
+                readyInformationForMasterClient.GetComponent<RawImage>().texture = _everyoneIsReadyTexture;
             }
             else
             {
                 _preparePage.inRoomPage.startButton.interactable = false;
                 //_everyOneIsReadyText.text = "Unready";
-                readyInformation.GetComponent<RawImage>().texture = _someoneNotReadyTexture;
+                readyInformationForMasterClient.GetComponent<RawImage>().texture = _someoneNotReadyTexture;
             }
         }
     }
@@ -134,7 +134,7 @@ public class InRoomPage : MonoBehaviourPunCallbacks
         {
             _readyButton.interactable = true;
             startButton.interactable = false;
-            readyInformation.SetActive(false);
+            readyInformationForMasterClient.SetActive(false);
             localReadyState = false;
             _customProperties["ReadyState"] = 0;
         }
@@ -196,7 +196,10 @@ public class InRoomPage : MonoBehaviourPunCallbacks
         Debug.Log("PlayersEntered.");
         addPlayerBlockIntoPlayerBoard(newPlayer);
         everyOneIsReady = false;
-        checkReadyState();
+        if (PhotonNetwork.IsMasterClient)
+        {
+            checkReadyState();
+        }
     }
 
     public override void OnPlayerLeftRoom(Player leftPlayer)
@@ -232,7 +235,6 @@ public class InRoomPage : MonoBehaviourPunCallbacks
                     if (!_playerBlockList[i].readyState)
                     {
                         everyOneIsReady = false;
-                        Debug.Log("Someone is unready");
                         break;
                     }
                 }
@@ -277,7 +279,10 @@ public class InRoomPage : MonoBehaviourPunCallbacks
         {
             _playerBlockList[index].readyState = playerReadyState;
         }
-        checkReadyState();     
+        if (PhotonNetwork.IsMasterClient)
+        {
+            checkReadyState();
+        }
     }
 
     [PunRPC] void RPC_ChangeClientInformation(playerState state)
