@@ -19,7 +19,8 @@ public class InstructionPage : MonoBehaviour
 		{
 			PlayerPrefs.SetInt("FinishSeekerTutorial", 0);
 			seekerInfo.SetActive(true);
-		}		
+		}
+		return;
 	}
 	public void HideSeeker()
 	{
@@ -33,7 +34,8 @@ public class InstructionPage : MonoBehaviour
 		{
 			PlayerPrefs.SetInt("FinishHiderTutorial", 0);
 			hiderInfo.SetActive(true);
-		}		
+		}
+		return;
 	}
 	public void HideHider()
 	{
