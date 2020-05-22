@@ -90,11 +90,7 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 			}
 			else
 			{
-				print("I'm back");
-				if (photonView.IsMine)
-				{
-					_gameManager.someoneRelive();
-				}
+				print("I'm back");				
 				currentHealth = 50;
 				rb.isKinematic = false;
 				photonView.RPC("RPC_IamBack", RpcTarget.Others, photonView.ViewID);
@@ -431,6 +427,10 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 			rb.isKinematic = false;
 			_dead = false;
 			_gameManager.deadPlayer = null;
+			if (photonView.IsMine)
+			{
+				_gameManager.someoneRelive();
+			}
 		}
 	}
 
