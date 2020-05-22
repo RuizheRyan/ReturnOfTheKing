@@ -81,7 +81,7 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 			if (_dead)
 			{
 				Debug.Log("I dead");
-				if(gameObject.GetPhotonView().IsMine)
+				if(photonView.IsMine)
 				{
 					_gameManager.someoneDead();
 				}				
@@ -91,7 +91,7 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 			else
 			{
 				print("I'm back");
-				if (gameObject.GetPhotonView().IsMine)
+				if (photonView.IsMine)
 				{
 					_gameManager.someoneRelive();
 				}
@@ -427,7 +427,10 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 	{
 		if(rebornID == photonView.ViewID)
 		{
-			Dead = false;
+			currentHealth = 50;
+			rb.isKinematic = false;
+			_dead = false;
+			_gameManager.deadPlayer = null;
 		}
 	}
 

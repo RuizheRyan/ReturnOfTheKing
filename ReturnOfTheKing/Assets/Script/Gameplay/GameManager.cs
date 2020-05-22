@@ -101,13 +101,14 @@ public class GameManager : MonoBehaviourPun
 	public void someoneDead()
 	{
 		Debug.Log("someoneDead");
-		numberOfDeadPlayer += 1;
+		//numberOfDeadPlayer += 1;
 		Debug.Log("deadNumber:" + numberOfDeadPlayer);
 		photonView.RPC("RPC_knell", RpcTarget.MasterClient);
 	}
 	public void someoneRelive()
 	{
-		numberOfDeadPlayer -= 1;
+		//numberOfDeadPlayer -= 1;
+		photonView.RPC("RPC_Relive", RpcTarget.MasterClient);
 	}
 
 	[PunRPC]
@@ -115,6 +116,12 @@ public class GameManager : MonoBehaviourPun
 	{
 		Debug.Log("knellCalled");
 		numberOfDeadPlayer += 1;
+		Debug.Log("deadNumber:" + numberOfDeadPlayer);
+	}
+	[PunRPC]
+	public void RPC_Relive()
+	{
+		numberOfDeadPlayer -= 1;
 		Debug.Log("deadNumber:" + numberOfDeadPlayer);
 	}
 	[PunRPC]

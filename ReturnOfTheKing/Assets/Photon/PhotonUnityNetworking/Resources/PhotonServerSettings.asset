@@ -53,6 +53,7 @@ MonoBehaviour:
   - RPC_SetCurrentTower
   - RPC_Iamback
   - RPC_IamBack
+  - RPC_Relive
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1
