@@ -97,6 +97,7 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 				}
 				currentHealth = 50;
 				rb.isKinematic = false;
+				photonView.RPC("RPC_IamBack", RpcTarget.Others, photonView.ViewID);
 				_gameManager.deadPlayer = null;
 			}
 		}
@@ -195,7 +196,6 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 			if (rescueTimer >= rescueCoolDown)
 			{
 				rescueTimer = 0;
-				photonView.RPC("RPC_IamBack", RpcTarget.Others, _gameManager.deadPlayer.GetPhotonView().ViewID);
 				//_gameManager.deadPlayer.GetComponent<CharacterController>().currentHealth = 50;
 				_gameManager.deadPlayer.GetComponent<CharacterController>().Dead = false;
 				//_gameManager.deadPlayer = null;
@@ -425,10 +425,8 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 	[PunRPC]
 	public void RPC_IamBack(int rebornID)
 	{
-		print("0");
 		if(rebornID == photonView.ViewID)
 		{
-			print("1");
 			Dead = false;
 		}
 	}
