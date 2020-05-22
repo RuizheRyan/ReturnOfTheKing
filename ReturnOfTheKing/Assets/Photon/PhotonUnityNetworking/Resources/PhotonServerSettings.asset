@@ -31,29 +31,22 @@ MonoBehaviour:
   RunInBackground: 1
   StartInOfflineMode: 0
   RpcList:
-  - ClickRpc
-  - DestroyRpc
-  - RPC_ChangeReadyState
-  - RPC_DropItem
-  - RPC_PickUpItem
-  - RPC_ThrowItem
   - changeGoalState
   - checkDestroySelf
-  - checkUnderAttack
-  - loadEndScene
-  - amIDead
-  - someoneDead
-  - SetDetectedStatus
+  - ClickRpc
+  - DestroyRpc
   - RPC_ChangeClientInformation
-  - RPC_amIDead
-  - RPC_SetDetectedStatus
+  - RPC_ChangeReadyState
   - RPC_checkUnderAttack
-  - RPC_loadEndScene
-  - RPC_knell
-  - RPC_SetCurrentTower
-  - RPC_Iamback
+  - RPC_DropItem
   - RPC_IamBack
+  - RPC_knell
+  - RPC_loadEndScene
+  - RPC_PickUpItem
   - RPC_Relive
+  - RPC_SetCurrentTower
+  - RPC_SetDetectedStatus
+  - RPC_ThrowItem
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1
