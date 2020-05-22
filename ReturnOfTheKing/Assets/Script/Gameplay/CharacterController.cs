@@ -39,7 +39,7 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 	[SerializeField] private float secondsToFrozen = 3f;
 	public float rescueCoolDown = 2;
 	public float rescueTimer = 0;
-	[HideInInspector]
+	//[HideInInspector]
 	public bool rescuable = false;
 
 	[Header("Debugging")]
@@ -77,22 +77,27 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 		}
 		set
 		{
-			Debug.Log("I dead");
 			_dead = value;
 			if (_dead)
 			{
+				Debug.Log("I dead");
 				if(gameObject.GetPhotonView().IsMine)
 				{
 					_gameManager.someoneDead();
-					_gameManager.deadPlayer = gameObject;
 				}				
+				_gameManager.deadPlayer = gameObject;
+				rb.isKinematic = true;
 			}
 			else
 			{
+				print("I'm back");
 				if (gameObject.GetPhotonView().IsMine)
 				{
 					_gameManager.someoneRelive();
-				}				
+				}
+				currentHealth = 50;
+				rb.isKinematic = false;
+				_gameManager.deadPlayer = null;
 			}
 		}
 	}
@@ -146,25 +151,30 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 
 	private void FixedUpdate()
 	{
+		if(_gameManager.deadPlayer == null || Dead)
+		{
+			return;
+		}
 		float detectingRange = 30;
 		Vector3 origin = transform.position;
-		origin.z += 1;
+		//origin.z += 1;
 		Vector3 startDirection = Quaternion.AngleAxis(-detectingRange / 2, -Vector3.forward) * transform.up;
 		float deltaAngle = detectingRange / (3 - 1f);
 		RaycastHit hitInfo;
-		rescuable = false;
 		for (int i = 0; i < 3; i++)
 		{
 			Vector3 rayDirection = Quaternion.AngleAxis(i * deltaAngle, -Vector3.forward) * startDirection;
 			Ray ray = new Ray(origin, rayDirection);
-			if (Physics.Raycast(ray, out hitInfo, 0.2f, 1 << 11) && hitInfo.transform.GetComponent<CharacterController>().Dead)
+			if (Physics.Raycast(ray, out hitInfo, 2f, 1 << 11) && hitInfo.transform.GetComponent<CharacterController>().Dead)
 			{
-				Debug.DrawRay(ray.origin, hitInfo.point, Color.green);
+				Debug.DrawRay(ray.origin, hitInfo.point, Color.red);
 				rescuable = true;
+				break;
 			}
 			else
 			{
 				Debug.DrawRay(ray.origin, ray.origin + ray.direction.normalized * 2, Color.green);
+				rescuable = false;
 			}
 		}
 	}
@@ -185,10 +195,10 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 			if (rescueTimer >= rescueCoolDown)
 			{
 				rescueTimer = 0;
-				photonView.RPC("RPC_IamBack", RpcTarget.All, _gameManager.deadPlayer.GetPhotonView());
-				_gameManager.deadPlayer.GetComponent<CharacterController>().currentHealth = 50;
+				photonView.RPC("RPC_IamBack", RpcTarget.Others, _gameManager.deadPlayer.GetPhotonView().ViewID);
+				//_gameManager.deadPlayer.GetComponent<CharacterController>().currentHealth = 50;
 				_gameManager.deadPlayer.GetComponent<CharacterController>().Dead = false;
-				_gameManager.deadPlayer = null;
+				//_gameManager.deadPlayer = null;
 			}
 		}
 		if (base.photonView.IsMine && !Dead && moveSpeed > 0)
@@ -413,14 +423,13 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 	}
 
 	[PunRPC]
-
 	public void RPC_IamBack(int rebornID)
 	{
+		print("0");
 		if(rebornID == photonView.ViewID)
 		{
+			print("1");
 			Dead = false;
-			currentHealth = 50;
-			_gameManager.deadPlayer = null;
 		}
 	}
 
