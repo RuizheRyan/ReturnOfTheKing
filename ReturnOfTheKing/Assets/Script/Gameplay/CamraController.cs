@@ -45,7 +45,7 @@ public class CamraController : MonoBehaviourPun
             {
                 mainCam.orthographicSize -= 0.5f;
             }
-            if (Input.GetMouseButton(2))
+            if (Input.GetMouseButton(2) || Input.GetMouseButton(0))
             {
                 if (lastMousePos != Vector3.zero)
                 {
@@ -53,7 +53,7 @@ public class CamraController : MonoBehaviourPun
                     transform.position += new Vector3(offset.x, offset.y, 0);
                 }
             }
-            if (Input.GetMouseButtonUp(2))
+            if (Input.GetMouseButtonUp(2) || Input.GetMouseButtonUp(0))
             {
                 lastMousePos = Vector3.zero;
             }
