@@ -41,6 +41,7 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 	public float rescueTimer = 0;
 	//[HideInInspector]
 	public bool rescuable = false;
+	float activeDelay = 1.75f;
 
 	[Header("Debugging")]
 	public bool hasThrown = false;
@@ -181,6 +182,11 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 	// Update is called once per frame
 	void Update()
 	{
+		if(activeDelay >= 0)
+		{
+			activeDelay -= Time.deltaTime;
+			return;
+		}
 		if (_isDetected)
 		{
 			UnderAttack(20);

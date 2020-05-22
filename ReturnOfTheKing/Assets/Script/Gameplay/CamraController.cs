@@ -13,6 +13,7 @@ public class CamraController : MonoBehaviourPun
     Vector3 lastMousePos;
     private float minSize = 25f;
     private float maxSize = 35f;
+    float activeDelay = 1.75f;
     // Start is called before the first frame update
     void Start()
     {
@@ -44,7 +45,7 @@ public class CamraController : MonoBehaviourPun
             {
                 mainCam.orthographicSize -= 0.5f;
             }
-            if (Input.GetMouseButton(2) || Input.GetMouseButton(0))
+            if (Input.GetMouseButton(2))
             {
                 if (lastMousePos != Vector3.zero)
                 {
@@ -52,7 +53,7 @@ public class CamraController : MonoBehaviourPun
                     transform.position += new Vector3(offset.x, offset.y, 0);
                 }
             }
-            if (Input.GetMouseButtonUp(2) || Input.GetMouseButton(0))
+            if (Input.GetMouseButtonUp(2))
             {
                 lastMousePos = Vector3.zero;
             }
@@ -60,6 +61,11 @@ public class CamraController : MonoBehaviourPun
         }
         else
         {
+            if(activeDelay >= 0)
+            {
+                activeDelay -= Time.deltaTime;
+                mainCam.orthographicSize = Mathf.Lerp(11f, 25, activeDelay / 1.75f);
+            }
             transform.position = player.position;
         }
     }

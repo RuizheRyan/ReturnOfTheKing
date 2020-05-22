@@ -7,7 +7,7 @@ public class BossAction : MonoBehaviourPun
 {
 	[Header("Attributes")]
 	[SerializeField] private float rotateSpeed = 10f;
-	public float switchCoolDown = 3f;
+	public float switchCoolDown;
 	[Header("Do not Change")]
 	[SerializeField] private LayerMask layerMask;
 
@@ -133,7 +133,7 @@ public class BossAction : MonoBehaviourPun
 		}
 	}
 
-	private void OnMouseUpAsButton()
+	private void OnMouseUp()
 	{
 		if (!PhotonNetwork.IsMasterClient)
 		{

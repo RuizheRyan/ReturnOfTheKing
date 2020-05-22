@@ -10,6 +10,7 @@ public class GoalHint : MonoBehaviour
     Material mat;
     [SerializeField]
     GameManager.ItemType targetItemType;
+    float distance;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,7 +22,7 @@ public class GoalHint : MonoBehaviour
     {
         if (itemIsNear)
         {
-            mat.SetFloat("_Alpha", Mathf.Sin(Time.time * speed) * 0.25f + 0.75f);
+            mat.SetFloat("_Alpha", Mathf.Sin(Time.time * speed * (1.5f - distance / 5)) * 0.25f + 0.75f);
         }
     }
 
@@ -29,6 +30,7 @@ public class GoalHint : MonoBehaviour
     {
         if (!itemIsNear && other.CompareTag("PickableItem") && other.GetComponent<PickableItem>().thisType == targetItemType)
         {
+            distance = (other.transform.position - transform.position).magnitude;
             itemIsNear = true;
         }
     }
