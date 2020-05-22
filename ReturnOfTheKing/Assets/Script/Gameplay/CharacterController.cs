@@ -361,7 +361,7 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 		Vector2 mousePosition = Input.mousePosition;
 		Ray ray = mainCam.ScreenPointToRay(mousePosition);
 		RaycastHit hit;
-		if (Physics.Raycast(ray, out hit, 100, 1 << 8 | 1 << 12))
+		if (Physics.Raycast(ray, out hit, 1000, 1 << 8 | 1 << 12))
 		{
 			Vector3 targetDirection = hit.point - transform.position;
 			targetDirection.z = 0;

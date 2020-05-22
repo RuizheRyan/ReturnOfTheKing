@@ -64,7 +64,7 @@ public class CamraController : MonoBehaviourPun
             if(activeDelay >= 0)
             {
                 activeDelay -= Time.deltaTime;
-                mainCam.orthographicSize = Mathf.Lerp(11f, 35, activeDelay / 1.75f);
+                mainCam.orthographicSize = Mathf.Lerp(15f, 35, activeDelay / 1.75f);
             }
             transform.position = player.position;
         }

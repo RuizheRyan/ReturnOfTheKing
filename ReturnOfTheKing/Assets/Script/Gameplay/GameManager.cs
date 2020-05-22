@@ -69,7 +69,7 @@ public class GameManager : MonoBehaviourPun
 			}
 		}
 
-		if(arrivedGoals >= PhotonNetwork.PlayerList.Length - 1)
+		if(arrivedGoals >= Mathf.Max(1, PhotonNetwork.PlayerList.Length - 1))
 		{
 			playerIsVictory = true;
 			callloadEndScene(playerIsVictory);
