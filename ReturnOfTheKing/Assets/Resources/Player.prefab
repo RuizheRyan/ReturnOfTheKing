@@ -761,6 +761,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isBossCam: 0
   player: {fileID: 3703448915361641229}
+  camera: {fileID: 582471231184517572}
 --- !u!1 &6021759319415798333
 GameObject:
   m_ObjectHideFlags: 0
