@@ -68,7 +68,7 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 	Vector3 forward, right;
 	private float moveSpeed;
 	[SerializeField] private bool _dead = false;
-	[SerializeField]
+	[SerializeField] private GameObject _helpTips;
 	public bool Dead
 	{
 		get
@@ -165,6 +165,8 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 			if (Physics.Raycast(ray, out hitInfo, 2f, 1 << 11) && hitInfo.transform.GetComponent<CharacterController>().Dead)
 			{
 				Debug.DrawRay(ray.origin, hitInfo.point, Color.red);
+				if(!PhotonNetwork.IsMasterClient)
+					_helpTips.SetActive(true);
 				rescuable = true;
 				break;
 			}
@@ -172,6 +174,7 @@ public class CharacterController : MonoBehaviourPun, IPunObservable
 			{
 				Debug.DrawRay(ray.origin, ray.origin + ray.direction.normalized * 2, Color.green);
 				rescuable = false;
+				_helpTips.SetActive(false);
 			}
 		}
 	}
