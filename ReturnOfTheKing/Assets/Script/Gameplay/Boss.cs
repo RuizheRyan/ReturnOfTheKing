@@ -25,7 +25,7 @@ public class Boss : MonoBehaviourPun, IPunObservable
 	[SerializeField] private float HitCoolDown = 5f;
 	[SerializeField] private int damage = 1;
 	[Header("Integer Angle & Times by 5")]
-	[SerializeField] private int detectingRange = 60;
+	public int detectingRange = 60;
 	[SerializeField] private int numberOfRays;
 	
 
